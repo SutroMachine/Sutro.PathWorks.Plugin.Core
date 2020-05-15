@@ -33,7 +33,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         IUserSettingCollection ISettingsManager.MaterialUserSettings => MaterialUserSettings;
         IUserSettingCollection ISettingsManager.PrintUserSettings => PrintUserSettings;
 
-        private static JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings
+        private readonly static JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings
         {
             MissingMemberHandling = MissingMemberHandling.Error,
         };

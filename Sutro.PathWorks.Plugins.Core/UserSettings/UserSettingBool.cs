@@ -1,7 +1,7 @@
 ﻿using System;
 using Sutro.PathWorks.Plugins.API.Settings;
 
-namespace Sutro.PathWorks.Plugins.Core.Settings
+namespace Sutro.PathWorks.Plugins.Core.UserSettings
 {
     public class UserSettingBool<TSettings> : UserSetting<TSettings, bool>
     {

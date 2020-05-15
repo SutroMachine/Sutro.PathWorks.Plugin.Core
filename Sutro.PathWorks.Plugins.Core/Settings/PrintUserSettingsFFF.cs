@@ -1,7 +1,7 @@
 ﻿using gs;
-using Sutro.PathWorks.Plugins.API;
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;
+using Sutro.PathWorks.Plugins.Core.UserSettings;
 using System.Globalization;
 
 namespace Sutro.PathWorks.Plugins.Core.Settings

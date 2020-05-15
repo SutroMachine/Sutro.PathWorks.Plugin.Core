@@ -1,7 +1,7 @@
 ﻿using Sutro.PathWorks.Plugins.API.Settings;
 using System;
 
-namespace Sutro.PathWorks.Plugins.Core.Settings
+namespace Sutro.PathWorks.Plugins.Core.UserSettings
 {
     public class UserSettingInt<TSettings> : UserSetting<TSettings, int>
     {

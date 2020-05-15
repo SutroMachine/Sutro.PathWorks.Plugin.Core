@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 
-namespace Sutro.PathWorks.Plugins.Core.Settings
+namespace Sutro.PathWorks.Plugins.Core.UserSettings
 {
     public abstract class UserSettingCollectionBase<TSettings> : IUserSettingCollection<TSettings>
     {

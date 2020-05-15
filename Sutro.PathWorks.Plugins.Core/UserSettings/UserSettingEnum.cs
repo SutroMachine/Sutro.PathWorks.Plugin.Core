@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Sutro.PathWorks.Plugins.Core.Settings
+namespace Sutro.PathWorks.Plugins.Core.UserSettings
 {
     public class UserSettingEnum<TSettings> : UserSetting<TSettings, string>
     {
