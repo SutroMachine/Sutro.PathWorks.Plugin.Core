@@ -7,10 +7,8 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
         public FixedRangeCustomDataDetails(
             Func<string> labelF, Func<float, string> colorScaleLabelerF,
             float rangeMin, float rangeMax)
-            : base(labelF, colorScaleLabelerF)
+            : base(labelF, colorScaleLabelerF, rangeMin, rangeMax)
         {
-            RangeMin = rangeMin;
-            RangeMax = rangeMax;
         }
     }
 }
