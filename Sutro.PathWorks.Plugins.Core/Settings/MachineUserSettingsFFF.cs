@@ -1,11 +1,12 @@
 ﻿using gs;
-using Sutro.PathWorks.Plugins.API;
+using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;
+using Sutro.PathWorks.Plugins.Core.UserSettings;
 using System.Globalization;
 
 namespace Sutro.PathWorks.Plugins.Core.Settings
 {
-    public class MachineUserSettingsFFF<TSettings> : UserSettingCollection<TSettings> where TSettings : SingleMaterialFFFSettings
+    public class MachineUserSettingsFFF<TSettings> : UserSettingCollectionBase<TSettings> where TSettings : SingleMaterialFFFSettings
     {
         #region Identifiers
 
@@ -42,7 +43,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupExtruder,
             (settings) => settings.Machine.MaxExtruderTempC,
             (settings, val) => settings.Machine.MaxExtruderTempC = val,
-            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResult.Level.Error));
+            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
 
         public UserSettingInt<TSettings> MinExtruderTempC = new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MinExtruderTempC",
@@ -51,7 +52,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupExtruder,
             (settings) => settings.Machine.MinExtruderTempC,
             (settings, val) => settings.Machine.MinExtruderTempC = val,
-            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResult.Level.Error));
+            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
 
         public UserSettingDouble<TSettings> NozzleDiamMM = new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.NozzleDiamMM",
@@ -60,7 +61,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupExtruder,
             (settings) => settings.Machine.NozzleDiamMM,
             (settings, val) => settings.Machine.NozzleDiamMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
         #endregion Extruder
 
@@ -76,7 +77,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupPrintVolume,
             (settings) => settings.Machine.BedSizeXMM,
             (settings, val) => settings.Machine.BedSizeXMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
         public UserSettingDouble<TSettings> BedSizeYMM = new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.BedSizeYMM",
@@ -85,7 +86,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupPrintVolume,
             (settings) => settings.Machine.BedSizeYMM,
             (settings, val) => settings.Machine.BedSizeYMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
         public UserSettingDouble<TSettings> MaxHeightMM = new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.MaxHeightMM",
@@ -94,7 +95,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupPrintVolume,
             (settings) => settings.Machine.MaxHeightMM,
             (settings, val) => settings.Machine.MaxHeightMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
         #endregion PrintVolume
 
@@ -110,7 +111,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.Machine.MaxExtrudeSpeedMMM,
             (settings, val) => settings.Machine.MaxExtrudeSpeedMMM = val,
-            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
 
         public UserSettingInt<TSettings> MaxRetractSpeedMMM = new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxRetractSpeedMMM",
@@ -119,7 +120,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.Machine.MaxRetractSpeedMMM,
             (settings, val) => settings.Machine.MaxRetractSpeedMMM = val,
-            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
 
         public UserSettingInt<TSettings> MaxTravelSpeedMMM = new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxTravelSpeedMMM",
@@ -128,7 +129,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.Machine.MaxTravelSpeedMMM,
             (settings, val) => settings.Machine.MaxTravelSpeedMMM = val,
-            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
 
         public UserSettingInt<TSettings> MaxZTravelSpeedMMM = new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxZTravelSpeedMMM",
@@ -137,7 +138,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.Machine.MaxZTravelSpeedMMM,
             (settings, val) => settings.Machine.MaxZTravelSpeedMMM = val,
-            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
 
         #endregion Speeds
 
@@ -169,7 +170,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupCapabilities,
             (settings) => settings.Machine.MaxLayerHeightMM,
             (settings, val) => settings.Machine.MaxLayerHeightMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
         public UserSettingDouble<TSettings> MinLayerHeightMM = new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.MinLayerHeightMM",
@@ -178,7 +179,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupCapabilities,
             (settings) => settings.Machine.MinLayerHeightMM,
             (settings, val) => settings.Machine.MinLayerHeightMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
         #endregion Capabilities
 
@@ -194,7 +195,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupHeatedBed,
             (settings) => settings.Machine.MaxBedTempC,
             (settings, val) => settings.Machine.MaxBedTempC = val,
-            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResult.Level.Error));
+            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
 
         public UserSettingInt<TSettings> MinBedTempC = new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MinBedTempC",
@@ -203,7 +204,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupHeatedBed,
             (settings) => settings.Machine.MinBedTempC,
             (settings, val) => settings.Machine.MinBedTempC = val,
-            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResult.Level.Error));
+            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
 
         #endregion HeatedBed
 

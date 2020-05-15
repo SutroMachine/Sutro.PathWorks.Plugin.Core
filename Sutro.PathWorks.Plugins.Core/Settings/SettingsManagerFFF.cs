@@ -1,6 +1,6 @@
 ﻿using gs;
 using gs.info;
-using Sutro.PathWorks.Plugins.API;
+using Sutro.PathWorks.Plugins.API.Settings;
 using System.Collections.Generic;
 
 namespace Sutro.PathWorks.Plugins.Core.Settings
@@ -24,7 +24,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             }
         }
 
-        public override IUserSettingCollection<SingleMaterialFFFSettings> MachineUserSettings => 
+        public override IUserSettingCollection<SingleMaterialFFFSettings> MachineUserSettings =>
             new MachineUserSettingsFFF<SingleMaterialFFFSettings>();
 
         public override IUserSettingCollection<SingleMaterialFFFSettings> MaterialUserSettings =>

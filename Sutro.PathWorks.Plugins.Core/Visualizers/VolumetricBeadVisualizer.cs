@@ -3,7 +3,7 @@ using gs;
 using gs.FillTypes;
 using gs.utility;
 using Sutro.Core.Models.GCode;
-using Sutro.PathWorks.Plugins.API;
+using Sutro.PathWorks.Plugins.API.Visualizers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -55,16 +55,16 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             {7, BridgeFillType.Label},
         };
 
-        public Dictionary<string, FillType> FillTypes { get; protected set; } = new Dictionary<string, FillType>()
+        public Dictionary<int, VisualizerFillType> FillTypes { get; protected set; } = new Dictionary<int, VisualizerFillType>()
         {
-            {DefaultFillType.Label, new FillType("Unknown", new Vector3f(0.5, 0.5, 0.5))},
-            {InnerPerimeterFillType.Label, new FillType("Inner Perimeter", new Vector3f(1, 0, 0))},
-            {OuterPerimeterFillType.Label, new FillType("Outer Perimeter", new Vector3f(1, 1, 0))},
-            {OpenShellCurveFillType.Label, new FillType("Open Mesh Curve", new Vector3f(0, 1, 1))},
-            {SolidFillType.Label, new FillType("Solid Fill", new Vector3f(0, 0.5f, 1))},
-            {SparseFillType.Label, new FillType("Sparse Fill", new Vector3f(0.5f, 0, 1))},
-            {SupportFillType.Label, new FillType("Support", new Vector3f(1, 0, 1))},
-            {BridgeFillType.Label, new FillType("Bridge", new Vector3f(0, 0, 1))},
+            {0, new VisualizerFillType("Unknown", new Vector3f(0.5, 0.5, 0.5))},
+            {1, new VisualizerFillType("Inner Perimeter", new Vector3f(1, 0, 0))},
+            {2, new VisualizerFillType("Outer Perimeter", new Vector3f(1, 1, 0))},
+            {3, new VisualizerFillType("Open Mesh Curve", new Vector3f(0, 1, 1))},
+            {4, new VisualizerFillType("Solid Fill", new Vector3f(0, 0.5f, 1))},
+            {5, new VisualizerFillType("Sparse Fill", new Vector3f(0.5f, 0, 1))},
+            {6, new VisualizerFillType("Support", new Vector3f(1, 0, 1))},
+            {7, new VisualizerFillType("Bridge", new Vector3f(0, 0, 1))},
         };
 
         protected readonly FixedRangeCustomDataDetails customDataBeadWidth =
@@ -72,25 +72,19 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                 () => "Bead Width",
                 (value) => $"{value:F2} mm", 0.1f, 0.8f);
 
-        public IVisualizerCustomDataDetails CustomDataDetails0 => customDataBeadWidth;
-
         protected readonly AdaptiveRangeCustomDataDetails customDataFeedRate =
             new AdaptiveRangeCustomDataDetails(
                 () => "Feed Rate",
                 (value) => $"{value:F0} mm/min");
-
-        public IVisualizerCustomDataDetails CustomDataDetails1 => customDataFeedRate;
 
         protected readonly NormalizedAdaptiveRangeCustomDataDetails customDataCompletion =
             new NormalizedAdaptiveRangeCustomDataDetails(
                 () => "Completion",
                 (value) => $"{value:P0}");
 
-        public IVisualizerCustomDataDetails CustomDataDetails2 => customDataCompletion;
-
-        public IVisualizerCustomDataDetails CustomDataDetails3 => null;
-        public IVisualizerCustomDataDetails CustomDataDetails4 => null;
-        public IVisualizerCustomDataDetails CustomDataDetails5 => null;
+        public VisualizerCustomDataDetailsCollection CustomDataDetails =>
+            new VisualizerCustomDataDetailsCollection(
+                customDataBeadWidth, customDataFeedRate, customDataCompletion);
 
         public void BeginGCodeLineStream()
         {
@@ -405,9 +399,9 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             Vector3d offset = miterNormal * (dimensions.x * crossSectionVertex.x * secant) + new Vector3d(0, 0, dimensions.y * crossSectionVertex.y);
             Vector3d vertex = point + offset;
 
-            Vector3f color = FillTypes[DefaultFillType.Label].Color;
+            Vector3f color = FillTypes[FillTypeIntegerId[DefaultFillType.Label]].Color;
 
-            if (FillTypes.TryGetValue(FillTypeStringInt[fillType], out var fillInfo))
+            if (FillTypes.TryGetValue(fillType, out var fillInfo))
             {
                 color = fillInfo.Color;
             }
@@ -423,9 +417,9 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             customDataFeedRate.ObserveValue((float)feedrate);
             customDataCompletion.ObserveValue(pointCount);
 
-            return new ToolpathPreviewVertex(vertex,
-                fillType, layerIndex, color, brightness,
-                (float)dimensions.x, (float)feedrate, pointCount);
+            return new ToolpathPreviewVertex(
+                vertex, fillType, layerIndex, color, brightness,
+                new CustomColorData(dimensions.x, feedrate, pointCount));
         }
 
         protected static Vector3d GetNormalAndSecant(Vector3d ab, Vector3d bc, out double secant)
@@ -501,10 +495,10 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
         public void PrintLayerCompleted(PrintLayerData printLayerData)
         {
-            throw new NotImplementedException();
         }
 
         private readonly GenericGCodeParser parser = new GenericGCodeParser();
+
         public void ProcessGCodeLine(string line)
         {
             // Note: if/when GenericGCodeParser exposes the protected method ParseLine,
