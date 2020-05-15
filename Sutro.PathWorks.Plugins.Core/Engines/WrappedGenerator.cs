@@ -1,11 +1,11 @@
 ﻿using g3;
 using gs;
+using Sutro.Core.Models.GCode;
 using Sutro.PathWorks.Plugins.API;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Sutro.Core.Models.GCode;
 
 namespace Sutro.PathWorks.Plugins.Core.Engines
 {

@@ -1,8 +1,6 @@
 ﻿using gs;
 using Newtonsoft.Json;
-using Sutro.Core.Models;
 using Sutro.Core.Models.Profiles;
-using Sutro.PathWorks.Plugins.API;
 using Sutro.PathWorks.Plugins.API.Settings;
 using System;
 using System.Collections.Generic;

@@ -46,7 +46,7 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
         }
 
         /// <summary>
-        /// Provides iteration through user settings without needing underlying raw settings type. 
+        /// Provides iteration through user settings without needing underlying raw settings type.
         /// </summary>
         /// <remarks>
         /// Common version of generic method IUserSettingCollection<TSettings>.Settings()
@@ -86,7 +86,6 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
         {
             return Validate((TSettings)rawSettings);
         }
-
 
         /// <summary>
         /// Loads values from raw settings into a collection of user settings.
@@ -131,6 +130,4 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
 
         public abstract void SetCulture(CultureInfo cultureInfo);
     }
-
-
 }

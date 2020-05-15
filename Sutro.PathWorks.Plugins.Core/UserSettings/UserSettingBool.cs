@@ -1,5 +1,5 @@
-﻿using System;
-using Sutro.PathWorks.Plugins.API.Settings;
+﻿using Sutro.PathWorks.Plugins.API.Settings;
+using System;
 
 namespace Sutro.PathWorks.Plugins.Core.UserSettings
 {

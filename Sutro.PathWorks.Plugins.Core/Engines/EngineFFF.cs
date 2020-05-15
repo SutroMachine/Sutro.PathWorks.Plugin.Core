@@ -15,17 +15,16 @@ namespace Sutro.PathWorks.Plugins.Core.Engines
     [ExportMetadata("Description", "Provides access to the basic print generator included in gsCore. Can only create gcode for a single mesh with single material.")]
     public class EngineFFF : EngineBase<SingleMaterialFFFSettings>
     {
-        public override ISettingsManager<SingleMaterialFFFSettings> SettingsManager => 
+        public override ISettingsManager<SingleMaterialFFFSettings> SettingsManager =>
             new SettingsManagerFFF();
 
         public override List<IVisualizer> Visualizers => new List<IVisualizer>() {
             new VolumetricBeadVisualizer(),
         };
 
-        public override IGenerator<SingleMaterialFFFSettings> Generator => 
+        public override IGenerator<SingleMaterialFFFSettings> Generator =>
             new WrappedGenerator<SingleMaterialFFFPrintGenerator, SingleMaterialFFFSettings>(
                 new PrintGeneratorManager<SingleMaterialFFFPrintGenerator, SingleMaterialFFFSettings>(
                     new SingleMaterialFFFSettings(), default, default, new ConsoleLogger(), true));
-
     }
 }

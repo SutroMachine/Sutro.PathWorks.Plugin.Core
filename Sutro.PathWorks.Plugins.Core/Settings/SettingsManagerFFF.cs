@@ -24,7 +24,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             }
         }
 
-        public override IUserSettingCollection<SingleMaterialFFFSettings> MachineUserSettings => 
+        public override IUserSettingCollection<SingleMaterialFFFSettings> MachineUserSettings =>
             new MachineUserSettingsFFF<SingleMaterialFFFSettings>();
 
         public override IUserSettingCollection<SingleMaterialFFFSettings> MaterialUserSettings =>

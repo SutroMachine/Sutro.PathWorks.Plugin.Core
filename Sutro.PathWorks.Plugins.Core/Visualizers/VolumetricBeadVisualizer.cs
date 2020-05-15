@@ -3,7 +3,6 @@ using gs;
 using gs.FillTypes;
 using gs.utility;
 using Sutro.Core.Models.GCode;
-using Sutro.PathWorks.Plugins.API;
 using Sutro.PathWorks.Plugins.API.Visualizers;
 using System;
 using System.Collections.Generic;
@@ -83,13 +82,11 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                 () => "Completion",
                 (value) => $"{value:P0}");
 
-
-        public VisualizerCustomDataDetailsCollection CustomDataDetails => 
+        public VisualizerCustomDataDetailsCollection CustomDataDetails =>
             new VisualizerCustomDataDetailsCollection(
                 customDataBeadWidth, customDataFeedRate, customDataCompletion);
 
         Dictionary<int, VisualizerFillType> IVisualizer.FillTypes => throw new NotImplementedException();
-
 
         public void BeginGCodeLineStream()
         {
@@ -504,6 +501,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
         }
 
         private readonly GenericGCodeParser parser = new GenericGCodeParser();
+
         public void ProcessGCodeLine(string line)
         {
             // Note: if/when GenericGCodeParser exposes the protected method ParseLine,
