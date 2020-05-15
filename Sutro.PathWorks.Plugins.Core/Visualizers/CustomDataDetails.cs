@@ -1,4 +1,4 @@
-﻿using Sutro.PathWorks.Plugins.API;
+﻿using Sutro.PathWorks.Plugins.API.Visualizers;
 using System;
 
 namespace Sutro.PathWorks.Plugins.Core.Visualizers

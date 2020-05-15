@@ -1,7 +1,6 @@
 using g3;
 using gs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Sutro.PathWorks.Plugins.Core.Settings;
 using System;
 using System.Collections.Generic;
 

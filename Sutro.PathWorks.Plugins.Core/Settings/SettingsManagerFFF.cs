@@ -1,6 +1,6 @@
 ﻿using gs;
 using gs.info;
-using Sutro.PathWorks.Plugins.API;
+using Sutro.PathWorks.Plugins.API.Settings;
 using System.Collections.Generic;
 
 namespace Sutro.PathWorks.Plugins.Core.Settings

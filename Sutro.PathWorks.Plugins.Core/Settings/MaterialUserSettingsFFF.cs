@@ -1,11 +1,11 @@
 ﻿using gs;
-using Sutro.PathWorks.Plugins.API;
+using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;
 using System.Globalization;
 
 namespace Sutro.PathWorks.Plugins.Core.Settings
 {
-    public class MaterialUserSettingsFFF<TSettings> : UserSettingCollection<TSettings> where TSettings : SingleMaterialFFFSettings
+    public class MaterialUserSettingsFFF<TSettings> : UserSettingCollectionBase<TSettings> where TSettings : SingleMaterialFFFSettings
     {
         #region Basic
 
@@ -19,7 +19,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBasic,
             (settings) => settings.Machine.FilamentDiamMM,
             (settings, val) => settings.Machine.FilamentDiamMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
         #endregion Basic
 
@@ -35,7 +35,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupTemperature,
             (settings) => settings.ExtruderTempC,
             (settings, val) => settings.ExtruderTempC = val,
-            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResult.Level.Error));
+            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
 
         public UserSettingInt<TSettings> HeatedBedTempC = new UserSettingInt<TSettings>(
             "MaterialUserSettingsFFF.HeatedBedTempC",
@@ -44,7 +44,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupTemperature,
             (settings) => settings.HeatedBedTempC,
             (settings, val) => settings.HeatedBedTempC = val,
-            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResult.Level.Error));
+            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
 
         #endregion Temperature
 
@@ -60,7 +60,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupRetraction,
             (settings) => settings.MinRetractTravelLength,
             (settings, val) => settings.MinRetractTravelLength = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
         public UserSettingDouble<TSettings> RetractDistanceMM = new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.RetractDistanceMM",
@@ -69,7 +69,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupRetraction,
             (settings) => settings.RetractDistanceMM,
             (settings, val) => settings.RetractDistanceMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
         public UserSettingDouble<TSettings> RetractSpeed = new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.RetractSpeed",
@@ -78,7 +78,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupRetraction,
             (settings) => settings.RetractSpeed,
             (settings, val) => settings.RetractSpeed = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResult.Level.Error));
+            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
         # endregion
 
