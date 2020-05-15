@@ -1,8 +1,25 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-  </PropertyGroup>
+    <Authors>Greg Meess</Authors>
+    <Company>Sutro Machine, Inc.</Company>
+    <Product />
+    <Description>Common functionality for building plugins for Sutro PathWorks using the Sutro.PathWorks.Plugin.API project.
+
+Includes a plugin for basic FFF printing with translations for all settings.</Description>
+    <RepositoryUrl>https://github.com/SutroMachine/Sutro.PathWorks.Plugin.Core</RepositoryUrl>
+    <Copyright>Copyright © Greg Meess/Sutro Machine, Inc. 2020</Copyright>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/SutroMachine/Sutro.PathWorks.Plugin.Core</RepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+      <RepositoryUrl>https://github.com/SutroMachine/Sutro.Core</RepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
@@ -15,6 +32,13 @@
     <EmbeddedResource Update="Translations\UserSettingTranslations.resx">
       <CustomToolNamespace>Sutro.PathWorks.Plugins.Core.Translations</CustomToolNamespace>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>

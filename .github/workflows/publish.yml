@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Create package
-        run: dotnet pack Sutro.PathWorks.Plugins.Core.csproj -c Release --include-source --include-symbols
+        run: dotnet pack Sutro.PathWorks.Plugins.Core/Sutro.PathWorks.Plugins.Core.csproj -c Release --include-source --include-symbols
       - name: Push package
         run: dotnet nuget push **/*.nupkg
                --skip-duplicate 
