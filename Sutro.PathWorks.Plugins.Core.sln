@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sutro.PathWorks.Plugins.Core", "Sutro.PathWorks.Plugins.Core\Sutro.PathWorks.Plugins.Core.csproj", "{BB9B609D-AC70-4F78-B320-94B704717564}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sutro.PathWorks.Plugins.Core.Tests", "Sutro.PathWorks.Plugins.Core.Tests\Sutro.PathWorks.Plugins.Core.Tests.csproj", "{04A4C016-226E-4323-BD5B-00BCC2CFECE7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BB9B609D-AC70-4F78-B320-94B704717564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB9B609D-AC70-4F78-B320-94B704717564}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB9B609D-AC70-4F78-B320-94B704717564}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB9B609D-AC70-4F78-B320-94B704717564}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04A4C016-226E-4323-BD5B-00BCC2CFECE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04A4C016-226E-4323-BD5B-00BCC2CFECE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04A4C016-226E-4323-BD5B-00BCC2CFECE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04A4C016-226E-4323-BD5B-00BCC2CFECE7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4F611E1C-FFEF-40D6-8AE6-20C853509182}
+	EndGlobalSection
+EndGlobal

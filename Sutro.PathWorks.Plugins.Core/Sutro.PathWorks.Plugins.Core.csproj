@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Sutro.Core" Version="1.0.2" />
+    <PackageReference Include="Sutro.geometry3Sharp" Version="1.0.11" />
+    <PackageReference Include="Sutro.PathWorks.Plugins.API" Version="4.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Translations\UserSettingTranslations.resx">
+      <CustomToolNamespace>Sutro.PathWorks.Plugins.Core.Translations</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
