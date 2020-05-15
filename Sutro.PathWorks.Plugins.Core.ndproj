@@ -4646,7 +4646,7 @@ select new {
 // because an API Breaking change can provoque significant
 // friction with consumers of the API.
 //</HowToFix>]]></Query>
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Methods</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Methods</Name>
 // <Id>ND1501:APIBreakingChangesMethods</Id>
 
 warnif count > 0 from m in codeBase.OlderVersion().Application.Methods
