@@ -160,7 +160,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
         protected void RaiseLineGenerated(List<Vector3d> list, int layerIndex)
         {
-            OnLineGenerated(list, layerIndex);
+            OnLineGenerated?.Invoke(list, layerIndex);
         }
 
         public void EndGCodeLineStream()
