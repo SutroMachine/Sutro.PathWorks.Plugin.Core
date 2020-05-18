@@ -9,6 +9,9 @@ namespace Sutro.PathWorks.Plugins.Core.Engines
 {
     public abstract class EngineBase<TSettings> : IEngine<TSettings> where TSettings : IProfile
     {
+        public abstract string Name { get; }
+        public abstract string Description { get; }
+
         public abstract IGenerator<TSettings> Generator { get; }
         public abstract ISettingsManager<TSettings> SettingsManager { get; }
         public abstract List<IVisualizer> Visualizers { get; }

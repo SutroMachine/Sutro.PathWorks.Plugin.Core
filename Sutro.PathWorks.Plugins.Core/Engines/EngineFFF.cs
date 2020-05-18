@@ -1,18 +1,13 @@
 ﻿using gs;
 using Sutro.PathWorks.Plugins.API;
-using Sutro.PathWorks.Plugins.API.Engines;
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.API.Visualizers;
 using Sutro.PathWorks.Plugins.Core.Settings;
 using Sutro.PathWorks.Plugins.Core.Visualizers;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 
 namespace Sutro.PathWorks.Plugins.Core.Engines
 {
-    [Export(typeof(IEngine))]
-    [ExportMetadata("Name", "fff")]
-    [ExportMetadata("Description", "Provides access to the basic print generator included in gsCore. Can only create gcode for a single mesh with single material.")]
     public class EngineFFF : EngineBase<SingleMaterialFFFSettings>
     {
         public override ISettingsManager<SingleMaterialFFFSettings> SettingsManager =>
@@ -26,5 +21,9 @@ namespace Sutro.PathWorks.Plugins.Core.Engines
             new WrappedGenerator<SingleMaterialFFFPrintGenerator, SingleMaterialFFFSettings>(
                 new PrintGeneratorManager<SingleMaterialFFFPrintGenerator, SingleMaterialFFFSettings>(
                     new SingleMaterialFFFSettings(), default, default, new ConsoleLogger(), true));
+
+        public override string Name => "fff";
+
+        public override string Description => "Provides access to the basic print generator included in gsCore.Can only create gcode for a single mesh with single material.";
     }
 }

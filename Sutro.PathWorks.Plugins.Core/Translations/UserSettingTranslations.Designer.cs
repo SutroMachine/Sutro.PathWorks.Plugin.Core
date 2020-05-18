@@ -40,7 +40,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("gsGCode.engine.translations.UserSettingTranslations", typeof(UserSettingTranslations).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Sutro.PathWorks.Plugins.Core.Translations.UserSettingTranslations", typeof(UserSettingTranslations).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
