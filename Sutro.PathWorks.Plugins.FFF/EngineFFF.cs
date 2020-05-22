@@ -23,8 +23,8 @@ namespace Sutro.PathWorks.Plugins.FFF
                 new PrintGeneratorManager<SingleMaterialFFFPrintGenerator, SingleMaterialFFFSettings>(
                     new SingleMaterialFFFSettings(), default, default, new ConsoleLogger(), true));
 
-        public override string Name => "fff";
+        public override string Name => "FFF";
 
-        public override string Description => "Provides access to the basic print generator included in gsCore.Can only create gcode for a single mesh with single material.";
+        public override string Description => "Basic thermoplastic extrusion deposition";
     }
 }
