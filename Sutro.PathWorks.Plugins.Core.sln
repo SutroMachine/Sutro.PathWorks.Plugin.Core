@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sutro.PathWorks.Plugins.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sutro.PathWorks.Plugins.Core.Tests", "Sutro.PathWorks.Plugins.Core.Tests\Sutro.PathWorks.Plugins.Core.Tests.csproj", "{04A4C016-226E-4323-BD5B-00BCC2CFECE7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sutro.PathWorks.Plugins.FFF", "Sutro.PathWorks.Plugins.FFF\Sutro.PathWorks.Plugins.FFF.csproj", "{6470608C-4DCF-4122-8E7D-2CBD3636B862}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{04A4C016-226E-4323-BD5B-00BCC2CFECE7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{04A4C016-226E-4323-BD5B-00BCC2CFECE7}.Release|x64.ActiveCfg = Release|x64
 		{04A4C016-226E-4323-BD5B-00BCC2CFECE7}.Release|x64.Build.0 = Release|x64
+		{6470608C-4DCF-4122-8E7D-2CBD3636B862}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6470608C-4DCF-4122-8E7D-2CBD3636B862}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6470608C-4DCF-4122-8E7D-2CBD3636B862}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6470608C-4DCF-4122-8E7D-2CBD3636B862}.Debug|x64.Build.0 = Debug|Any CPU
+		{6470608C-4DCF-4122-8E7D-2CBD3636B862}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6470608C-4DCF-4122-8E7D-2CBD3636B862}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6470608C-4DCF-4122-8E7D-2CBD3636B862}.Release|x64.ActiveCfg = Release|Any CPU
+		{6470608C-4DCF-4122-8E7D-2CBD3636B862}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

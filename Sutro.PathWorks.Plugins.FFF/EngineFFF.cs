@@ -2,11 +2,12 @@
 using Sutro.PathWorks.Plugins.API;
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.API.Visualizers;
+using Sutro.PathWorks.Plugins.Core.Engines;
 using Sutro.PathWorks.Plugins.Core.Settings;
 using Sutro.PathWorks.Plugins.Core.Visualizers;
 using System.Collections.Generic;
 
-namespace Sutro.PathWorks.Plugins.Core.Engines
+namespace Sutro.PathWorks.Plugins.FFF
 {
     public class EngineFFF : EngineBase<SingleMaterialFFFSettings>
     {
