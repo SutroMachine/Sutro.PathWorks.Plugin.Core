@@ -82,11 +82,11 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                 () => "Completion",
                 (value) => $"{value:P0}");
 
-        public VisualizerCustomDataDetailsCollection CustomDataDetails =>
+        public virtual VisualizerCustomDataDetailsCollection CustomDataDetails =>
             new VisualizerCustomDataDetailsCollection(
                 customDataBeadWidth, customDataFeedRate, customDataCompletion);
 
-        public void BeginGCodeLineStream()
+        public virtual void BeginGCodeLineStream()
         {
             lastVertex = new PrintVertex(Vector3d.Zero, 0, Vector2d.Zero);
             layerIndex = 0;
@@ -158,12 +158,12 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             lastVertex = vertex;
         }
 
-        protected void RaiseLineGenerated(List<Vector3d> list, int layerIndex)
+        protected virtual void RaiseLineGenerated(List<Vector3d> list, int layerIndex)
         {
             OnLineGenerated?.Invoke(list, layerIndex);
         }
 
-        public void EndGCodeLineStream()
+        public virtual void EndGCodeLineStream()
         {
             if (toolpath != null)
             {
@@ -171,7 +171,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             }
         }
 
-        protected void Emit(List<PrintVertex> printVertices, int layerIndex, int startPointCount)
+        protected virtual void Emit(List<PrintVertex> printVertices, int layerIndex, int startPointCount)
         {
             List<ToolpathPreviewVertex> vertices = new List<ToolpathPreviewVertex>();
             List<int> triangles = new List<int>();
@@ -214,7 +214,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             EndEmit(mesh, layerIndex);
         }
 
-        protected void AddEdges(ToolpathPreviewJoint[] joints, List<int> triangles)
+        protected virtual void AddEdges(ToolpathPreviewJoint[] joints, List<int> triangles)
         {
             for (int i = joints.Length - 2; i >= 0; i--)
             {
@@ -255,7 +255,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             }
         }
 
-        protected ToolpathPreviewJoint GenerateMiterJoint(List<PrintVertex> toolpath, int toolpathIndex, int layerIndex, int startPointCount, List<ToolpathPreviewVertex> vertices)
+        protected virtual ToolpathPreviewJoint GenerateMiterJoint(List<PrintVertex> toolpath, int toolpathIndex, int layerIndex, int startPointCount, List<ToolpathPreviewVertex> vertices)
         {
             double miterSecant = 1;
             Vector3d miterNormal;
@@ -454,12 +454,12 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             public int out3;
         }
 
-        protected void EndEmit(Tuple<ToolpathPreviewVertex[], int[]> mesh, int layerIndex)
+        protected virtual void EndEmit(Tuple<ToolpathPreviewVertex[], int[]> mesh, int layerIndex)
         {
             OnMeshGenerated?.Invoke(mesh.Item1, mesh.Item2, layerIndex);
         }
 
-        protected static void ExtractPositionFeedrateAndExtrusion(GCodeLine line, ref Vector3d position, ref double feedrate, ref double extrusion)
+        protected virtual void ExtractPositionFeedrateAndExtrusion(GCodeLine line, ref Vector3d position, ref double feedrate, ref double extrusion)
         {
             if (line.Parameters != null)
             {
@@ -493,17 +493,17 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             }
         }
 
-        public void PrintLayerCompleted(PrintLayerData printLayerData)
+        public virtual void PrintLayerCompleted(PrintLayerData printLayerData)
         {
         }
 
-        private readonly GenericGCodeParser parser = new GenericGCodeParser();
+        protected virtual GenericGCodeParser Parser { get; } = new GenericGCodeParser();
 
-        public void ProcessGCodeLine(string line)
+        public virtual void ProcessGCodeLine(string line)
         {
             // Note: if/when GenericGCodeParser exposes the protected method ParseLine,
             // this could be simplified
-            foreach (var gcodeLine in parser.Parse(new StringReader(line)).AllLines())
+            foreach (var gcodeLine in Parser.Parse(new StringReader(line)).AllLines())
                 ProcessGCodeLine(gcodeLine);
         }
     }
