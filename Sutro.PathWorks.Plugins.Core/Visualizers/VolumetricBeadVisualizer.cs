@@ -27,9 +27,11 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
         public virtual event Action<List<Vector3d>, int> OnLineGenerated;
 
+        public virtual event Action<ToolpathPreviewVertex[], int> OnPointsGenerated;
+
         public virtual event Action<double, int> OnNewPlane;
 
-        public string Name => "Bead Visualizer";
+        public virtual string Name => "Bead Visualizer";
 
         public static readonly Dictionary<string, int> FillTypeIntegerId = new Dictionary<string, int>()
         {

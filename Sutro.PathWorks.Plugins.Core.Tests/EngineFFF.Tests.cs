@@ -3,6 +3,7 @@ using gs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sutro.Core.Models.GCode;
 using Sutro.PathWorks.Plugins.Core.Visualizers;
+using Sutro.PathWorks.Plugins.FFF;
 using System;
 using System.Collections.Generic;
 
@@ -32,7 +33,7 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
 
         private static GCodeFile CreateGCode()
         {
-            var engine = new Engines.EngineFFF();
+            var engine = new EngineFFF();
             var boxGenerator = new TrivialBox3Generator();
             var mesh = boxGenerator.Generate().MakeDMesh();
             var parts = new List<Tuple<DMesh3, SingleMaterialFFFSettings>>();
