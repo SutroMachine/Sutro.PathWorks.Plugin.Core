@@ -213,7 +213,26 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
             var mesh = new Tuple<ToolpathPreviewVertex[], int[]>(vertices.ToArray(), triangles.ToArray());
 
+            OnPointsGenerated?.Invoke(CreatePoints(printVertices), layerIndex);
+
             EndEmit(mesh, layerIndex);
+        }
+
+        private ToolpathPreviewVertex[] CreatePoints(List<PrintVertex> printVertices)
+        {
+            var previewVertices = new ToolpathPreviewVertex[printVertices.Count];
+
+            int i = 0;
+            foreach (var printVertex in printVertices)
+            {
+                int fillTypeIndex = GetFillTypeInteger(printVertex);
+                var color = GetColor(fillTypeIndex);
+
+                previewVertices[i++] = new ToolpathPreviewVertex(
+                    printVertex.Position, fillTypeIndex, layerIndex, 
+                    color, 1, new CustomColorData(1, 1, 1));
+            }
+            return previewVertices;
         }
 
         protected virtual void AddEdges(ToolpathPreviewJoint[] joints, List<int> triangles)
@@ -401,6 +420,15 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             Vector3d offset = miterNormal * (dimensions.x * crossSectionVertex.x * secant) + new Vector3d(0, 0, dimensions.y * crossSectionVertex.y);
             Vector3d vertex = point + offset;
 
+            var color = GetColor(fillType);
+
+            vertices.Add(VertexFactory(layerIndex, fillType, dimensions, feedrate, brightness, pointCount, vertex, color));
+
+            return vertices.Count - 1;
+        }
+
+        private Vector3f GetColor(int fillType)
+        {
             Vector3f color = FillTypes[FillTypeIntegerId[DefaultFillType.Label]].Color;
 
             if (FillTypes.TryGetValue(fillType, out var fillInfo))
@@ -408,9 +436,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                 color = fillInfo.Color;
             }
 
-            vertices.Add(VertexFactory(layerIndex, fillType, dimensions, feedrate, brightness, pointCount, vertex, color));
-
-            return vertices.Count - 1;
+            return color;
         }
 
         protected virtual ToolpathPreviewVertex VertexFactory(int layerIndex, int fillType, Vector2d dimensions, double feedrate, float brightness, int pointCount, Vector3d vertex, Vector3f color)
