@@ -91,7 +91,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
         private void ProcessNewLayer(int newLayerIndex)
         {
             layerIndex = newLayerIndex;
-            OnNewPlane(0, newLayerIndex);
+            OnNewPlane?.Invoke(0, newLayerIndex);
         }
 
         private void ProcessToolpath(IToolpath toolpath)
@@ -197,9 +197,9 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             var previewVertices = new ToolpathPreviewVertex[toolpath.VertexCount];
 
             int i = 0;
+            int fillTypeIndex = GetFillTypeInteger(toolpath);
             foreach (var printVertex in toolpath)
             {
-                int fillTypeIndex = GetFillTypeInteger(printVertex);
                 var color = GetColor(fillTypeIndex);
 
                 previewVertices[i++] = new ToolpathPreviewVertex(
@@ -279,7 +279,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             var point = toolpath[toolpathIndex].Position;
             var dimensions = toolpath[toolpathIndex].Dimensions;
 
-            int fillType = GetFillTypeInteger(toolpath[toolpathIndex]);
+            int fillType = GetFillTypeInteger(toolpath);
 
             var feedRate = toolpath[toolpathIndex].FeedRate;
             ToolpathPreviewJoint joint = new ToolpathPreviewJoint();
@@ -292,9 +292,9 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             return joint;
         }
 
-        private static int GetFillTypeInteger(PrintVertex vertex)
+        private static int GetFillTypeInteger(LinearToolpath3<PrintVertex> toolpath)
         {
-            if (vertex.Source is string s && FillTypeIntegerId.TryGetValue(s, out int newFillType))
+            if (FillTypeIntegerId.TryGetValue(toolpath.FillType.GetLabel(), out int newFillType))
             {
                 return newFillType;
             }
@@ -319,7 +319,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             var point = toolpath[toolpathIndex].Position;
             var dimensions = toolpath[toolpathIndex].Dimensions;
 
-            var fillType = GetFillTypeInteger(toolpath[toolpathIndex]);
+            var fillType = GetFillTypeInteger(toolpath);
 
             var feedRate = toolpath[toolpathIndex].FeedRate;
             ToolpathPreviewJoint joint = new ToolpathPreviewJoint();
@@ -360,7 +360,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             var point = toolpath[toolpathIndex].Position;
             var dimensions = toolpath[toolpathIndex].Dimensions;
 
-            var fillType = GetFillTypeInteger(toolpath[toolpathIndex]);
+            var fillType = GetFillTypeInteger(toolpath);
 
             var feedRate = toolpath[toolpathIndex].FeedRate;
             ToolpathPreviewJoint joint = new ToolpathPreviewJoint();

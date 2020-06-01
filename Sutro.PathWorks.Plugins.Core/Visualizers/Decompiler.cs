@@ -3,7 +3,9 @@ using gs;
 using gs.FillTypes;
 using Sutro.Core.Models.GCode;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Sutro.PathWorks.Plugins.Core.Visualizers
 {
@@ -17,6 +19,19 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
         public event Action<IToolpath> OnToolpathComplete;
         public event Action<int> OnNewLayer;
+
+        protected readonly Dictionary<string, IFillType> FillTypes = new Dictionary<string, IFillType>()
+        {
+            {DefaultFillType.Label, new DefaultFillType() },
+            {OuterPerimeterFillType.Label, new OuterPerimeterFillType(new SingleMaterialFFFSettings()) },
+            {InnerPerimeterFillType.Label, new InnerPerimeterFillType(new SingleMaterialFFFSettings()) },
+            {OpenShellCurveFillType.Label, new OpenShellCurveFillType()},
+            {SolidFillType.Label, new SolidFillType(new SingleMaterialFFFSettings().SolidFillSpeedX)},
+            {SparseFillType.Label, new SparseFillType()},
+            {SupportFillType.Label, new SupportFillType(new SingleMaterialFFFSettings())},
+            {BridgeFillType.Label, new BridgeFillType(new SingleMaterialFFFSettings())},
+        };
+
 
         public void Begin()
         {
@@ -60,7 +75,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                     }
                     else
                     {
-                        //RaiseLineGenerated(new List<Vector3d>() { previousVertex.Position, vertex.Position }, layerIndex);
+                        CreateTravelToolpath(previousVertex, currentVertex);
                     }
                 }
                 else
@@ -74,6 +89,14 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             }
 
             previousVertex = currentVertex;
+        }
+
+        private void CreateTravelToolpath(PrintVertex vertexStart, PrintVertex vertexEnd)
+        {
+            var travel = new LinearToolpath3<PrintVertex>(ToolpathTypes.Travel);
+            travel.AppendVertex(vertexStart, TPVertexFlags.IsPathStart);
+            travel.AppendVertex(vertexEnd, TPVertexFlags.None);
+            OnToolpathComplete(toolpath);
         }
 
         public void End()
@@ -172,13 +195,23 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             return newToolpath;
         }
 
+
+        protected Regex fillTypeLabelPattern => new Regex(@"feature (.+)$");
+
         protected bool LineIsNewFillTypeComment(GCodeLine line, out IFillType fillType)
         {
-            fillType = new DefaultFillType();
-            if (line?.Comment?.Contains("feature") ?? false)
+            if (line.Comment != null)
             {
-                return true;
+                var match = fillTypeLabelPattern.Match(line.Comment);
+                if (match.Success)
+                {
+                    if (!FillTypes.TryGetValue(match.Groups[1].Captures[0].Value, out fillType))
+                        fillType = new DefaultFillType();
+                    return true;
+                }
             }
+
+            fillType = null;
             return false;
         }
 
