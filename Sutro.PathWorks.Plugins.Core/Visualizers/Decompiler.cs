@@ -4,7 +4,6 @@ using gs.FillTypes;
 using Sutro.Core.Models.GCode;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Sutro.PathWorks.Plugins.Core.Visualizers
@@ -16,8 +15,10 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
         protected PrintVertex currentVertex;
         protected PrintVertex previousVertex;
         protected LinearToolpath3<PrintVertex> toolpath;
+        private bool extruderRelativeCoordinates = false;
 
         public event Action<IToolpath> OnToolpathComplete;
+
         public event Action<int> OnNewLayer;
 
         protected readonly Dictionary<string, IFillType> FillTypes = new Dictionary<string, IFillType>()
@@ -32,7 +33,6 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             {BridgeFillType.Label, new BridgeFillType(new SingleMaterialFFFSettings())},
         };
 
-
         public void Begin()
         {
             previousVertex = new PrintVertex(Vector3d.Zero, 0, Vector2d.Zero);
@@ -43,10 +43,18 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             if (LineIsEmpty(line))
                 return;
 
+            SetExtrusionCoordinateMode(line);
+            currentVertex = UpdatePrintVertex(line, previousVertex);
+
             if (LineIsNewLayerComment(line))
             {
                 toolpath = FinishToolpath();
                 OnNewLayer?.Invoke(currentLayerIndex++);
+            }
+
+            if (LineIsTravel(line))
+            {
+                CloseToolpathAndAddTravel(previousVertex, currentVertex);
             }
 
             if (LineIsNewFillTypeComment(line, out var newFillType))
@@ -55,8 +63,6 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                 toolpath.Type = ToolpathTypes.Deposition;
                 toolpath.FillType = newFillType;
             }
-
-            currentVertex = UpdatePrintVertex(line, previousVertex);
 
             if (line.Comment?.Contains("Plane Change") ?? false)
             {
@@ -67,23 +73,20 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             {
                 if (toolpath == null)
                 {
-                    if (currentVertex.Extrusion.x > previousVertex.Extrusion.x)
+                    if (VertexHasNegativeOrZeroExtrusion(previousVertex, currentVertex))
                     {
-                        toolpath = FinishToolpath();
-                        toolpath.Append(previousVertex);
-                        toolpath.Append(currentVertex);
-                    }
-                    else
-                    {
-                        CreateTravelToolpath(previousVertex, currentVertex);
+                        CloseToolpathAndAddTravel(previousVertex, currentVertex);
                     }
                 }
                 else
                 {
-                    toolpath.AppendVertex(currentVertex, TPVertexFlags.None);
-                    if (currentVertex.Extrusion.x <= previousVertex.Extrusion.x)
+                    if (VertexHasNegativeOrZeroExtrusion(previousVertex, currentVertex))
                     {
-                        FinishToolpath();
+                        CloseToolpathAndAddTravel(previousVertex, currentVertex);
+                    }
+                    else
+                    {
+                        toolpath.AppendVertex(currentVertex, TPVertexFlags.None);
                     }
                 }
             }
@@ -91,12 +94,67 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             previousVertex = currentVertex;
         }
 
+        private void SetExtrusionCoordinateMode(GCodeLine line)
+        {
+            if (line.Type == LineType.MCode)
+            {
+                if (line.Code == 82)
+                {
+                    extruderRelativeCoordinates = false;
+                }
+                else if (line.Code == 83)
+                {
+                    extruderRelativeCoordinates = true;
+                }
+            }
+        }
+
+        private void CloseToolpathAndAddTravel(PrintVertex previousVertex, PrintVertex currentVertex)
+        {
+            toolpath = FinishToolpath();
+
+            if (currentVertex == null)
+                return;
+
+            CreateTravelToolpath(previousVertex, currentVertex);
+            toolpath = StartNewToolpath(toolpath, currentVertex);
+        }
+
+        private bool VertexHasNegativeOrZeroExtrusion(PrintVertex previousVertex, PrintVertex currentVertex)
+        {
+            if (previousVertex == null || currentVertex == null)
+                return false;
+
+            if (extruderRelativeCoordinates)
+            {
+                // TODO: Update this for relative vs. absolute extruder coords
+                return currentVertex.Extrusion.x <= 0;
+            }
+            else
+            {
+                return currentVertex.Extrusion.x <= previousVertex.Extrusion.x;
+            }
+        }
+
+        private LinearToolpath3<PrintVertex> StartNewToolpath(LinearToolpath3<PrintVertex> toolpath, PrintVertex currentVertex)
+        {
+            var newToolpath = new LinearToolpath3<PrintVertex>(toolpath.Type);
+            newToolpath.FillType = toolpath.FillType;
+            newToolpath.AppendVertex(currentVertex, TPVertexFlags.IsPathStart);
+            return newToolpath;
+        }
+
+        private bool LineIsTravel(GCodeLine line)
+        {
+            return line?.Comment?.Contains("Travel") ?? false;
+        }
+
         private void CreateTravelToolpath(PrintVertex vertexStart, PrintVertex vertexEnd)
         {
             var travel = new LinearToolpath3<PrintVertex>(ToolpathTypes.Travel);
             travel.AppendVertex(vertexStart, TPVertexFlags.IsPathStart);
             travel.AppendVertex(vertexEnd, TPVertexFlags.None);
-            OnToolpathComplete(toolpath);
+            OnToolpathComplete(travel);
         }
 
         public void End()
@@ -179,10 +237,14 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             }
             return new Vector3d(x, y, z);
         }
+
         protected LinearToolpath3<PrintVertex> FinishToolpath()
         {
             if (toolpath == null)
                 return new LinearToolpath3<PrintVertex>();
+
+            toolpath.Type = SetTypeFromVertexExtrusions(toolpath);
+            OnToolpathComplete?.Invoke(toolpath);
 
             // TODO: Simplify with "CopyProperties" method on LinearToolpath3
             var newToolpath = new LinearToolpath3<PrintVertex>(toolpath.Type);
@@ -190,11 +252,18 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             newToolpath.FillType = toolpath.FillType;
             newToolpath.AppendVertex(toolpath.End, TPVertexFlags.IsPathStart);
 
-            OnToolpathComplete?.Invoke(toolpath);
-
             return newToolpath;
         }
 
+        private ToolpathTypes SetTypeFromVertexExtrusions(LinearToolpath3<PrintVertex> toolpath)
+        {
+            for (int i = 1; i < toolpath.VertexCount; i++)
+            {
+                if (!VertexHasNegativeOrZeroExtrusion(toolpath[i - 1], toolpath[i]))
+                    return ToolpathTypes.Deposition;
+            }
+            return ToolpathTypes.Travel;
+        }
 
         protected Regex fillTypeLabelPattern => new Regex(@"feature (.+)$");
 
