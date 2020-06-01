@@ -35,8 +35,10 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
         {
             var engine = new EngineFFF();
             var boxGenerator = new TrivialBox3Generator();
+            boxGenerator.Box = new Box3d(new Vector3d(0, 0, 5), new Vector3d(5, 5, 5));
             var mesh = boxGenerator.Generate().MakeDMesh();
             var parts = new List<Tuple<DMesh3, SingleMaterialFFFSettings>>();
+            parts.Add(new Tuple<DMesh3, SingleMaterialFFFSettings>(mesh, null));
             var settings = engine.SettingsManager.FactorySettings[0];
             var gcode = engine.Generator.GenerateGCode(parts, settings, out var generationReport);
             return gcode;

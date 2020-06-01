@@ -1,7 +1,6 @@
 ﻿using g3;
 using gs;
 using gs.FillTypes;
-using gs.utility;
 using Sutro.Core.Models.GCode;
 using Sutro.PathWorks.Plugins.API.Visualizers;
 using System;
@@ -12,16 +11,10 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 {
     public class VolumetricBeadVisualizer : IVisualizer
     {
-        protected Vector3d position;
-        protected double feedrate;
-        protected double extrusion;
-        protected Vector2d dimensions = new Vector2d(0.4, 0.2);
-        protected string fillType;
+        private readonly Decompiler decompiler;
+
         protected int layerIndex;
         protected int pointCount;
-
-        protected List<PrintVertex> toolpath;
-        protected PrintVertex lastVertex;
 
         public virtual event Action<ToolpathPreviewVertex[], int[], int> OnMeshGenerated;
 
@@ -88,105 +81,84 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             new VisualizerCustomDataDetailsCollection(
                 customDataBeadWidth, customDataFeedRate, customDataCompletion);
 
+        public VolumetricBeadVisualizer()
+        {
+            decompiler = new Decompiler();
+            decompiler.OnToolpathComplete += ProcessToolpath;
+            decompiler.OnNewLayer += ProcessNewLayer;
+        }
+
+        private void ProcessNewLayer(int newLayerIndex)
+        {
+            layerIndex = newLayerIndex;
+            OnNewPlane(0, newLayerIndex);
+        }
+
+        private void ProcessToolpath(IToolpath toolpath)
+        {
+            if (toolpath is LinearToolpath3<PrintVertex> linearToolpath)
+            {
+                switch (linearToolpath.Type)
+                {
+                    case ToolpathTypes.Travel:
+                        RaiseLineGenerated(linearToolpath, layerIndex);
+                        break;
+
+                    case ToolpathTypes.PlaneChange:
+                        RaiseLineGenerated(linearToolpath, layerIndex);
+                        break;
+
+                    case ToolpathTypes.Deposition:
+                        Emit(linearToolpath, layerIndex, pointCount);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         public virtual void BeginGCodeLineStream()
         {
-            lastVertex = new PrintVertex(Vector3d.Zero, 0, Vector2d.Zero);
-            layerIndex = 0;
+            decompiler.Begin();
         }
 
         public virtual void ProcessGCodeLine(GCodeLine line)
         {
-            if (line == null || line.Type == LineType.Blank)
-                return;
-
-            pointCount++;
-
-            if (line.Comment != null && line.Comment.Contains("layer") && !line.Comment.Contains("feature"))
-            {
-                if (toolpath != null)
-                {
-                    Emit(toolpath, layerIndex, pointCount - toolpath.Count);
-                    toolpath = null;
-                }
-                layerIndex++;
-
-                return;
-            }
-
-            ExtractPositionFeedrateAndExtrusion(line, ref position, ref feedrate, ref extrusion);
-            ExtractDimensions(line, ref dimensions);
-            GCodeLineUtil.ExtractFillType(line, ref fillType);
-
-            if (line.Comment?.Contains("Plane Change") ?? false)
-            {
-                OnNewPlane(position.z, layerIndex);
-            }
-
-            PrintVertex vertex = new PrintVertex(position, feedrate, dimensions)
-            {
-                Extrusion = new Vector3d(extrusion, 0, 0),
-                Source = fillType,
-            };
-
-            if (line.Type == LineType.GCode)
-            {
-                if (toolpath == null)
-                {
-                    if (extrusion > lastVertex.Extrusion.x)
-                    {
-                        lastVertex.Source = fillType;
-                        lastVertex.Dimensions = vertex.Dimensions;
-                        lastVertex.FeedRate = vertex.FeedRate;
-                        lastVertex.ExtendedData = vertex.ExtendedData;
-
-                        toolpath = new List<PrintVertex> { lastVertex, vertex };
-                    }
-                    else
-                    {
-                        RaiseLineGenerated(new List<Vector3d>() { lastVertex.Position, vertex.Position }, layerIndex);
-                    }
-                }
-                else
-                {
-                    toolpath.Add(vertex);
-                    if (extrusion <= lastVertex.Extrusion.x)
-                    {
-                        Emit(toolpath, layerIndex, pointCount - toolpath.Count);
-                        toolpath = null;
-                    }
-                }
-            }
-
-            lastVertex = vertex;
+            decompiler.ProcessGCodeLine(line);
         }
 
-        protected virtual void RaiseLineGenerated(List<Vector3d> list, int layerIndex)
+        protected virtual void RaiseLineGenerated(LinearToolpath3<PrintVertex> toolpath, int layerIndex)
         {
-            OnLineGenerated?.Invoke(list, layerIndex);
+            var points = new List<Vector3d>(toolpath.VertexCount);
+            foreach (var vertex in toolpath)
+            {
+                points.Add(vertex.Position);
+            }
+             OnLineGenerated?.Invoke(points, layerIndex);
         }
 
         public virtual void EndGCodeLineStream()
         {
-            if (toolpath != null)
-            {
-                Emit(toolpath, layerIndex, pointCount - toolpath.Count);
-            }
+            decompiler.End();
         }
 
-        protected virtual void Emit(List<PrintVertex> printVertices, int layerIndex, int startPointCount)
+        protected virtual void Emit(LinearToolpath3<PrintVertex> toolpath, int layerIndex, int startPointCount)
         {
+            if (toolpath.VertexCount < 2)
+                return;
+
             List<ToolpathPreviewVertex> vertices = new List<ToolpathPreviewVertex>();
             List<int> triangles = new List<int>();
 
-            ToolpathPreviewJoint[] joints = new ToolpathPreviewJoint[printVertices.Count];
+            ToolpathPreviewJoint[] joints = new ToolpathPreviewJoint[toolpath.VertexCount];
 
-            joints[joints.Length - 1] = GenerateMiterJoint(printVertices, joints.Length - 1, layerIndex, startPointCount, vertices);
+            joints[joints.Length - 1] = GenerateMiterJoint(toolpath, joints.Length - 1, layerIndex, startPointCount, vertices);
 
             for (int i = joints.Length - 2; i > 0; i--)
             {
-                Vector3d a = printVertices[i - 1].Position;
-                Vector3d b = printVertices[i].Position;
-                Vector3d c = printVertices[i + 1].Position;
+                Vector3d a = toolpath[i - 1].Position;
+                Vector3d b = toolpath[i].Position;
+                Vector3d c = toolpath[i + 1].Position;
                 Vector3d ab = b - a;
                 Vector3d bc = c - b;
                 var angleRad = SignedAngleRad(ab.xy, bc.xy);
@@ -194,42 +166,44 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                 {
                     if (angleRad < 0)
                     {
-                        joints[i] = GenerateRightBevelJoint(printVertices, i, layerIndex, startPointCount, vertices, triangles);
+                        joints[i] = GenerateRightBevelJoint(toolpath, i, layerIndex, startPointCount, vertices, triangles);
                     }
                     else
                     {
-                        joints[i] = GenerateLeftBevelJoint(printVertices, i, layerIndex, startPointCount, vertices, triangles);
+                        joints[i] = GenerateLeftBevelJoint(toolpath, i, layerIndex, startPointCount, vertices, triangles);
                     }
                 }
                 else
                 {
-                    joints[i] = GenerateMiterJoint(printVertices, i, layerIndex, startPointCount, vertices);
+                    joints[i] = GenerateMiterJoint(toolpath, i, layerIndex, startPointCount, vertices);
                 }
             }
 
-            joints[0] = GenerateMiterJoint(printVertices, 0, layerIndex, startPointCount, vertices);
+            joints[0] = GenerateMiterJoint(toolpath, 0, layerIndex, startPointCount, vertices);
 
             AddEdges(joints, triangles);
 
             var mesh = new Tuple<ToolpathPreviewVertex[], int[]>(vertices.ToArray(), triangles.ToArray());
 
-            OnPointsGenerated?.Invoke(CreatePoints(printVertices), layerIndex);
+            OnPointsGenerated?.Invoke(CreatePoints(toolpath), layerIndex);
+
+            pointCount += mesh.Item1.Length;
 
             EndEmit(mesh, layerIndex);
         }
 
-        private ToolpathPreviewVertex[] CreatePoints(List<PrintVertex> printVertices)
+        private ToolpathPreviewVertex[] CreatePoints(LinearToolpath3<PrintVertex> toolpath)
         {
-            var previewVertices = new ToolpathPreviewVertex[printVertices.Count];
+            var previewVertices = new ToolpathPreviewVertex[toolpath.VertexCount];
 
             int i = 0;
-            foreach (var printVertex in printVertices)
+            foreach (var printVertex in toolpath)
             {
                 int fillTypeIndex = GetFillTypeInteger(printVertex);
                 var color = GetColor(fillTypeIndex);
 
                 previewVertices[i++] = new ToolpathPreviewVertex(
-                    printVertex.Position, fillTypeIndex, layerIndex, 
+                    printVertex.Position, fillTypeIndex, layerIndex,
                     color, 1, new CustomColorData(1, 1, 1));
             }
             return previewVertices;
@@ -276,7 +250,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             }
         }
 
-        protected virtual ToolpathPreviewJoint GenerateMiterJoint(List<PrintVertex> toolpath, int toolpathIndex, int layerIndex, int startPointCount, List<ToolpathPreviewVertex> vertices)
+        protected virtual ToolpathPreviewJoint GenerateMiterJoint(LinearToolpath3<PrintVertex> toolpath, int toolpathIndex, int layerIndex, int startPointCount, List<ToolpathPreviewVertex> vertices)
         {
             double miterSecant = 1;
             Vector3d miterNormal;
@@ -286,7 +260,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                 Vector3d miterTangent = toolpath[1].Position - toolpath[0].Position;
                 miterNormal = new Vector3d(-miterTangent.y, miterTangent.x, 0).Normalized;
             }
-            else if (toolpathIndex == toolpath.Count - 1)
+            else if (toolpathIndex == toolpath.VertexCount - 1)
             {
                 Vector3d miterTangent = toolpath[toolpathIndex].Position - toolpath[toolpathIndex - 1].Position;
                 miterNormal = new Vector3d(-miterTangent.y, miterTangent.x, 0).Normalized;
@@ -330,7 +304,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             }
         }
 
-        protected ToolpathPreviewJoint GenerateRightBevelJoint(List<PrintVertex> toolpath, int toolpathIndex,
+        protected ToolpathPreviewJoint GenerateRightBevelJoint(LinearToolpath3<PrintVertex> toolpath, int toolpathIndex,
             int layerIndex, int startPointCount, List<ToolpathPreviewVertex> vertices, List<int> triangles)
         {
             Vector3d a = toolpath[toolpathIndex - 1].Position;
@@ -371,7 +345,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             return joint;
         }
 
-        protected ToolpathPreviewJoint GenerateLeftBevelJoint(List<PrintVertex> toolpath, int toolpathIndex,
+        protected ToolpathPreviewJoint GenerateLeftBevelJoint(LinearToolpath3<PrintVertex> toolpath, int toolpathIndex,
             int layerIndex, int startPointCount, List<ToolpathPreviewVertex> vertices, List<int> triangles)
         {
             Vector3d a = toolpath[toolpathIndex - 1].Position;
@@ -485,40 +459,6 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
         protected virtual void EndEmit(Tuple<ToolpathPreviewVertex[], int[]> mesh, int layerIndex)
         {
             OnMeshGenerated?.Invoke(mesh.Item1, mesh.Item2, layerIndex);
-        }
-
-        protected virtual void ExtractPositionFeedrateAndExtrusion(GCodeLine line, ref Vector3d position, ref double feedrate, ref double extrusion)
-        {
-            if (line.Parameters != null)
-            {
-                foreach (var param in line.Parameters)
-                {
-                    switch (param.Identifier)
-                    {
-                        case "X": position.x = param.DoubleValue; break;
-                        case "Y": position.y = param.DoubleValue; break;
-                        case "Z": position.z = param.DoubleValue; break;
-                        case "F": feedrate = param.DoubleValue; break;
-                        case "E": extrusion = param.DoubleValue; break;
-                    }
-                }
-            }
-        }
-
-        protected virtual void ExtractDimensions(GCodeLine line, ref Vector2d dimensions)
-        {
-            if (line.Comment != null && line.Comment.Contains("tool"))
-            {
-                foreach (var word in line.Comment.Split(' '))
-                {
-                    int i = word.IndexOf('W');
-                    if (i >= 0)
-                        dimensions.x = double.Parse(word.Substring(i + 1));
-                    i = word.IndexOf('H');
-                    if (i >= 0)
-                        dimensions.y = double.Parse(word.Substring(i + 1));
-                }
-            }
         }
 
         public virtual void PrintLayerCompleted(PrintLayerData printLayerData)
