@@ -8,26 +8,63 @@ using System.IO;
 
 namespace Sutro.PathWorks.Plugins.Core.Visualizers
 {
-    public class VolumetricBeadVisualizer : IVisualizer
+    public abstract class VisualizerBase<TPrintVertex> : IVisualizer where TPrintVertex : IToolpathVertex
     {
-        private readonly Decompiler decompiler;
-        private readonly IToolpathPreviewMesher<PrintVertex> mesher;
-        private readonly FillTypeMapper fillTypeMapper;
+        protected DecompilerBase<TPrintVertex> decompiler;
+        protected IToolpathPreviewMesher<PrintVertex> mesher;
+        protected FillTypeMapper fillTypeMapper;
 
+        // Track current properties
         protected int layerIndex;
         protected int pointCount;
         protected int fillTypeInteger;
         protected Vector3f color;
 
-        public virtual event Action<ToolpathPreviewVertex[], int[], int> OnMeshGenerated;
+        public abstract string Name { get; }
 
-        public virtual event Action<List<Vector3d>, int> OnLineGenerated;
+        public Dictionary<int, VisualizerFillType> FillTypes => fillTypeMapper.VisualizerFillTypes;
 
-        public virtual event Action<ToolpathPreviewVertex[], int> OnPointsGenerated;
+        public abstract VisualizerCustomDataDetailsCollection CustomDataDetails { get; }
 
-        public virtual event Action<double, int> OnNewPlane;
+        public event Action<ToolpathPreviewVertex[], int[], int> OnMeshGenerated;
 
-        public virtual string Name => "Tube";
+        public event Action<List<Vector3d>, int> OnLineGenerated;
+
+        public event Action<ToolpathPreviewVertex[], int> OnPointsGenerated;
+
+        public event Action<double, int> OnNewPlane;
+
+        public abstract void BeginGCodeLineStream();
+
+        public abstract void EndGCodeLineStream();
+
+        public abstract void ProcessGCodeLine(GCodeLine line);
+
+        protected virtual void EndEmit(Tuple<ToolpathPreviewVertex[], int[]> mesh, int layerIndex)
+        {
+            OnMeshGenerated?.Invoke(mesh.Item1, mesh.Item2, layerIndex);
+        }
+
+        protected void RaiseLineGenerated(List<Vector3d> points, int layerIndex)
+        {
+            OnLineGenerated?.Invoke(points, layerIndex);
+        }
+
+        protected void RaisePointsGenerated(ToolpathPreviewVertex[] points, int layerIndex)
+        {
+            OnPointsGenerated?.Invoke(points, layerIndex);
+        }
+
+        protected void RaiseNewLayer(int newLayerIndex)
+        {
+            layerIndex = newLayerIndex;
+            OnNewPlane?.Invoke(0, newLayerIndex);
+        }
+    }
+
+    public class VolumetricBeadVisualizer : VisualizerBase<PrintVertex>
+    {
+        public override string Name => "Tube";
 
         protected readonly FixedRangeCustomDataDetails customDataBeadWidth =
             new FixedRangeCustomDataDetails(
@@ -44,25 +81,19 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                 () => "Completion",
                 (value) => $"{value:P0}");
 
-        public virtual VisualizerCustomDataDetailsCollection CustomDataDetails =>
+        public override VisualizerCustomDataDetailsCollection CustomDataDetails =>
             new VisualizerCustomDataDetailsCollection(
                 customDataBeadWidth, customDataFeedRate, customDataCompletion);
 
-        public VolumetricBeadVisualizer()
+        public VolumetricBeadVisualizer() : base()
         {
-            decompiler = new Decompiler();
+            decompiler = new DecompilerFFF();
             decompiler.OnToolpathComplete += ProcessToolpath;
-            decompiler.OnNewLayer += ProcessNewLayer;
+            decompiler.OnNewLayer += RaiseNewLayer;
 
             mesher = new TubeMesher<PrintVertex>();
 
             fillTypeMapper = new FillTypeMapper();
-        }
-
-        private void ProcessNewLayer(int newLayerIndex)
-        {
-            layerIndex = newLayerIndex;
-            OnNewPlane?.Invoke(0, newLayerIndex);
         }
 
         private void ProcessToolpath(IToolpath toolpath)
@@ -86,6 +117,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                         EmitMesh(linearToolpath);
                         EmitPoints(linearToolpath);
                         break;
+
                     default:
                         break;
                 }
@@ -94,13 +126,12 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
         protected virtual void EmitPoints(LinearToolpath3<PrintVertex> linearToolpath)
         {
-            OnPointsGenerated?.Invoke(CreatePoints(linearToolpath), layerIndex);
+            RaisePointsGenerated(CreatePoints(linearToolpath), layerIndex);
         }
 
-        public virtual void BeginGCodeLineStream()
+        public override void BeginGCodeLineStream()
         {
             Reset();
-
             decompiler.Begin();
         }
 
@@ -139,7 +170,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                 yield return CustomDataDetails.Field5;
         }
 
-        public virtual void ProcessGCodeLine(GCodeLine line)
+        public override void ProcessGCodeLine(GCodeLine line)
         {
             decompiler.ProcessGCodeLine(line);
         }
@@ -151,14 +182,14 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             {
                 points.Add(vertex.Position);
             }
-             OnLineGenerated?.Invoke(points, layerIndex);
+
+            RaiseLineGenerated(points, layerIndex);
         }
 
-        public virtual void EndGCodeLineStream()
+        public override void EndGCodeLineStream()
         {
             decompiler.End();
         }
-
 
         protected virtual ToolpathPreviewVertex VertexFactory(PrintVertex vertex, Vector3d position, float brightness)
         {
@@ -168,7 +199,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
             return new ToolpathPreviewVertex(
                 position, fillTypeInteger, layerIndex, color, brightness,
-                new CustomColorData(vertex.Dimensions.x, vertex.FeedRate, pointCount));;
+                new CustomColorData(vertex.Dimensions.x, vertex.FeedRate, pointCount)); ;
         }
 
         protected virtual void EmitMesh(LinearToolpath3<PrintVertex> toolpath)
@@ -195,11 +226,6 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                     color, 1, new CustomColorData(1, 1, 1));
             }
             return previewVertices;
-        }
-
-        protected virtual void EndEmit(Tuple<ToolpathPreviewVertex[], int[]> mesh, int layerIndex)
-        {
-            OnMeshGenerated?.Invoke(mesh.Item1, mesh.Item2, layerIndex);
         }
 
         public virtual void PrintLayerCompleted(PrintLayerData printLayerData)
