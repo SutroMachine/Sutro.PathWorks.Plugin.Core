@@ -71,27 +71,30 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
             if (line.Type == LineType.GCode)
             {
-                if (toolpath == null)
+                if (VertexHasNegativeOrZeroExtrusion(previousVertex, currentVertex))
                 {
-                    if (VertexHasNegativeOrZeroExtrusion(previousVertex, currentVertex))
-                    {
-                        CloseToolpathAndAddTravel(previousVertex, currentVertex);
-                    }
+                    CloseToolpathAndAddTravel(previousVertex, currentVertex);
                 }
-                else
+                else if (toolpath != null)
                 {
-                    if (VertexHasNegativeOrZeroExtrusion(previousVertex, currentVertex))
-                    {
-                        CloseToolpathAndAddTravel(previousVertex, currentVertex);
-                    }
-                    else
-                    {
-                        toolpath.AppendVertex(currentVertex, TPVertexFlags.None);
-                    }
+                    AppendVertexToCurrentToolpath(currentVertex);
                 }
             }
 
             previousVertex = currentVertex;
+        }
+
+        private void AppendVertexToCurrentToolpath(PrintVertex vertex)
+        {
+            if (toolpath.VertexCount == 1)
+            {
+                var modifiedFirstVertex = new PrintVertex(toolpath.StartPosition, vertex.FeedRate, vertex.Dimensions, vertex.Extrusion.x);
+                modifiedFirstVertex.ExtendedData = vertex.ExtendedData;
+                modifiedFirstVertex.Source = vertex.Source;
+                toolpath.UpdateVertex(0, modifiedFirstVertex);
+            }
+            toolpath.AppendVertex(vertex, TPVertexFlags.None);
+
         }
 
         private void SetExtrusionCoordinateMode(GCodeLine line)
