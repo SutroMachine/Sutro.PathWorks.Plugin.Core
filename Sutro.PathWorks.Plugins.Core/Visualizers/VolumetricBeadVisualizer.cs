@@ -1,6 +1,5 @@
 ﻿using g3;
 using gs;
-using gs.FillTypes;
 using Sutro.Core.Models.GCode;
 using Sutro.PathWorks.Plugins.API.Visualizers;
 using System;
@@ -13,6 +12,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
     {
         private readonly Decompiler decompiler;
         private readonly IToolpathPreviewMesher<PrintVertex> mesher;
+        private readonly FillTypeMapper fillTypeMapper;
 
         protected int layerIndex;
         protected int pointCount;
@@ -27,43 +27,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
         public virtual event Action<double, int> OnNewPlane;
 
-        public virtual string Name => "Bead Visualizer";
-
-        public static readonly Dictionary<string, int> FillTypeIntegerId = new Dictionary<string, int>()
-        {
-            {DefaultFillType.Label, 0},
-            {InnerPerimeterFillType.Label, 1},
-            {OuterPerimeterFillType.Label, 2},
-            {OpenShellCurveFillType.Label, 3},
-            {SolidFillType.Label, 4},
-            {SparseFillType.Label, 5},
-            {SupportFillType.Label, 6},
-            {BridgeFillType.Label, 7},
-        };
-
-        public static readonly Dictionary<int, string> FillTypeStringInt = new Dictionary<int, string>()
-        {
-            {0, DefaultFillType.Label},
-            {1, InnerPerimeterFillType.Label},
-            {2, OuterPerimeterFillType.Label},
-            {3, OpenShellCurveFillType.Label},
-            {4, SolidFillType.Label},
-            {5, SparseFillType.Label},
-            {6, SupportFillType.Label},
-            {7, BridgeFillType.Label},
-        };
-
-        public Dictionary<int, VisualizerFillType> FillTypes { get; protected set; } = new Dictionary<int, VisualizerFillType>()
-        {
-            {0, new VisualizerFillType("Unknown", new Vector3f(0.5, 0.5, 0.5))},
-            {1, new VisualizerFillType("Inner Perimeter", new Vector3f(1, 0, 0))},
-            {2, new VisualizerFillType("Outer Perimeter", new Vector3f(1, 1, 0))},
-            {3, new VisualizerFillType("Open Mesh Curve", new Vector3f(0, 1, 1))},
-            {4, new VisualizerFillType("Solid Fill", new Vector3f(0, 0.5f, 1))},
-            {5, new VisualizerFillType("Sparse Fill", new Vector3f(0.5f, 0, 1))},
-            {6, new VisualizerFillType("Support", new Vector3f(1, 0, 1))},
-            {7, new VisualizerFillType("Bridge", new Vector3f(0, 0, 1))},
-        };
+        public virtual string Name => "Tube";
 
         protected readonly FixedRangeCustomDataDetails customDataBeadWidth =
             new FixedRangeCustomDataDetails(
@@ -91,6 +55,8 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             decompiler.OnNewLayer += ProcessNewLayer;
 
             mesher = new TubeMesher<PrintVertex>();
+
+            fillTypeMapper = new FillTypeMapper();
         }
 
         private void ProcessNewLayer(int newLayerIndex)
@@ -103,8 +69,8 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
         {
             if (toolpath is LinearToolpath3<PrintVertex> linearToolpath)
             {
-                fillTypeInteger = GetFillTypeInteger(linearToolpath);
-                color = GetColor(fillTypeInteger);
+                fillTypeInteger = fillTypeMapper.GetIntegerFromLabel(linearToolpath.FillType.GetLabel());
+                color = fillTypeMapper.GetColor(fillTypeInteger);
 
                 switch (linearToolpath.Type)
                 {
@@ -117,8 +83,8 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                         break;
 
                     case ToolpathTypes.Deposition:
-                        Emit(linearToolpath);
-                        CreatePoints(linearToolpath);
+                        EmitMesh(linearToolpath);
+                        EmitPoints(linearToolpath);
                         break;
                     default:
                         break;
@@ -126,9 +92,51 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             }
         }
 
+        protected virtual void EmitPoints(LinearToolpath3<PrintVertex> linearToolpath)
+        {
+            OnPointsGenerated?.Invoke(CreatePoints(linearToolpath), layerIndex);
+        }
+
         public virtual void BeginGCodeLineStream()
         {
+            Reset();
+
             decompiler.Begin();
+        }
+
+        private void Reset()
+        {
+            layerIndex = 0;
+            pointCount = 0;
+
+            foreach (var customData in EnumerateCustomFields())
+            {
+                if (customData is AdaptiveRangeCustomDataDetails adaptive)
+                {
+                    adaptive.Reset();
+                }
+            }
+        }
+
+        private IEnumerable<IVisualizerCustomDataDetails> EnumerateCustomFields()
+        {
+            if (CustomDataDetails.Field0 != null)
+                yield return CustomDataDetails.Field0;
+
+            if (CustomDataDetails.Field1 != null)
+                yield return CustomDataDetails.Field1;
+
+            if (CustomDataDetails.Field2 != null)
+                yield return CustomDataDetails.Field2;
+
+            if (CustomDataDetails.Field3 != null)
+                yield return CustomDataDetails.Field3;
+
+            if (CustomDataDetails.Field4 != null)
+                yield return CustomDataDetails.Field4;
+
+            if (CustomDataDetails.Field5 != null)
+                yield return CustomDataDetails.Field5;
         }
 
         public virtual void ProcessGCodeLine(GCodeLine line)
@@ -163,7 +171,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                 new CustomColorData(vertex.Dimensions.x, vertex.FeedRate, pointCount));;
         }
 
-        protected virtual void Emit(LinearToolpath3<PrintVertex> toolpath)
+        protected virtual void EmitMesh(LinearToolpath3<PrintVertex> toolpath)
         {
             if (toolpath.VertexCount < 2)
                 return;
@@ -179,40 +187,14 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             var previewVertices = new ToolpathPreviewVertex[toolpath.VertexCount];
 
             int i = 0;
-            int fillTypeIndex = GetFillTypeInteger(toolpath);
+            int fillTypeIndex = fillTypeMapper.GetIntegerFromLabel(toolpath.FillType.GetLabel());
             foreach (var printVertex in toolpath)
             {
-                var color = GetColor(fillTypeIndex);
-
                 previewVertices[i++] = new ToolpathPreviewVertex(
                     printVertex.Position, fillTypeIndex, layerIndex,
                     color, 1, new CustomColorData(1, 1, 1));
             }
             return previewVertices;
-        }
-
-        private static int GetFillTypeInteger(LinearToolpath3<PrintVertex> toolpath)
-        {
-            if (FillTypeIntegerId.TryGetValue(toolpath.FillType.GetLabel(), out int newFillType))
-            {
-                return newFillType;
-            }
-            else
-            {
-                return FillTypeIntegerId[DefaultFillType.Label];
-            }
-        }
-
-        private Vector3f GetColor(int fillType)
-        {
-            Vector3f color = FillTypes[FillTypeIntegerId[DefaultFillType.Label]].Color;
-
-            if (FillTypes.TryGetValue(fillType, out var fillInfo))
-            {
-                color = fillInfo.Color;
-            }
-
-            return color;
         }
 
         protected virtual void EndEmit(Tuple<ToolpathPreviewVertex[], int[]> mesh, int layerIndex)
@@ -225,6 +207,8 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
         }
 
         protected virtual GenericGCodeParser Parser { get; } = new GenericGCodeParser();
+
+        public Dictionary<int, VisualizerFillType> FillTypes => fillTypeMapper.VisualizerFillTypes;
 
         public virtual void ProcessGCodeLine(string line)
         {
