@@ -12,6 +12,14 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
     [TestClass]
     public class EngineFFFTests
     {
+        private EngineFFF engine;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            engine = new EngineFFF();
+        }
+
         [TestMethod]
         public void GCodeFromCube()
         {
@@ -24,16 +32,15 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
         {
             var gcode = CreateGCode();
 
-            var visualizer = new VolumetricBeadVisualizer();
+            var visualizer = engine.Visualizers[0];
             visualizer.BeginGCodeLineStream();
             foreach (var line in gcode.AllLines())
                 visualizer.ProcessGCodeLine(line);
             visualizer.EndGCodeLineStream();
         }
 
-        private static GCodeFile CreateGCode()
+        private GCodeFile CreateGCode()
         {
-            var engine = new EngineFFF();
             var boxGenerator = new TrivialBox3Generator();
             boxGenerator.Box = new Box3d(new Vector3d(0, 0, 5), new Vector3d(5, 5, 5));
             var mesh = boxGenerator.Generate().MakeDMesh();

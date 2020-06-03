@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <NDepend AppName="Sutro.PathWorks.Plugins.Core" Platform="DotNet" FileWrittenByProductVersion="2020.1.0.9404">
   <OutputDir KeepXmlFiles="False">.\NDependOut</OutputDir>
   <IDEFiles>
@@ -12,7 +12,6 @@
     <Name>Sutro.Core</Name>
     <Name>Sutro.Core.Models</Name>
     <Name>Newtonsoft.Json</Name>
-    <Name>System.ComponentModel.Composition</Name>
   </FrameworkAssemblies>
   <Dirs>
     <Dir>C:\windows\Microsoft.NET\Framework\v4.0.30319</Dir>
@@ -24,7 +23,9 @@
   <Report Kind="0" SectionsEnabled="110591" XslPath="" Flags="261120" />
   <BuildComparisonSetting ProjectMode="CurrentProject" BuildMode="NDaysAgoAnalysisResult" ProjectFileToCompareWith="" BuildFileToCompareWith="" NDaysAgo="30" />
   <BaselineInUISetting ProjectMode="CurrentProject" BuildMode="NDaysAgoAnalysisResult" ProjectFileToCompareWith="" BuildFileToCompareWith="" NDaysAgo="30" />
-  <CoverageFiles CoverageDir=".\Coverage" UncoverableAttribute="" />
+  <CoverageFiles CoverageDir=".\Coverage" UncoverableAttribute="">
+    <CoverageFile>.\Coverage\Coverage.coveragexml</CoverageFile>
+  </CoverageFiles>
   <TrendMetrics UseCustomLog="False" LogRecurrence="3" LogLabel="2" UseCustomDir="False" CustomDir="">
     <Chart Name="Size" ShowInReport="True">
       <Serie MetricName="# Lines of Code" MetricUnit="Loc" Color="#FF00BFFF" ChartType="Line" ScaleExp="0" />
@@ -85,7 +86,8 @@
       <High2Critical_SeverityThreshold>72000000000</High2Critical_SeverityThreshold>
       <Critical2Blocker_SeverityThreshold>360000000000</Critical2Blocker_SeverityThreshold>
     </DebtSettings>
-  </ProjectDebtSettings><Queries>
+  </ProjectDebtSettings>
+  <Queries>
     <Group Name="Quality Gates" Active="True" ShownInReport="False">
       <Query Active="True" DisplayList="True" DisplayStat="True" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Quality Gates Evolution</Name>
 from qg in QualityGates
@@ -1013,7 +1015,7 @@ select new {
       <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>Avoid methods with too many parameters</Name>
 // <Id>ND1004:AvoidMethodsWithTooManyParameters</Id>
 warnif count > 0 from m in JustMyCode.Methods where 
-  m.NbParameters >= 7 &&
+  m.NbParameters >= 8 &&
 
   // Don't match a method that overrides a third-party method with many parameters
   !m.OverriddensBase.Any(mo => mo.IsThirdParty) &&
@@ -1021,7 +1023,7 @@ warnif count > 0 from m in JustMyCode.Methods where
   // Don't match a constructor that calls a base constructor with many parameters
   !(m.IsConstructor && m.MethodsCalled.Any(
      mc => mc.IsConstructor && 
-           mc.NbParameters >= 7 && 
+           mc.NbParameters >= 8 && 
            m.ParentType.DeriveFrom(mc.ParentType))) &&
 
   // Don't match DllImport P/invoke methods with many parameters
@@ -1031,11 +1033,11 @@ warnif count > 0 from m in JustMyCode.Methods where
 select new { 
    m, 
    m.NbParameters,
-   Debt = m.NbParameters.Linear(7, 1,  40, 6).ToHours().ToDebt(),
+   Debt = m.NbParameters.Linear(8, 1,  40, 6).ToHours().ToDebt(),
 
    // The annual interest varies linearly from interest for severity Medium for 7 parameters
    // to interest for severity Critical for 40 parameters
-   AnnualInterest = m.NbParameters.Linear(7,  Severity.Medium.AnnualInterestThreshold().Value.TotalMinutes, 
+   AnnualInterest = m.NbParameters.Linear(8,  Severity.Medium.AnnualInterestThreshold().Value.TotalMinutes, 
                                           40, Severity.Critical.AnnualInterestThreshold().Value.TotalMinutes).ToMinutes().ToAnnualInterest()
 }
 
@@ -4781,7 +4783,7 @@ select new {
 // because an API Breaking change can provoque significant
 // friction with consumers of the API.
 //</HowToFix>]]></Query>
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Interfaces and Abstract Classes</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="True"><![CDATA[// <Name>API Breaking Changes: Interfaces and Abstract Classes</Name>
 // <Id>ND1503:APIBreakingChangesInterfacesAndAbstractClasses</Id>
 
 warnif count > 0 from tNewer in Application.Types where 
@@ -12522,4 +12524,5 @@ select new {
 //</HowToFix>]]></Query>
       </Group>
     </Group>
-  </Queries></NDepend>
+  </Queries>
+</NDepend>

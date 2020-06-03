@@ -2,10 +2,13 @@
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;
 using Sutro.PathWorks.Plugins.Core.UserSettings;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Sutro.PathWorks.Plugins.Core.Settings
 {
+    [SuppressMessage("NDepend", "ND1000:AvoidTypesTooBig", Justification = "...")]
+    [SuppressMessage("NDepend", "ND1002:AvoidTypesWithTooManyFields", Justification = "...")]
     public class PrintUserSettingsFFF<TSettings> : UserSettingCollectionBase<TSettings> where TSettings : SingleMaterialFFFSettings
     {
         #region Advanced

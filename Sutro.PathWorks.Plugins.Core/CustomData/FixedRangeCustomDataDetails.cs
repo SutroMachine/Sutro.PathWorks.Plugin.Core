@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Sutro.PathWorks.Plugins.Core.Visualizers
+namespace Sutro.PathWorks.Plugins.Core.CustomData
 {
     public class FixedRangeCustomDataDetails : CustomDataDetails
     {

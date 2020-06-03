@@ -4,23 +4,23 @@ using Sutro.PathWorks.Plugins.API.Visualizers;
 using System;
 using System.Collections.Generic;
 
-namespace Sutro.PathWorks.Plugins.Core.Visualizers
+namespace Sutro.PathWorks.Plugins.Core.Meshers
 {
     public class TubeMesher<TPrintVertex> : IToolpathPreviewMesher<TPrintVertex> where TPrintVertex : IToolpathVertex
     {
         private Func<TPrintVertex, Vector3d, float, ToolpathPreviewVertex> vertexFactory;
 
-        protected struct ToolpathPreviewJoint
+        protected class ToolpathPreviewJoint
         {
-            public int in0;
-            public int in1;
-            public int in2;
-            public int in3;
+            public int in0 { get; set; }
+            public int in1 { get; set; }
+            public int in2 { get; set; }
+            public int in3 { get; set; }
 
-            public int out0;
-            public int out1;
-            public int out2;
-            public int out3;
+            public int out0 { get; set; }
+            public int out1 { get; set; }
+            public int out2 { get; set; }
+            public int out3 { get; set; }
         }
 
         public ToolpathPreviewMesh Generate(LinearToolpath3<TPrintVertex> toolpath, Func<TPrintVertex, Vector3d, float, ToolpathPreviewVertex> vertexFactory)

@@ -15,7 +15,7 @@ namespace Sutro.PathWorks.Plugins.FFF
             new SettingsManagerFFF();
 
         public override List<IVisualizer> Visualizers => new List<IVisualizer>() {
-            new VolumetricBeadVisualizer(),
+            TubeVisualizerFFF.Create(),
         };
 
         public override IGenerator<SingleMaterialFFFSettings> Generator =>
