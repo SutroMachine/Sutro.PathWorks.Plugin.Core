@@ -3,11 +3,11 @@ using System;
 
 namespace Sutro.PathWorks.Plugins.Core.CustomData
 {
-    public class AdaptiveRangeCustomDataDetails : CustomDataDetails
+    public class AdaptiveRange : CustomDataBase
     {
         protected Interval1d interval;
 
-        public AdaptiveRangeCustomDataDetails(
+        public AdaptiveRange(
             Func<string> labelF, Func<float, string> colorScaleLabelerF)
             : base(labelF, colorScaleLabelerF)
         {

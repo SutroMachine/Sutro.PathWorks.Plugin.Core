@@ -110,7 +110,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
             foreach (var customData in EnumerateCustomFields())
             {
-                if (customData is AdaptiveRangeCustomDataDetails adaptive)
+                if (customData is AdaptiveRange adaptive)
                 {
                     adaptive.Reset();
                 }

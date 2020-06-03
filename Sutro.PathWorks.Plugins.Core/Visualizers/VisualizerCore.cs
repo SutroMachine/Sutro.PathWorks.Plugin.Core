@@ -11,18 +11,18 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 {
     public class VisualizerCore : VisualizerBase<PrintVertex>
     {
-        protected readonly FixedRangeCustomDataDetails customDataBeadWidth =
-            new FixedRangeCustomDataDetails(
+        protected readonly FixedRange customDataBeadWidth =
+            new FixedRange(
                 () => "Bead Width",
                 (value) => $"{value:F2} mm", 0.1f, 0.8f);
 
-        protected readonly AdaptiveRangeCustomDataDetails customDataFeedRate =
-            new AdaptiveRangeCustomDataDetails(
+        protected readonly AdaptiveRange customDataFeedRate =
+            new AdaptiveRange(
                 () => "Feed Rate",
                 (value) => $"{value:F0} mm/min");
 
-        protected readonly NormalizedAdaptiveRangeCustomDataDetails customDataCompletion =
-            new NormalizedAdaptiveRangeCustomDataDetails(
+        protected readonly NormalizedAdaptiveRange customDataCompletion =
+            new NormalizedAdaptiveRange(
                 () => "Completion",
                 (value) => $"{value:P0}");
 
