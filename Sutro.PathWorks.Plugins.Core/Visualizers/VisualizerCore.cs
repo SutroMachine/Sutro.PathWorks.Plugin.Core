@@ -78,52 +78,6 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             RaisePointsGenerated(CreatePoints(linearToolpath), layerIndex);
         }
 
-        public override void BeginGCodeLineStream()
-        {
-            Reset();
-            decompiler.Begin();
-        }
-
-        private void Reset()
-        {
-            layerIndex = 0;
-            pointCount = 0;
-
-            foreach (var customData in EnumerateCustomFields())
-            {
-                if (customData is AdaptiveRangeCustomDataDetails adaptive)
-                {
-                    adaptive.Reset();
-                }
-            }
-        }
-
-        private IEnumerable<IVisualizerCustomDataDetails> EnumerateCustomFields()
-        {
-            if (CustomDataDetails.Field0 != null)
-                yield return CustomDataDetails.Field0;
-
-            if (CustomDataDetails.Field1 != null)
-                yield return CustomDataDetails.Field1;
-
-            if (CustomDataDetails.Field2 != null)
-                yield return CustomDataDetails.Field2;
-
-            if (CustomDataDetails.Field3 != null)
-                yield return CustomDataDetails.Field3;
-
-            if (CustomDataDetails.Field4 != null)
-                yield return CustomDataDetails.Field4;
-
-            if (CustomDataDetails.Field5 != null)
-                yield return CustomDataDetails.Field5;
-        }
-
-        public override void ProcessGCodeLine(GCodeLine line)
-        {
-            decompiler.ProcessGCodeLine(line);
-        }
-
         protected virtual void RaiseLineGenerated(LinearToolpath3<PrintVertex> toolpath)
         {
             var points = new List<Vector3d>(toolpath.VertexCount);
@@ -135,11 +89,6 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             RaiseLineGenerated(points, layerIndex);
         }
 
-        public override void EndGCodeLineStream()
-        {
-            decompiler.End();
-        }
-
         protected virtual ToolpathPreviewVertex VertexFactory(PrintVertex vertex, Vector3d position, float brightness)
         {
             // Update adaptive ranges for custom data
@@ -149,17 +98,6 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             return new ToolpathPreviewVertex(
                 position, fillTypeInteger, layerIndex, color, brightness,
                 new CustomColorData(vertex.Dimensions.x, vertex.FeedRate, pointCount)); ;
-        }
-
-        protected virtual void EmitMesh(LinearToolpath3<PrintVertex> toolpath)
-        {
-            if (toolpath.VertexCount < 2)
-                return;
-
-            var mesh = mesher.Generate(toolpath, VertexFactory);
-            pointCount += toolpath.VertexCount;
-
-            EndEmit(Tuple.Create(mesh.Vertices, mesh.Triangles), layerIndex);
         }
 
         private ToolpathPreviewVertex[] CreatePoints(LinearToolpath3<PrintVertex> toolpath)
@@ -175,10 +113,6 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                     color, 1, new CustomColorData(1, 1, 1));
             }
             return previewVertices;
-        }
-
-        public virtual void PrintLayerCompleted(PrintLayerData printLayerData)
-        {
         }
 
         protected virtual GenericGCodeParser Parser { get; } = new GenericGCodeParser();

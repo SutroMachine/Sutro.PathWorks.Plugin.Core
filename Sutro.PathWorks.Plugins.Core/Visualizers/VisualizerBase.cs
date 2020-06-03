@@ -2,6 +2,7 @@
 using gs;
 using Sutro.Core.Models.GCode;
 using Sutro.PathWorks.Plugins.API.Visualizers;
+using Sutro.PathWorks.Plugins.Core.CustomData;
 using Sutro.PathWorks.Plugins.Core.Decompilers;
 using Sutro.PathWorks.Plugins.Core.Meshers;
 using System;
@@ -45,12 +46,6 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
         public event Action<double, int> OnNewPlane;
 
-        public abstract void BeginGCodeLineStream();
-
-        public abstract void EndGCodeLineStream();
-
-        public abstract void ProcessGCodeLine(GCodeLine line);
-
         protected virtual void EndEmit(Tuple<ToolpathPreviewVertex[], int[]> mesh, int layerIndex)
         {
             OnMeshGenerated?.Invoke(mesh.Item1, mesh.Item2, layerIndex);
@@ -70,6 +65,60 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
         {
             layerIndex = newLayerIndex;
             OnNewPlane?.Invoke(0, newLayerIndex);
+        }
+
+        protected IEnumerable<IVisualizerCustomDataDetails> EnumerateCustomFields()
+        {
+            if (CustomDataDetails.Field0 != null)
+                yield return CustomDataDetails.Field0;
+
+            if (CustomDataDetails.Field1 != null)
+                yield return CustomDataDetails.Field1;
+
+            if (CustomDataDetails.Field2 != null)
+                yield return CustomDataDetails.Field2;
+
+            if (CustomDataDetails.Field3 != null)
+                yield return CustomDataDetails.Field3;
+
+            if (CustomDataDetails.Field4 != null)
+                yield return CustomDataDetails.Field4;
+
+            if (CustomDataDetails.Field5 != null)
+                yield return CustomDataDetails.Field5;
+        }
+
+        protected virtual void EmitMesh(LinearToolpath3<TPrintVertex> toolpath)
+        {
+            if (toolpath.VertexCount < 2)
+                return;
+
+            var mesh = mesher.Generate(toolpath, VertexFactory);
+            pointCount += toolpath.VertexCount;
+
+            EndEmit(Tuple.Create(mesh.Vertices, mesh.Triangles), layerIndex);
+        }
+
+        protected abstract ToolpathPreviewVertex VertexFactory(TPrintVertex printVertex, Vector3d position, float brightness);
+
+        protected void Reset()
+        {
+            layerIndex = 0;
+            pointCount = 0;
+
+            foreach (var customData in EnumerateCustomFields())
+            {
+                if (customData is AdaptiveRangeCustomDataDetails adaptive)
+                {
+                    adaptive.Reset();
+                }
+            }
+        }
+
+        protected virtual void BeginGCodeLineStream()
+        {
+            Reset();
+            decompiler.Begin();
         }
     }
 }
