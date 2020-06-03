@@ -1,9 +1,9 @@
 ﻿using g3;
 using gs;
+using Sutro.Core.Decompilers;
 using Sutro.Core.Models.GCode;
 using Sutro.PathWorks.Plugins.API.Visualizers;
 using Sutro.PathWorks.Plugins.Core.CustomData;
-using Sutro.PathWorks.Plugins.Core.Decompilers;
 using Sutro.PathWorks.Plugins.Core.Meshers;
 using System;
 using System.Collections.Generic;
@@ -22,13 +22,15 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
         protected int fillTypeInteger;
         protected Vector3f color;
 
-        public abstract string Name { get; }
+        public string Name { get; }
 
         public VisualizerBase(
+            string name,
             FillTypeMapper fillTypeMapper, 
             DecompilerBase<TPrintVertex> decompiler,
             IToolpathPreviewMesher<TPrintVertex> mesher)
         {
+            Name = name;
             this.fillTypeMapper = fillTypeMapper;
             this.decompiler = decompiler;
             this.mesher = mesher;
@@ -115,10 +117,20 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             }
         }
 
-        protected virtual void BeginGCodeLineStream()
+        public virtual void BeginGCodeLineStream()
         {
             Reset();
             decompiler.Begin();
+        }
+
+        public virtual void ProcessGCodeLine(GCodeLine line)
+        {
+            decompiler.ProcessGCodeLine(line);
+        }
+
+        public virtual void EndGCodeLineStream()
+        {
+            decompiler.End();
         }
     }
 }

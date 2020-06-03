@@ -1,20 +1,16 @@
 ﻿using g3;
 using gs;
+using Sutro.Core.Decompilers;
 using Sutro.Core.Models.GCode;
 using Sutro.PathWorks.Plugins.API.Visualizers;
 using Sutro.PathWorks.Plugins.Core.CustomData;
-using Sutro.PathWorks.Plugins.Core.Decompilers;
 using Sutro.PathWorks.Plugins.Core.Meshers;
-using System;
 using System.Collections.Generic;
-using System.IO;
 
 namespace Sutro.PathWorks.Plugins.Core.Visualizers
 {
     public class VisualizerCore : VisualizerBase<PrintVertex>
     {
-        public override string Name { get; }
-
         protected readonly FixedRangeCustomDataDetails customDataBeadWidth =
             new FixedRangeCustomDataDetails(
                 () => "Bead Width",
@@ -39,13 +35,13 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             FillTypeMapper mapper, 
             DecompilerBase<PrintVertex> decompiler,
             IToolpathPreviewMesher<PrintVertex> mesher) 
-            : base(mapper, decompiler, mesher)
+            : base(name, mapper, decompiler, mesher)
         {
             decompiler.OnToolpathComplete += ProcessToolpath;
             decompiler.OnNewLayer += RaiseNewLayer;
         }
 
-        protected virtual void ProcessToolpath(IToolpath toolpath)
+        protected void ProcessToolpath(IToolpath toolpath)
         {
             if (toolpath is LinearToolpath3<PrintVertex> linearToolpath)
             {
@@ -89,7 +85,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             RaiseLineGenerated(points, layerIndex);
         }
 
-        protected virtual ToolpathPreviewVertex VertexFactory(PrintVertex vertex, Vector3d position, float brightness)
+        protected override ToolpathPreviewVertex VertexFactory(PrintVertex vertex, Vector3d position, float brightness)
         {
             // Update adaptive ranges for custom data
             customDataFeedRate.ObserveValue((float)vertex.FeedRate);
@@ -113,16 +109,6 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
                     color, 1, new CustomColorData(1, 1, 1));
             }
             return previewVertices;
-        }
-
-        protected virtual GenericGCodeParser Parser { get; } = new GenericGCodeParser();
-
-        public virtual void ProcessGCodeLine(string line)
-        {
-            // Note: if/when GenericGCodeParser exposes the protected method ParseLine,
-            // this could be simplified
-            foreach (var gcodeLine in Parser.Parse(new StringReader(line)).AllLines())
-                ProcessGCodeLine(gcodeLine);
         }
     }
 }

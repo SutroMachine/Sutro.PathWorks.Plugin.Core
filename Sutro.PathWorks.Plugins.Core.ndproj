@@ -5529,7 +5529,7 @@ select new {
 // If you find some *hard-to-test code*, it is certainly a sign that this code
 // is not *well designed* and hence, needs refactoring.
 //</HowToFix>]]></Query>
-      <Query Active="True" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Types 100% covered should be tagged with FullCoveredAttribute</Name>
+      <Query Active="False" DisplayList="True" DisplayStat="False" DisplaySelectionView="False" IsCriticalRule="False"><![CDATA[// <Name>Types 100% covered should be tagged with FullCoveredAttribute</Name>
 // <Id>ND1608:Types100PercentCoveredShouldBeTaggedWithFullCoveredAttribute</Id>
 
 warnif count > 0 from t in JustMyCode.Types where

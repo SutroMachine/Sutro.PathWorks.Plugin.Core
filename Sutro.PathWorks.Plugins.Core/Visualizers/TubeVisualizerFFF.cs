@@ -1,8 +1,8 @@
 ﻿using g3;
 using gs;
 using gs.FillTypes;
+using Sutro.Core.Decompilers;
 using Sutro.PathWorks.Plugins.API.Visualizers;
-using Sutro.PathWorks.Plugins.Core.Decompilers;
 using Sutro.PathWorks.Plugins.Core.Meshers;
 using System;
 using System.Collections.Generic;
