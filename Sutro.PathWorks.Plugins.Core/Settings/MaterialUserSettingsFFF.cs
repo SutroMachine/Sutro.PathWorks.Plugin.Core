@@ -16,7 +16,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupBasic =
             new UserSettingGroup(() => UserSettingTranslations.GroupBasic);
 
-        public UserSettingDouble<TSettings> FilamentDiamMM = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> FilamentDiamMM => new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.FilamentDiamMM",
             () => UserSettingTranslations.FilamentDiamMM_Name,
             () => UserSettingTranslations.FilamentDiamMM_Description,
@@ -32,7 +32,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupTemperature =
             new UserSettingGroup(() => UserSettingTranslations.GroupTemperature);
 
-        public UserSettingInt<TSettings> ExtruderTempC = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> ExtruderTempC => new UserSettingInt<TSettings>(
             "MaterialUserSettingsFFF.FilamentDiamMM",
             () => UserSettingTranslations.ExtruderTempC_Name,
             () => UserSettingTranslations.ExtruderTempC_Description,
@@ -41,7 +41,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.ExtruderTempC = val,
             UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
 
-        public UserSettingInt<TSettings> HeatedBedTempC = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> HeatedBedTempC => new UserSettingInt<TSettings>(
             "MaterialUserSettingsFFF.HeatedBedTempC",
             () => UserSettingTranslations.HeatedBedTempC_Name,
             () => UserSettingTranslations.HeatedBedTempC_Description,
@@ -57,7 +57,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupRetraction =
             new UserSettingGroup(() => UserSettingTranslations.GroupRetraction);
 
-        public UserSettingDouble<TSettings> MinRetractTravelLength = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> MinRetractTravelLength => new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.MinRetractTravelLength",
             () => UserSettingTranslations.MinRetractTravelLength_Name,
             () => UserSettingTranslations.MinRetractTravelLength_Description,
@@ -66,7 +66,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.MinRetractTravelLength = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> RetractDistanceMM = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> RetractDistanceMM => new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.RetractDistanceMM",
             () => UserSettingTranslations.RetractDistanceMM_Name,
             () => UserSettingTranslations.RetractDistanceMM_Description,
@@ -75,7 +75,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.RetractDistanceMM = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> RetractSpeed = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> RetractSpeed => new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.RetractSpeed",
             () => UserSettingTranslations.RetractSpeed_Name,
             () => UserSettingTranslations.RetractSpeed_Description,

@@ -13,7 +13,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
     public abstract class VisualizerBase<TPrintVertex> : IVisualizer where TPrintVertex : IToolpathVertex
     {
         protected readonly DecompilerBase<TPrintVertex> decompiler;
-        protected IToolpathPreviewMesher<TPrintVertex> mesher;
+        protected readonly IToolpathPreviewMesher<TPrintVertex> mesher;
         protected readonly FillTypeMapper fillTypeMapper;
 
         // Track current properties

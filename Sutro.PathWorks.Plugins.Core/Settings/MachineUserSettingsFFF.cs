@@ -16,7 +16,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupIdentifiers =
             new UserSettingGroup(() => UserSettingTranslations.GroupIdentifiers);
 
-        public UserSettingString<TSettings> ManufacturerName = new UserSettingString<TSettings>(
+        public UserSettingString<TSettings> ManufacturerName => new UserSettingString<TSettings>(
             "MachineUserSettingsFFF.ManufacturerName",
             () => UserSettingTranslations.ManufacturerName_Name,
             () => UserSettingTranslations.ManufacturerName_Description,
@@ -24,7 +24,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.Machine.ManufacturerName,
             (settings, val) => settings.Machine.ManufacturerName = val);
 
-        public UserSettingString<TSettings> ModelIdentifier = new UserSettingString<TSettings>(
+        public UserSettingString<TSettings> ModelIdentifier => new UserSettingString<TSettings>(
             "MachineUserSettingsFFF.ModelIdentifier",
             () => UserSettingTranslations.ModelIdentifier_Name,
             () => UserSettingTranslations.ModelIdentifier_Description,
@@ -39,7 +39,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupExtruder =
             new UserSettingGroup(() => UserSettingTranslations.GroupExtruder);
 
-        public UserSettingInt<TSettings> MaxExtruderTempC = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> MaxExtruderTempC => new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxExtruderTempC",
             () => UserSettingTranslations.MaxExtruderTempC_Name,
             () => UserSettingTranslations.MaxExtruderTempC_Description,
@@ -48,7 +48,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.Machine.MaxExtruderTempC = val,
             UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
 
-        public UserSettingInt<TSettings> MinExtruderTempC = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> MinExtruderTempC => new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MinExtruderTempC",
             () => UserSettingTranslations.MinExtruderTempC_Name,
             () => UserSettingTranslations.MinExtruderTempC_Description,
@@ -57,7 +57,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.Machine.MinExtruderTempC = val,
             UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> NozzleDiamMM = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> NozzleDiamMM => new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.NozzleDiamMM",
             () => UserSettingTranslations.NozzleDiamMM_Name,
             () => UserSettingTranslations.NozzleDiamMM_Description,
@@ -73,7 +73,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupPrintVolume =
             new UserSettingGroup(() => UserSettingTranslations.GroupPrintVolume);
 
-        public UserSettingDouble<TSettings> BedSizeXMM = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> BedSizeXMM => new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.BedSizeXMM",
             () => UserSettingTranslations.BedSizeXMM_Name,
             () => UserSettingTranslations.BedSizeXMM_Description,
@@ -82,7 +82,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.Machine.BedSizeXMM = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> BedSizeYMM = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> BedSizeYMM => new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.BedSizeYMM",
             () => UserSettingTranslations.BedSizeYMM_Name,
             () => UserSettingTranslations.BedSizeYMM_Description,
@@ -91,7 +91,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.Machine.BedSizeYMM = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> MaxHeightMM = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> MaxHeightMM => new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.MaxHeightMM",
             () => UserSettingTranslations.MaxHeightMM_Name,
             () => UserSettingTranslations.MaxHeightMM_Description,
@@ -107,7 +107,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupSpeeds =
             new UserSettingGroup(() => UserSettingTranslations.GroupSpeeds);
 
-        public UserSettingInt<TSettings> MaxExtrudeSpeedMMM = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> MaxExtrudeSpeedMMM => new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxExtrudeSpeedMMM",
             () => UserSettingTranslations.MaxExtrudeSpeedMMM_Name,
             () => UserSettingTranslations.MaxExtrudeSpeedMMM_Description,
@@ -116,7 +116,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.Machine.MaxExtrudeSpeedMMM = val,
             UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingInt<TSettings> MaxRetractSpeedMMM = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> MaxRetractSpeedMMM => new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxRetractSpeedMMM",
             () => UserSettingTranslations.MaxRetractSpeedMMM_Name,
             () => UserSettingTranslations.MaxRetractSpeedMMM_Description,
@@ -125,7 +125,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.Machine.MaxRetractSpeedMMM = val,
             UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingInt<TSettings> MaxTravelSpeedMMM = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> MaxTravelSpeedMMM => new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxTravelSpeedMMM",
             () => UserSettingTranslations.MaxTravelSpeedMMM_Name,
             () => UserSettingTranslations.MaxTravelSpeedMMM_Description,
@@ -134,7 +134,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.Machine.MaxTravelSpeedMMM = val,
             UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingInt<TSettings> MaxZTravelSpeedMMM = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> MaxZTravelSpeedMMM => new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxZTravelSpeedMMM",
             () => UserSettingTranslations.MaxZTravelSpeedMMM_Name,
             () => UserSettingTranslations.MaxZTravelSpeedMMM_Description,
@@ -150,7 +150,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupCapabilities =
             new UserSettingGroup(() => UserSettingTranslations.GroupCapabilities);
 
-        public UserSettingBool<TSettings> HasAutoBedLeveling = new UserSettingBool<TSettings>(
+        public UserSettingBool<TSettings> HasAutoBedLeveling => new UserSettingBool<TSettings>(
             "MachineUserSettingsFFF.HasAutoBedLeveling",
             () => UserSettingTranslations.HasAutoBedLeveling_Name,
             () => UserSettingTranslations.HasAutoBedLeveling_Description,
@@ -158,7 +158,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.Machine.HasAutoBedLeveling,
             (settings, val) => settings.Machine.HasAutoBedLeveling = val);
 
-        public UserSettingBool<TSettings> HasHeatedBed = new UserSettingBool<TSettings>(
+        public UserSettingBool<TSettings> HasHeatedBed => new UserSettingBool<TSettings>(
             "MachineUserSettingsFFF.HasHeatedBed",
             () => UserSettingTranslations.HasHeatedBed_Name,
             () => UserSettingTranslations.HasHeatedBed_Description,
@@ -166,7 +166,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.Machine.HasHeatedBed,
             (settings, val) => settings.Machine.HasHeatedBed = val);
 
-        public UserSettingDouble<TSettings> MaxLayerHeightMM = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> MaxLayerHeightMM => new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.MaxLayerHeightMM",
             () => UserSettingTranslations.MaxLayerHeightMM_Name,
             () => UserSettingTranslations.MaxLayerHeightMM_Description,
@@ -175,7 +175,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.Machine.MaxLayerHeightMM = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> MinLayerHeightMM = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> MinLayerHeightMM => new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.MinLayerHeightMM",
             () => UserSettingTranslations.MinLayerHeightMM_Name,
             () => UserSettingTranslations.MinLayerHeightMM_Description,
@@ -191,7 +191,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupHeatedBed =
             new UserSettingGroup(() => UserSettingTranslations.GroupHeatedBed);
 
-        public UserSettingInt<TSettings> MaxBedTempC = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> MaxBedTempC => new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxBedTempC",
             () => UserSettingTranslations.MaxBedTempC_Name,
             () => UserSettingTranslations.MaxBedTempC_Description,
@@ -200,7 +200,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.Machine.MaxBedTempC = val,
             UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
 
-        public UserSettingInt<TSettings> MinBedTempC = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> MinBedTempC => new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MinBedTempC",
             () => UserSettingTranslations.MinBedTempC_Name,
             () => UserSettingTranslations.MinBedTempC_Description,

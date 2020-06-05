@@ -16,7 +16,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupAdvanced =
             new UserSettingGroup(() => UserSettingTranslations.GroupAdvanced);
 
-        public UserSettingBool<TSettings> EnableAutoBedLeveling = new UserSettingBool<TSettings>(
+        public UserSettingBool<TSettings> EnableAutoBedLeveling => new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.EnableAutoBedLeveling",
             () => UserSettingTranslations.EnableAutoBedLeveling_Name,
             () => UserSettingTranslations.EnableAutoBedLeveling_Description,
@@ -31,7 +31,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupBasic =
             new UserSettingGroup(() => UserSettingTranslations.GroupBasic);
 
-        public UserSettingString<TSettings> Identifier = new UserSettingString<TSettings>(
+        public UserSettingString<TSettings> Identifier => new UserSettingString<TSettings>(
             "PrintUserSettingsFFF.Identifier",
             () => UserSettingTranslations.Identifier_Name,
             () => UserSettingTranslations.Identifier_Description,
@@ -39,7 +39,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.Identifier,
             (settings, val) => settings.Identifier = val);
 
-        public UserSettingBool<TSettings> EnableBridging = new UserSettingBool<TSettings>(
+        public UserSettingBool<TSettings> EnableBridging => new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.EnableBridging",
             () => UserSettingTranslations.EnableBridging_Name,
             () => UserSettingTranslations.EnableBridging_Description,
@@ -47,7 +47,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.EnableBridging,
             (settings, val) => settings.EnableBridging = val);
 
-        public UserSettingInt<TSettings> FloorLayers = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> FloorLayers => new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.FloorLayers",
             () => UserSettingTranslations.FloorLayers_Name,
             () => UserSettingTranslations.FloorLayers_Description,
@@ -56,7 +56,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.FloorLayers = val,
             UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingBool<TSettings> GenerateSupport = new UserSettingBool<TSettings>(
+        public UserSettingBool<TSettings> GenerateSupport => new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.GenerateSupport",
             () => UserSettingTranslations.GenerateSupport_Name,
             () => UserSettingTranslations.GenerateSupport_Description,
@@ -64,7 +64,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.GenerateSupport,
             (settings, val) => settings.GenerateSupport = val);
 
-        public UserSettingDouble<TSettings> LayerHeightMM = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> LayerHeightMM => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.LayerHeightMM",
             () => UserSettingTranslations.LayerHeightMM_Name,
             () => UserSettingTranslations.LayerHeightMM_Description,
@@ -73,7 +73,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.LayerHeightMM = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> MinExtrudeSpeed = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> MinExtrudeSpeed => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.MinExtrudeSpeed",
             () => UserSettingTranslations.MinExtrudeSpeed_Name,
             () => UserSettingTranslations.MinExtrudeSpeed_Description,
@@ -82,7 +82,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.MinExtrudeSpeed = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingInt<TSettings> RoofLayers = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> RoofLayers => new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.RoofLayers",
             () => UserSettingTranslations.RoofLayers_Name,
             () => UserSettingTranslations.RoofLayers_Description,
@@ -91,7 +91,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.RoofLayers = val,
             UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingInt<TSettings> Shells = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> Shells => new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.Shells",
             () => UserSettingTranslations.Shells_Name,
             () => UserSettingTranslations.Shells_Description,
@@ -107,7 +107,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupBridging =
             new UserSettingGroup(() => UserSettingTranslations.GroupBridging);
 
-        public UserSettingDouble<TSettings> BridgeExtrudeSpeedX = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> BridgeExtrudeSpeedX => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.BridgeExtrudeSpeedX",
             () => UserSettingTranslations.BridgeExtrudeSpeedX_Name,
             () => UserSettingTranslations.BridgeExtrudeSpeedX_Description,
@@ -116,7 +116,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.BridgeExtrudeSpeedX = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> BridgeFillNozzleDiamStepX = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> BridgeFillNozzleDiamStepX => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.BridgeFillNozzleDiamStepX",
             () => UserSettingTranslations.BridgeFillNozzleDiamStepX_Name,
             () => UserSettingTranslations.BridgeFillNozzleDiamStepX_Description,
@@ -125,7 +125,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.BridgeFillNozzleDiamStepX = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> BridgeVolumeScale = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> BridgeVolumeScale => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.BridgeVolumeScale",
             () => UserSettingTranslations.BridgeVolumeScale_Name,
             () => UserSettingTranslations.BridgeVolumeScale_Description,
@@ -134,7 +134,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.BridgeVolumeScale = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> MaxBridgeWidthMM = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> MaxBridgeWidthMM => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.MaxBridgeWidthMM",
             () => UserSettingTranslations.MaxBridgeWidthMM_Name,
             () => UserSettingTranslations.MaxBridgeWidthMM_Description,
@@ -150,7 +150,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupFirstLayer =
             new UserSettingGroup(() => UserSettingTranslations.GroupFirstLayer);
 
-        public UserSettingDouble<TSettings> CarefulExtrudeSpeed = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> CarefulExtrudeSpeed => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.CarefulExtrudeSpeed",
             () => UserSettingTranslations.CarefulExtrudeSpeed_Name,
             () => UserSettingTranslations.CarefulExtrudeSpeed_Description,
@@ -159,7 +159,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.CarefulExtrudeSpeed = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> StartLayerHeightMM = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> StartLayerHeightMM => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.StartLayerHeightMM",
             () => UserSettingTranslations.StartLayerHeightMM_Name,
             () => UserSettingTranslations.StartLayerHeightMM_Description,
@@ -168,7 +168,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.StartLayerHeightMM = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingInt<TSettings> StartLayers = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> StartLayers => new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.StartLayers",
             () => UserSettingTranslations.StartLayers_Name,
             () => UserSettingTranslations.StartLayers_Description,
@@ -184,7 +184,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupMiscellaneous =
             new UserSettingGroup(() => UserSettingTranslations.GroupMiscellaneous);
 
-        public UserSettingDouble<TSettings> MinLayerTime = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> MinLayerTime => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.MinLayerTime",
             () => UserSettingTranslations.MinLayerTime_Name,
             () => UserSettingTranslations.MinLayerTime_Description,
@@ -200,7 +200,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupPerimeters =
             new UserSettingGroup(() => UserSettingTranslations.GroupPerimeters);
 
-        public UserSettingBool<TSettings> ClipSelfOverlaps = new UserSettingBool<TSettings>(
+        public UserSettingBool<TSettings> ClipSelfOverlaps => new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.ClipSelfOverlaps",
             () => UserSettingTranslations.ClipSelfOverlaps_Name,
             () => UserSettingTranslations.ClipSelfOverlaps_Description,
@@ -208,7 +208,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.ClipSelfOverlaps,
             (settings, val) => settings.ClipSelfOverlaps = val);
 
-        public UserSettingInt<TSettings> InteriorSolidRegionShells = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> InteriorSolidRegionShells => new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.InteriorSolidRegionShells",
             () => UserSettingTranslations.InteriorSolidRegionShells_Name,
             () => UserSettingTranslations.InteriorSolidRegionShells_Description,
@@ -217,7 +217,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.InteriorSolidRegionShells = val,
             UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingBool<TSettings> OuterShellLast = new UserSettingBool<TSettings>(
+        public UserSettingBool<TSettings> OuterShellLast => new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.OuterShellLast",
             () => UserSettingTranslations.OuterShellLast_Name,
             () => UserSettingTranslations.OuterShellLast_Description,
@@ -225,7 +225,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.OuterShellLast,
             (settings, val) => settings.OuterShellLast = val);
 
-        public UserSettingDouble<TSettings> SelfOverlapToleranceX = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> SelfOverlapToleranceX => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SelfOverlapToleranceX",
             () => UserSettingTranslations.SelfOverlapToleranceX_Name,
             () => UserSettingTranslations.SelfOverlapToleranceX_Description,
@@ -234,7 +234,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.SelfOverlapToleranceX = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> ShellsFillNozzleDiamStepX = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> ShellsFillNozzleDiamStepX => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.ShellsFillNozzleDiamStepX",
             () => UserSettingTranslations.ShellsFillNozzleDiamStepX_Name,
             () => UserSettingTranslations.ShellsFillNozzleDiamStepX_Description,
@@ -243,7 +243,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.ShellsFillNozzleDiamStepX = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingBool<TSettings> ShellRandomizeStart = new UserSettingBool<TSettings>(
+        public UserSettingBool<TSettings> ShellRandomizeStart => new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.ShellRandomizeStart",
             () => UserSettingTranslations.ShellRandomizeStart_Name,
             () => UserSettingTranslations.ShellRandomizeStart_Description,
@@ -251,7 +251,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.ShellRandomizeStart,
             (settings, val) => settings.ShellRandomizeStart = val);
 
-        public UserSettingBool<TSettings> ZipperAlignedToPoint = new UserSettingBool<TSettings>(
+        public UserSettingBool<TSettings> ZipperAlignedToPoint => new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.ZipperAlignedToPoint",
             () => UserSettingTranslations.ZipperAlignedToPoint_Name,
             () => UserSettingTranslations.ZipperAlignedToPoint_Description,
@@ -259,7 +259,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.ZipperAlignedToPoint,
             (settings, val) => settings.ZipperAlignedToPoint = val);
 
-        public UserSettingDouble<TSettings> ZipperLocationX = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> ZipperLocationX => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.ZipperLocationX",
             () => UserSettingTranslations.ZipperLocationX_Name,
             () => UserSettingTranslations.ZipperLocationX_Description,
@@ -267,7 +267,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.ZipperLocationX,
             (settings, val) => settings.ZipperLocationX = val);
 
-        public UserSettingDouble<TSettings> ZipperLocationY = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> ZipperLocationY => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.ZipperLocationY",
             () => UserSettingTranslations.ZipperLocationY_Name,
             () => UserSettingTranslations.ZipperLocationY_Description,
@@ -282,7 +282,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupSolidFill =
             new UserSettingGroup(() => UserSettingTranslations.GroupSolidFill);
 
-        public UserSettingDouble<TSettings> SolidFillBorderOverlapX = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> SolidFillBorderOverlapX => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SolidFillBorderOverlapX",
             () => UserSettingTranslations.SolidFillBorderOverlapX_Name,
             () => UserSettingTranslations.SolidFillBorderOverlapX_Description,
@@ -291,7 +291,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.SolidFillBorderOverlapX = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> SolidFillNozzleDiamStepX = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> SolidFillNozzleDiamStepX => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SolidFillNozzleDiamStepX",
             () => UserSettingTranslations.SolidFillNozzleDiamStepX_Name,
             () => UserSettingTranslations.SolidFillNozzleDiamStepX_Description,
@@ -307,7 +307,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupSparseFill =
             new UserSettingGroup(() => UserSettingTranslations.GroupSparseFill);
 
-        public UserSettingDouble<TSettings> SparseFillBorderOverlapX = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> SparseFillBorderOverlapX => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SparseFillBorderOverlapX",
            () => UserSettingTranslations.SparseFillBorderOverlapX_Name,
            () => UserSettingTranslations.SparseFillBorderOverlapX_Description,
@@ -316,7 +316,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
            (settings, val) => settings.SparseFillBorderOverlapX = val,
            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> SparseLinearInfillStepX = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> SparseLinearInfillStepX => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SparseLinearInfillStepX",
            () => UserSettingTranslations.SparseLinearInfillStepX_Name,
            () => UserSettingTranslations.SparseLinearInfillStepX_Description,
@@ -332,7 +332,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupSpeeds =
             new UserSettingGroup(() => UserSettingTranslations.GroupSpeeds);
 
-        public UserSettingDouble<TSettings> OuterPerimeterSpeedX = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> OuterPerimeterSpeedX => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.OuterPerimeterSpeedX",
             () => UserSettingTranslations.OuterPerimeterSpeedX_Name,
             () => UserSettingTranslations.OuterPerimeterSpeedX_Description,
@@ -341,7 +341,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.OuterPerimeterSpeedX = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> RapidExtrudeSpeed = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> RapidExtrudeSpeed => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.RapidExtrudeSpeed",
             () => UserSettingTranslations.RapidExtrudeSpeed_Name,
             () => UserSettingTranslations.RapidExtrudeSpeed_Description,
@@ -350,7 +350,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.RapidExtrudeSpeed = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> RapidTravelSpeed = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> RapidTravelSpeed => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.RapidTravelSpeed",
             () => UserSettingTranslations.RapidTravelSpeed_Name,
             () => UserSettingTranslations.RapidTravelSpeed_Description,
@@ -359,7 +359,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.RapidTravelSpeed = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> ZTravelSpeed = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> ZTravelSpeed => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.ZTravelSpeed",
             () => UserSettingTranslations.ZTravelSpeed_Name,
             () => UserSettingTranslations.ZTravelSpeed_Description,
@@ -375,7 +375,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupSupport =
             new UserSettingGroup(() => UserSettingTranslations.GroupSupport);
 
-        public UserSettingBool<TSettings> EnableSupportReleaseOpt = new UserSettingBool<TSettings>(
+        public UserSettingBool<TSettings> EnableSupportReleaseOpt => new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.EnableSupportReleaseOpt",
             () => UserSettingTranslations.EnableSupportReleaseOpt_Name,
             () => UserSettingTranslations.EnableSupportReleaseOpt_Description,
@@ -383,7 +383,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.EnableSupportReleaseOpt,
             (settings, val) => settings.EnableSupportReleaseOpt = val);
 
-        public UserSettingBool<TSettings> EnableSupportShell = new UserSettingBool<TSettings>(
+        public UserSettingBool<TSettings> EnableSupportShell => new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.EnableSupportShell",
             () => UserSettingTranslations.EnableSupportShell_Name,
             () => UserSettingTranslations.EnableSupportShell_Description,
@@ -391,7 +391,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.EnableSupportShell,
             (settings, val) => settings.EnableSupportShell = val);
 
-        public UserSettingDouble<TSettings> SupportAreaOffsetX = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> SupportAreaOffsetX => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportAreaOffsetX",
             () => UserSettingTranslations.SupportAreaOffsetX_Name,
             () => UserSettingTranslations.SupportAreaOffsetX_Description,
@@ -399,7 +399,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.SupportAreaOffsetX,
             (settings, val) => settings.SupportAreaOffsetX = val);
 
-        public UserSettingBool<TSettings> SupportMinZTips = new UserSettingBool<TSettings>(
+        public UserSettingBool<TSettings> SupportMinZTips => new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.SupportMinZTips",
             () => UserSettingTranslations.SupportMinZTips_Name,
             () => UserSettingTranslations.SupportMinZTips_Description,
@@ -407,7 +407,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.SupportMinZTips,
             (settings, val) => settings.SupportMinZTips = val);
 
-        public UserSettingDouble<TSettings> SupportOverhangAngleDeg = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> SupportOverhangAngleDeg => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportOverhangAngleDeg",
             () => UserSettingTranslations.SupportOverhangAngleDeg_Name,
             () => UserSettingTranslations.SupportOverhangAngleDeg_Description,
@@ -416,7 +416,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.SupportOverhangAngleDeg = val,
             UserSettingNumericValidations<double>.ValidateMinMax(0, 90, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> SupportPointDiam = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> SupportPointDiam => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportPointDiam",
             () => UserSettingTranslations.SupportPointDiam_Name,
             () => UserSettingTranslations.SupportPointDiam_Description,
@@ -425,7 +425,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.SupportPointDiam = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingInt<TSettings> SupportPointSides = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> SupportPointSides => new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.SupportPointSides",
             () => UserSettingTranslations.SupportPointSides_Name,
             () => UserSettingTranslations.SupportPointSides_Description,
@@ -434,7 +434,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.SupportPointSides = val,
             UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> SupportRegionJoinTolX = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> SupportRegionJoinTolX => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportRegionJoinTolX",
             () => UserSettingTranslations.SupportRegionJoinTolX_Name,
             () => UserSettingTranslations.SupportRegionJoinTolX_Description,
@@ -443,7 +443,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.SupportRegionJoinTolX = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> SupportReleaseGap = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> SupportReleaseGap => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportReleaseGap",
             () => UserSettingTranslations.SupportReleaseGap_Name,
             () => UserSettingTranslations.SupportReleaseGap_Description,
@@ -452,7 +452,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.SupportReleaseGap = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> SupportSolidSpace = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> SupportSolidSpace => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportSolidSpace",
             () => UserSettingTranslations.SupportSolidSpace_Name,
             () => UserSettingTranslations.SupportSolidSpace_Description,
@@ -461,7 +461,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.SupportSolidSpace = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> SupportSpacingStepX = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> SupportSpacingStepX => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportSpacingStepX",
             () => UserSettingTranslations.SupportSpacingStepX_Name,
             () => UserSettingTranslations.SupportSpacingStepX_Description,
@@ -470,7 +470,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.SupportSpacingStepX = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> SupportVolumeScale = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> SupportVolumeScale => new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportVolumeScale",
             () => UserSettingTranslations.SupportVolumeScale_Name,
             () => UserSettingTranslations.SupportVolumeScale_Description,
