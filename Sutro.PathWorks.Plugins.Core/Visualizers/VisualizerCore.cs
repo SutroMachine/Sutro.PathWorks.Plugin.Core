@@ -1,11 +1,9 @@
 ﻿using g3;
 using gs;
 using Sutro.Core.Decompilers;
-using Sutro.Core.Models.GCode;
 using Sutro.PathWorks.Plugins.API.Visualizers;
 using Sutro.PathWorks.Plugins.Core.CustomData;
 using Sutro.PathWorks.Plugins.Core.Meshers;
-using System.Collections.Generic;
 
 namespace Sutro.PathWorks.Plugins.Core.Visualizers
 {
@@ -72,17 +70,6 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
         protected virtual void EmitPoints(LinearToolpath3<PrintVertex> linearToolpath)
         {
             RaisePointsGenerated(CreatePoints(linearToolpath), layerIndex);
-        }
-
-        protected virtual void RaiseLineGenerated(LinearToolpath3<PrintVertex> toolpath)
-        {
-            var points = new List<Vector3d>(toolpath.VertexCount);
-            foreach (var vertex in toolpath)
-            {
-                points.Add(vertex.Position);
-            }
-
-            RaiseLineGenerated(points, layerIndex);
         }
 
         protected override ToolpathPreviewVertex VertexFactory(PrintVertex vertex, Vector3d position, float brightness)

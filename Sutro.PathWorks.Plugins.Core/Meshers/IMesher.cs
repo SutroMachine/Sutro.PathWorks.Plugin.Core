@@ -2,7 +2,6 @@
 using gs;
 using Sutro.PathWorks.Plugins.API.Visualizers;
 using System;
-using System.Collections.Generic;
 
 namespace Sutro.PathWorks.Plugins.Core.Meshers
 {

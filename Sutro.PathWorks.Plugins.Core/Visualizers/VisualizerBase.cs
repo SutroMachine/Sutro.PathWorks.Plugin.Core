@@ -132,5 +132,16 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
         {
             decompiler.End();
         }
+
+        protected virtual void RaiseLineGenerated(LinearToolpath3<TPrintVertex> toolpath)
+        {
+            var points = new List<Vector3d>(toolpath.VertexCount);
+            foreach (var vertex in toolpath)
+            {
+                points.Add(vertex.Position);
+            }
+
+            RaiseLineGenerated(points, layerIndex);
+        }
     }
 }
