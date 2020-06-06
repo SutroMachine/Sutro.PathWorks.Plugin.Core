@@ -2,10 +2,13 @@
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;
 using Sutro.PathWorks.Plugins.Core.UserSettings;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Sutro.PathWorks.Plugins.Core.Settings
 {
+    [SuppressMessage("NDepend", "ND1000:AvoidTypesTooBig", Justification = "...")]
+    [SuppressMessage("NDepend", "ND1002:AvoidTypesWithTooManyFields", Justification = "...")]
     public class MaterialUserSettingsFFF<TSettings> : UserSettingCollectionBase<TSettings> where TSettings : SingleMaterialFFFSettings
     {
         #region Basic
@@ -13,7 +16,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupBasic =
             new UserSettingGroup(() => UserSettingTranslations.GroupBasic);
 
-        public UserSettingDouble<TSettings> FilamentDiamMM = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> FilamentDiamMM => new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.FilamentDiamMM",
             () => UserSettingTranslations.FilamentDiamMM_Name,
             () => UserSettingTranslations.FilamentDiamMM_Description,
@@ -29,7 +32,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupTemperature =
             new UserSettingGroup(() => UserSettingTranslations.GroupTemperature);
 
-        public UserSettingInt<TSettings> ExtruderTempC = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> ExtruderTempC => new UserSettingInt<TSettings>(
             "MaterialUserSettingsFFF.FilamentDiamMM",
             () => UserSettingTranslations.ExtruderTempC_Name,
             () => UserSettingTranslations.ExtruderTempC_Description,
@@ -38,7 +41,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.ExtruderTempC = val,
             UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
 
-        public UserSettingInt<TSettings> HeatedBedTempC = new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> HeatedBedTempC => new UserSettingInt<TSettings>(
             "MaterialUserSettingsFFF.HeatedBedTempC",
             () => UserSettingTranslations.HeatedBedTempC_Name,
             () => UserSettingTranslations.HeatedBedTempC_Description,
@@ -54,7 +57,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupRetraction =
             new UserSettingGroup(() => UserSettingTranslations.GroupRetraction);
 
-        public UserSettingDouble<TSettings> MinRetractTravelLength = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> MinRetractTravelLength => new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.MinRetractTravelLength",
             () => UserSettingTranslations.MinRetractTravelLength_Name,
             () => UserSettingTranslations.MinRetractTravelLength_Description,
@@ -63,7 +66,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.MinRetractTravelLength = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> RetractDistanceMM = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> RetractDistanceMM => new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.RetractDistanceMM",
             () => UserSettingTranslations.RetractDistanceMM_Name,
             () => UserSettingTranslations.RetractDistanceMM_Description,
@@ -72,7 +75,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.RetractDistanceMM = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
-        public UserSettingDouble<TSettings> RetractSpeed = new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> RetractSpeed => new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.RetractSpeed",
             () => UserSettingTranslations.RetractSpeed_Name,
             () => UserSettingTranslations.RetractSpeed_Description,

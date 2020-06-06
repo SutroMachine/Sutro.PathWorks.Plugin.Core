@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sutro.PathWorks.Plugins.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sutro.PathWorks.Plugins.Core.Tests", "Sutro.PathWorks.Plugins.Core.Tests\Sutro.PathWorks.Plugins.Core.Tests.csproj", "{04A4C016-226E-4323-BD5B-00BCC2CFECE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sutro.PathWorks.Plugins.FFF", "Sutro.PathWorks.Plugins.FFF\Sutro.PathWorks.Plugins.FFF.csproj", "{6470608C-4DCF-4122-8E7D-2CBD3636B862}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sutro.PathWorks.Plugins.FFF", "Sutro.PathWorks.Plugins.FFF\Sutro.PathWorks.Plugins.FFF.csproj", "{6470608C-4DCF-4122-8E7D-2CBD3636B862}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,5 +47,8 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4F611E1C-FFEF-40D6-8AE6-20C853509182}
+	EndGlobalSection
+	GlobalSection(NDepend) = preSolution
+		Project = ".\Sutro.PathWorks.Plugins.Core.ndproj"
 	EndGlobalSection
 EndGlobal

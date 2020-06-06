@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Sutro.PathWorks.Plugins.Core.Visualizers
+namespace Sutro.PathWorks.Plugins.Core.CustomData
 {
-    public class NormalizedAdaptiveRangeCustomDataDetails : AdaptiveRangeCustomDataDetails
+    public class NormalizedAdaptiveRange : AdaptiveRange
     {
-        public NormalizedAdaptiveRangeCustomDataDetails(
+        public NormalizedAdaptiveRange(
             Func<string> labelF, Func<float, string> colorScaleLabelerF) : base(labelF, colorScaleLabelerF)
         {
         }

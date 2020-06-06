@@ -1,9 +1,9 @@
 ﻿using Sutro.PathWorks.Plugins.API.Visualizers;
 using System;
 
-namespace Sutro.PathWorks.Plugins.Core.Visualizers
+namespace Sutro.PathWorks.Plugins.Core.CustomData
 {
-    public abstract class CustomDataDetails : IVisualizerCustomDataDetails
+    public abstract class CustomDataBase : IVisualizerCustomDataDetails
     {
         public float RangeMin { get; protected set; }
         public float RangeMax { get; protected set; }
@@ -18,7 +18,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             return colorScaleLabelerF(value);
         }
 
-        public CustomDataDetails(Func<string> labelF, Func<float, string> colorScaleLabelerF, float rangeMin = 0, float rangeMax = 0)
+        public CustomDataBase(Func<string> labelF, Func<float, string> colorScaleLabelerF, float rangeMin = 0, float rangeMax = 0)
         {
             this.labelF = labelF;
             this.colorScaleLabelerF = colorScaleLabelerF;

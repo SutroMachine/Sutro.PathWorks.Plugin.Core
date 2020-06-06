@@ -1,10 +1,10 @@
 ﻿using System;
 
-namespace Sutro.PathWorks.Plugins.Core.Visualizers
+namespace Sutro.PathWorks.Plugins.Core.CustomData
 {
-    public class FixedRangeCustomDataDetails : CustomDataDetails
+    public class FixedRange : CustomDataBase
     {
-        public FixedRangeCustomDataDetails(
+        public FixedRange(
             Func<string> labelF, Func<float, string> colorScaleLabelerF,
             float rangeMin, float rangeMax)
             : base(labelF, colorScaleLabelerF, rangeMin, rangeMax)

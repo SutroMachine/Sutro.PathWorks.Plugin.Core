@@ -1,16 +1,17 @@
 ﻿using g3;
 using System;
 
-namespace Sutro.PathWorks.Plugins.Core.Visualizers
+namespace Sutro.PathWorks.Plugins.Core.CustomData
 {
-    public class AdaptiveRangeCustomDataDetails : CustomDataDetails
+    public class AdaptiveRange : CustomDataBase
     {
-        protected Interval1d interval = Interval1d.Empty;
+        protected Interval1d interval;
 
-        public AdaptiveRangeCustomDataDetails(
+        public AdaptiveRange(
             Func<string> labelF, Func<float, string> colorScaleLabelerF)
             : base(labelF, colorScaleLabelerF)
         {
+            Reset();
         }
 
         public void ObserveValue(float value)
@@ -18,6 +19,11 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             interval.Contain(value);
             RangeMin = (float)interval.a;
             RangeMax = (float)interval.b;
+        }
+
+        public void Reset()
+        {
+            interval = Interval1d.Empty;
         }
     }
 }
