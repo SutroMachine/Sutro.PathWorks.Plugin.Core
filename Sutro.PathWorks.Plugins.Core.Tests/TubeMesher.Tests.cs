@@ -110,18 +110,31 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
 
 
         [TestMethod]
-        public void ShortBackJog()
+        public void ShortBackJogLeft()
         {
             var mesher = new TubeMesher<PrintVertex>();
             var toolpath = new LinearToolpath3<PrintVertex>(ToolpathTypes.Deposition);
             toolpath.AppendVertex(new PrintVertex(new Vector3d(0, 0, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
             toolpath.AppendVertex(new PrintVertex(new Vector3d(10, 0, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
             toolpath.AppendVertex(new PrintVertex(new Vector3d(9, 0.02, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
-            //toolpath.AppendVertex(new PrintVertex(new Vector3d(20, 0, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
 
             var mesh = mesher.Generate(toolpath, VertexF);
 
-            ExportMesh(mesh, "ShortBackJog.stl");
+            ExportMesh(mesh, "ShortBackJogLeft.stl");
+        }
+
+        [TestMethod]
+        public void ShortBackJogRight()
+        {
+            var mesher = new TubeMesher<PrintVertex>();
+            var toolpath = new LinearToolpath3<PrintVertex>(ToolpathTypes.Deposition);
+            toolpath.AppendVertex(new PrintVertex(new Vector3d(0, 0, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
+            toolpath.AppendVertex(new PrintVertex(new Vector3d(10, 0, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
+            toolpath.AppendVertex(new PrintVertex(new Vector3d(9, -0.02, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
+
+            var mesh = mesher.Generate(toolpath, VertexF);
+
+            ExportMesh(mesh, "ShortBackJogRight.stl");
         }
 
 

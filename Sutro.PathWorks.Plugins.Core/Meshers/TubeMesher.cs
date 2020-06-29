@@ -26,26 +26,22 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             joints[0] = GenerateButtJoint(toolpath, 0, vertices, triangles);
             joints[^1] = GenerateButtJoint(toolpath, joints.Length - 1, vertices, triangles);
 
-            for (int i = joints.Length - 2; i > 0; i--)
+            for (int i = 1; i < toolpath.VertexCount - 1; i++)
             {
                 var segmentBeforeJoint = new Segment3d(toolpath[i - 1].Position, toolpath[i].Position);
                 var segmentAfterJoint = new Segment3d(toolpath[i].Position, toolpath[i + 1].Position);
 
-                var angleRad = SignedAngleRad(segmentAfterJoint.Direction.xy, segmentBeforeJoint.Direction.xy);
+                var angleRad = SignedAngleRad(segmentBeforeJoint.Direction.xy, segmentAfterJoint.Direction.xy);
 
-                if (CornerIsInsideTube(segmentBeforeJoint, segmentAfterJoint, toolpath[i].Dimensions.x))
+                if (Math.Abs(angleRad) > miterThreshold)
                 {
-                    joints[i] = GenerateButtJoint(toolpath, i, vertices, triangles);
-                }
-                else if (Math.Abs(angleRad) > miterThreshold)
-                {
-                    if (angleRad < 0)
+                    if (angleRad > 0)
                     {
-                        joints[i] = GenerateLeftBevelJoint(toolpath, i, vertices, triangles);
+                        joints[i] = GenerateRightBevelJoint(toolpath, i, vertices, triangles);
                     }
                     else
                     {
-                        joints[i] = GenerateRightBevelJoint(toolpath, i, vertices, triangles);
+                        joints[i] = GenerateLeftBevelJoint(toolpath, i, vertices, triangles);
                     }
                 }
                 else
@@ -89,21 +85,21 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
                 frame.FromFrameP(new Vector3d(0, 0, 0)), brightnessMax);
 
             joint.OutRight = AddVertex(vertices, toolpath[i],
-                frame.FromFrameP(new Vector3d(-dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
+                frame.FromFrameP(new Vector3d(dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
 
             joint.OutBottom = AddVertex(vertices, toolpath[i],
                 frame.FromFrameP(new Vector3d(0, 0, -dimensions.y)), brightnessMax);
 
             joint.OutLeft = AddVertex(vertices, toolpath[i],
-                frame.FromFrameP(new Vector3d(dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
+                frame.FromFrameP(new Vector3d(-dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
 
             triangles.Add(joint.OutBottom);
+            triangles.Add(joint.OutTop);
             triangles.Add(joint.OutLeft);
-            triangles.Add(joint.OutTop);
 
             triangles.Add(joint.OutBottom);
-            triangles.Add(joint.OutTop);
             triangles.Add(joint.OutRight);
+            triangles.Add(joint.OutTop);
         }
 
         private void AddCapBeforeJoint(LinearToolpath3<TPrintVertex> toolpath, int i, List<ToolpathPreviewVertex> vertices, ToolpathPreviewJoint joint, List<int> triangles)
@@ -117,21 +113,21 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
                 frame.FromFrameP(new Vector3d(0, 0, 0)), brightnessMax);
 
             joint.InRight = AddVertex(vertices, toolpath[i],
-                frame.FromFrameP(new Vector3d(-dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
+                frame.FromFrameP(new Vector3d(dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
 
             joint.InBottom = AddVertex(vertices, toolpath[i],
                 frame.FromFrameP(new Vector3d(0, 0, -dimensions.y)), brightnessMax);
 
             joint.InLeft = AddVertex(vertices, toolpath[i],
-                frame.FromFrameP(new Vector3d(dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
+                frame.FromFrameP(new Vector3d(-dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
 
             triangles.Add(joint.InBottom);
-            triangles.Add(joint.InTop);
             triangles.Add(joint.InLeft);
+            triangles.Add(joint.InTop);
 
             triangles.Add(joint.InBottom);
-            triangles.Add(joint.InRight);
             triangles.Add(joint.InTop);
+            triangles.Add(joint.InRight);
         }
 
         private static bool CornerIsInsideTube(Segment3d segmentBeforeJoint, Segment3d segmentAfterJoint, double tubeWidth)
@@ -180,7 +176,6 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             var frameSegAfter = new Frame3f(toolpath[vertexIndex].Position);
             frameSegAfter.AlignAxis(1, ToVector3f(segAfter.Direction));
 
-
             double angle = Math.Abs(segBefore.Direction.AngleR(segAfter.Direction));
 
             double miterExtensions = Math.Tan(angle / 4) * dimensions.x / 2;
@@ -190,25 +185,36 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             joint.InTop = joint.OutTop = AddVertex(vertices, toolpath[vertexIndex],
                 frameMitre.FromFrameP(new Vector3d(0, 0, 0)), brightnessMax);
 
-            joint.InLeft = joint.OutLeft = AddVertex(vertices, toolpath[vertexIndex],
-                frameMitre.FromFrameP(new Vector3d(dimensions.x / 2 * scaleFactor, 0, -dimensions.y / 2)), brightnessMin);
+            if (CornerIsInsideTube(segBefore, segAfter, dimensions.x))
+            {
+                joint.InLeft = AddVertex(vertices, toolpath[vertexIndex], 
+                    frameSegBefore.FromFrameP(new Vector3d(-dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
+
+                joint.OutLeft = AddVertex(vertices, toolpath[vertexIndex],
+                    frameSegAfter.FromFrameP(new Vector3d(-dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
+            }
+            else
+            {
+                joint.InLeft = joint.OutLeft = AddVertex(vertices, toolpath[vertexIndex], 
+                    frameMitre.FromFrameP(new Vector3d(-dimensions.x / 2 * scaleFactor, 0, -dimensions.y / 2)), brightnessMin);
+            }
 
             joint.InBottom = joint.OutBottom = AddVertex(vertices, toolpath[vertexIndex],
                 frameMitre.FromFrameP(new Vector3d(0, 0, -dimensions.y)), brightnessMax);
 
             joint.InRight = AddVertex(vertices, toolpath[vertexIndex],
-                frameSegBefore.FromFrameP(new Vector3d(-dimensions.x / 2, miterExtensions, -dimensions.y / 2)), brightnessMin);
+                frameSegBefore.FromFrameP(new Vector3d(dimensions.x / 2, miterExtensions, -dimensions.y / 2)), brightnessMin);
 
             joint.OutRight = AddVertex(vertices, toolpath[vertexIndex],
-                frameSegAfter.FromFrameP(new Vector3d(-dimensions.x / 2, -miterExtensions, -dimensions.y / 2)), brightnessMin);
+                frameSegAfter.FromFrameP(new Vector3d(dimensions.x / 2, -miterExtensions, -dimensions.y / 2)), brightnessMin);
 
             triangles.Add(joint.InRight);
+            triangles.Add(joint.OutRight);
             triangles.Add(joint.InTop);
-            triangles.Add(joint.OutRight);
 
             triangles.Add(joint.InRight);
-            triangles.Add(joint.OutRight);
             triangles.Add(joint.InBottom);
+            triangles.Add(joint.OutRight);
 
             return joint;
 
@@ -234,7 +240,6 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             var frameSegAfter = new Frame3f(toolpath[vertexIndex].Position);
             frameSegAfter.AlignAxis(1, ToVector3f(segAfter.Direction));
 
-
             double angle = segBefore.Direction.AngleR(segAfter.Direction);
 
             double miterExtensions = Math.Tan(angle / 4) * dimensions.x / 2; 
@@ -244,25 +249,36 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             joint.InTop = joint.OutTop = AddVertex(vertices, toolpath[vertexIndex],
                 frameMitre.FromFrameP(new Vector3d(0, 0, 0)), brightnessMax);
 
-            joint.InRight = joint.OutRight = AddVertex(vertices, toolpath[vertexIndex],
-                frameMitre.FromFrameP(new Vector3d(-dimensions.x / 2 * scaleFactor, 0, -dimensions.y / 2)), brightnessMin);
+            if (CornerIsInsideTube(segBefore, segAfter, dimensions.x))
+            {
+                joint.InRight = AddVertex(vertices, toolpath[vertexIndex],
+                    frameSegBefore.FromFrameP(new Vector3d(dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
+
+                joint.OutRight = AddVertex(vertices, toolpath[vertexIndex],
+                    frameSegAfter.FromFrameP(new Vector3d(dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
+            }
+            else
+            {
+                joint.InRight = joint.OutRight = AddVertex(vertices, toolpath[vertexIndex],
+                    frameMitre.FromFrameP(new Vector3d(dimensions.x / 2 * scaleFactor, 0, -dimensions.y / 2)), brightnessMin);
+            }
 
             joint.InBottom = joint.OutBottom = AddVertex(vertices, toolpath[vertexIndex],
                 frameMitre.FromFrameP(new Vector3d(0, 0, -dimensions.y)), brightnessMax);
 
             joint.InLeft = AddVertex(vertices, toolpath[vertexIndex],
-                frameSegBefore.FromFrameP(new Vector3d(dimensions.x / 2, miterExtensions, -dimensions.y / 2)), brightnessMin);
+                frameSegBefore.FromFrameP(new Vector3d(-dimensions.x / 2, miterExtensions, -dimensions.y / 2)), brightnessMin);
 
             joint.OutLeft = AddVertex(vertices, toolpath[vertexIndex],
-                frameSegAfter.FromFrameP(new Vector3d(dimensions.x / 2, -miterExtensions, -dimensions.y / 2)), brightnessMin);
+                frameSegAfter.FromFrameP(new Vector3d(-dimensions.x / 2, -miterExtensions, -dimensions.y / 2)), brightnessMin);
 
             triangles.Add(joint.InLeft);
-            triangles.Add(joint.OutLeft);
             triangles.Add(joint.InTop);
+            triangles.Add(joint.OutLeft);
 
             triangles.Add(joint.InLeft);
-            triangles.Add(joint.InBottom);
             triangles.Add(joint.OutLeft);
+            triangles.Add(joint.InBottom);
 
             return joint;
         }
@@ -292,13 +308,13 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
                 frame.FromFrameP(new Vector3d(0, 0, 0)), brightnessMax);
 
             joint.InRight = joint.OutRight = AddVertex(vertices, toolpath[vertexIndex],
-                frame.FromFrameP(new Vector3d(-dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
+                frame.FromFrameP(new Vector3d(dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
 
             joint.InBottom = joint.OutBottom = AddVertex(vertices, toolpath[vertexIndex],
                 frame.FromFrameP(new Vector3d(0, 0, -dimensions.y)), brightnessMax);
 
             joint.InLeft = joint.OutLeft = AddVertex(vertices, toolpath[vertexIndex],
-                frame.FromFrameP(new Vector3d(dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
+                frame.FromFrameP(new Vector3d(-dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
 
             return joint;
         }
@@ -316,36 +332,36 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
                 var end = joints[i + 1];
 
                 triangles.Add(start.OutRight);
-                triangles.Add(start.OutTop);
-                triangles.Add(end.InRight);
-
                 triangles.Add(end.InRight);
                 triangles.Add(start.OutTop);
+
+                triangles.Add(end.InRight);
                 triangles.Add(end.InTop);
+                triangles.Add(start.OutTop);
 
                 triangles.Add(start.OutTop);
-                triangles.Add(start.OutLeft);
-                triangles.Add(end.InTop);
-
                 triangles.Add(end.InTop);
                 triangles.Add(start.OutLeft);
+
+                triangles.Add(end.InTop);
                 triangles.Add(end.InLeft);
+                triangles.Add(start.OutLeft);
 
                 triangles.Add(start.OutLeft);
-                triangles.Add(start.OutBottom);
-                triangles.Add(end.InLeft);
-
                 triangles.Add(end.InLeft);
                 triangles.Add(start.OutBottom);
+
+                triangles.Add(end.InLeft);
                 triangles.Add(end.InBottom);
+                triangles.Add(start.OutBottom);
 
                 triangles.Add(start.OutBottom);
-                triangles.Add(start.OutRight);
-                triangles.Add(end.InBottom);
-
                 triangles.Add(end.InBottom);
                 triangles.Add(start.OutRight);
+
+                triangles.Add(end.InBottom);
                 triangles.Add(end.InRight);
+                triangles.Add(start.OutRight);
             }
         }
     }
