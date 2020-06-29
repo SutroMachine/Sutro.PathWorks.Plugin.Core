@@ -12,7 +12,7 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
     public class TubeMesherTests
     {
         [TestMethod]
-        public void SharpAngle()
+        public void SharpAngleLeft()
         {
             var mesher = new TubeMesher<PrintVertex>();
             var toolpath = new LinearToolpath3<PrintVertex>(ToolpathTypes.Deposition);
@@ -22,7 +22,21 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
 
             var mesh = mesher.Generate(toolpath, VertexF);
 
-            ExportMesh(mesh, "SharpAngle.stl");
+            ExportMesh(mesh, "SharpAngleLeft.stl");
+        }
+
+        [TestMethod]
+        public void SharpAngleRight()
+        {
+            var mesher = new TubeMesher<PrintVertex>();
+            var toolpath = new LinearToolpath3<PrintVertex>(ToolpathTypes.Deposition);
+            toolpath.AppendVertex(new PrintVertex(new Vector3d(0, 0, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
+            toolpath.AppendVertex(new PrintVertex(new Vector3d(10, 0, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
+            toolpath.AppendVertex(new PrintVertex(new Vector3d(0, -1, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
+
+            var mesh = mesher.Generate(toolpath, VertexF);
+
+            ExportMesh(mesh, "SharpAngleRight.stl");
         }
 
         private void ExportMesh(ToolpathPreviewMesh mesh, string filePath)
@@ -77,6 +91,23 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
 
             ExportMesh(mesh, "ShortJog.stl");
         }
+
+        [TestMethod]
+        public void Square()
+        {
+            var mesher = new TubeMesher<PrintVertex>();
+            var toolpath = new LinearToolpath3<PrintVertex>(ToolpathTypes.Deposition);
+            toolpath.AppendVertex(new PrintVertex(new Vector3d(0, 0, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
+            toolpath.AppendVertex(new PrintVertex(new Vector3d(10, 0, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
+            toolpath.AppendVertex(new PrintVertex(new Vector3d(10, 10, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
+            toolpath.AppendVertex(new PrintVertex(new Vector3d(0, 10, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
+            toolpath.AppendVertex(new PrintVertex(new Vector3d(0, 0, 0), 1000, new Vector2d(0.4, 0.2)), TPVertexFlags.None);
+
+            var mesh = mesher.Generate(toolpath, VertexF);
+
+            ExportMesh(mesh, "Square.stl");
+        }
+
 
         [TestMethod]
         public void ShortBackJog()

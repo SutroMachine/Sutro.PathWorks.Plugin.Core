@@ -10,6 +10,10 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
     {
         private Func<TPrintVertex, Vector3d, float, ToolpathPreviewVertex> vertexFactory;
 
+        private const float brightnessMax = 1f;
+        private const float brightnessMin = 0.2f;
+        private const double miterThreshold = 40 * MathUtil.Deg2Rad;
+
         public ToolpathPreviewMesh Generate(LinearToolpath3<TPrintVertex> toolpath, Func<TPrintVertex, Vector3d, float, ToolpathPreviewVertex> vertexFactory)
         {
             this.vertexFactory = vertexFactory;
@@ -19,8 +23,8 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
 
             var joints = new ToolpathPreviewJoint[toolpath.VertexCount];
 
-            joints[0] = GenerateButtJoint(toolpath, 0, vertices);
-            joints[^1] = GenerateButtJoint(toolpath, joints.Length - 1, vertices);
+            joints[0] = GenerateButtJoint(toolpath, 0, vertices, triangles);
+            joints[^1] = GenerateButtJoint(toolpath, joints.Length - 1, vertices, triangles);
 
             for (int i = joints.Length - 2; i > 0; i--)
             {
@@ -31,25 +35,24 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
 
                 if (CornerIsInsideTube(segmentBeforeJoint, segmentAfterJoint, toolpath[i].Dimensions.x))
                 {
-                    joints[i] = GenerateButtJoint(toolpath, i, vertices);
+                    joints[i] = GenerateButtJoint(toolpath, i, vertices, triangles);
                 }
-                else if (Math.Abs(angleRad) > 0.698132)
+                else if (Math.Abs(angleRad) > miterThreshold)
                 {
                     if (angleRad < 0)
                     {
-                        joints[i] = GenerateButtJoint(toolpath, i, vertices);
+                        joints[i] = GenerateLeftBevelJoint(toolpath, i, vertices, triangles);
                     }
                     else
                     {
-                        joints[i] = GenerateButtJoint(toolpath, i, vertices);
+                        joints[i] = GenerateRightBevelJoint(toolpath, i, vertices, triangles);
                     }
                 }
                 else
                 {
-                    joints[i] = GenerateButtJoint(toolpath, i, vertices);
+                    joints[i] = GenerateMiterJoint(toolpath, i, vertices, triangles);
                 }
             }
-
 
             AddEdges(joints, triangles);
 
@@ -57,62 +60,78 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             return result;
         }
 
-        private ToolpathPreviewJoint GenerateButtJoint(LinearToolpath3<TPrintVertex> toolpath, int i, List<ToolpathPreviewVertex> vertices)
+        private ToolpathPreviewJoint GenerateButtJoint(LinearToolpath3<TPrintVertex> toolpath, int i, List<ToolpathPreviewVertex> vertices, List<int> triangles)
         {
             var joint = new ToolpathPreviewJoint();
             // If joint is not the first point in the toolpath
             if (i > 0)
             {
-                AddCapBeforeJoint(toolpath, i, vertices, joint);
+                AddCapBeforeJoint(toolpath, i, vertices, joint, triangles);
             }
 
             // If joint is not the last point in the toolpath
             if (i < toolpath.VertexCount - 1)
             {
-                AddCapAfterJoint(toolpath, i, vertices, joint);
+                AddCapAfterJoint(toolpath, i, vertices, joint, triangles);
             }
 
             return joint;
         }
 
-        private void AddCapAfterJoint(LinearToolpath3<TPrintVertex> toolpath, int i, List<ToolpathPreviewVertex> vertices, ToolpathPreviewJoint joint)
+        private void AddCapAfterJoint(LinearToolpath3<TPrintVertex> toolpath, int i, List<ToolpathPreviewVertex> vertices, ToolpathPreviewJoint joint, List<int> triangles)
         {
             var seg = new Segment3d(toolpath[i].Position, toolpath[i + 1].Position);
             var dimensions = toolpath[i].Dimensions;
             var frame = new Frame3f(new Vector3d(toolpath[i].Position));
-            frame.AlignAxis(1, new Vector3f((float)seg.Direction.x, (float)seg.Direction.y, (float)seg.Direction.z));
+            frame.AlignAxis(1, ToVector3f(seg.Direction));
 
-            joint.OutTop = AddVertex(vertices, toolpath[i], 
-                frame.FromFrameP(new Vector3d(0, 0, 0)), 1);
+            joint.OutTop = AddVertex(vertices, toolpath[i],
+                frame.FromFrameP(new Vector3d(0, 0, 0)), brightnessMax);
 
-            joint.OutRight = AddVertex(vertices, toolpath[i], 
-                frame.FromFrameP(new Vector3d(-dimensions.x / 2, 0, -dimensions.y / 2)), 0.5f);
+            joint.OutRight = AddVertex(vertices, toolpath[i],
+                frame.FromFrameP(new Vector3d(-dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
 
-            joint.OutBottom = AddVertex(vertices, toolpath[i], 
-                frame.FromFrameP(new Vector3d(0, 0, -dimensions.y)), 1);
+            joint.OutBottom = AddVertex(vertices, toolpath[i],
+                frame.FromFrameP(new Vector3d(0, 0, -dimensions.y)), brightnessMax);
 
-            joint.OutLeft = AddVertex(vertices, toolpath[i], 
-                frame.FromFrameP(new Vector3d(dimensions.x / 2, 0, -dimensions.y / 2)), 0.5f);
+            joint.OutLeft = AddVertex(vertices, toolpath[i],
+                frame.FromFrameP(new Vector3d(dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
+
+            triangles.Add(joint.OutBottom);
+            triangles.Add(joint.OutLeft);
+            triangles.Add(joint.OutTop);
+
+            triangles.Add(joint.OutBottom);
+            triangles.Add(joint.OutTop);
+            triangles.Add(joint.OutRight);
         }
 
-        private void AddCapBeforeJoint(LinearToolpath3<TPrintVertex> toolpath, int i, List<ToolpathPreviewVertex> vertices, ToolpathPreviewJoint joint)
+        private void AddCapBeforeJoint(LinearToolpath3<TPrintVertex> toolpath, int i, List<ToolpathPreviewVertex> vertices, ToolpathPreviewJoint joint, List<int> triangles)
         {
             var seg = new Segment3d(toolpath[i - 1].Position, toolpath[i].Position);
             var dimensions = toolpath[i].Dimensions;
             var frame = new Frame3f(new Vector3d(toolpath[i].Position));
-            frame.AlignAxis(1, new Vector3f((float)seg.Direction.x, (float)seg.Direction.y, (float)seg.Direction.z));
+            frame.AlignAxis(1, ToVector3f(seg.Direction));
 
-            var v1 = frame.FromFrameP(new Vector3d(0, 0, 0));
-            joint.InTop = AddVertex(vertices, toolpath[i], v1, 1);
+            joint.InTop = AddVertex(vertices, toolpath[i],
+                frame.FromFrameP(new Vector3d(0, 0, 0)), brightnessMax);
 
-            var v2 = frame.FromFrameP(new Vector3d(-dimensions.x / 2, 0, -dimensions.y / 2));
-            joint.InRight = AddVertex(vertices, toolpath[i], v2, 0.5f);
+            joint.InRight = AddVertex(vertices, toolpath[i],
+                frame.FromFrameP(new Vector3d(-dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
 
-            var v3 = frame.FromFrameP(new Vector3d(0, 0, -dimensions.y));
-            joint.InBottom = AddVertex(vertices, toolpath[i], v3, 1);
+            joint.InBottom = AddVertex(vertices, toolpath[i],
+                frame.FromFrameP(new Vector3d(0, 0, -dimensions.y)), brightnessMax);
 
-            var v4 = frame.FromFrameP(new Vector3d(dimensions.x / 2, 0, -dimensions.y / 2));
-            joint.InLeft = AddVertex(vertices, toolpath[i], v4, 0.5f);
+            joint.InLeft = AddVertex(vertices, toolpath[i],
+                frame.FromFrameP(new Vector3d(dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
+
+            triangles.Add(joint.InBottom);
+            triangles.Add(joint.InTop);
+            triangles.Add(joint.InLeft);
+
+            triangles.Add(joint.InBottom);
+            triangles.Add(joint.InRight);
+            triangles.Add(joint.InTop);
         }
 
         private static bool CornerIsInsideTube(Segment3d segmentBeforeJoint, Segment3d segmentAfterJoint, double tubeWidth)
@@ -141,77 +160,109 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             return ret;
         }
 
-        protected ToolpathPreviewJoint GenerateLeftBevelJoint(LinearToolpath3<TPrintVertex> toolpath, int toolpathIndex,
+        protected ToolpathPreviewJoint GenerateRightBevelJoint(LinearToolpath3<TPrintVertex> toolpath, int vertexIndex,
             List<ToolpathPreviewVertex> vertices, List<int> triangles)
         {
-            throw new NotImplementedException();
-            Vector3d a = toolpath[toolpathIndex - 1].Position;
-            Vector3d b = toolpath[toolpathIndex].Position;
-            Vector3d c = toolpath[toolpathIndex + 1].Position;
-            Vector3d ab = (b - a).Normalized;
-            Vector3d bc = (c - b).Normalized;
-            Vector3d miterNormal = GetNormalAndSecant(ab, bc, out double miterSecant);
-            Vector3d miterTangent = ab + bc;
+            var segBefore = new Segment3d(toolpath[vertexIndex - 1].Position, toolpath[vertexIndex].Position);
+            var segAfter = new Segment3d(toolpath[vertexIndex].Position, toolpath[vertexIndex + 1].Position);
 
-            var point = toolpath[toolpathIndex].Position;
+            var averageDirection = (segBefore.Direction + segAfter.Direction).Normalized;
+            var scaleFactor = 1 / segBefore.Direction.Dot(averageDirection);
 
-            ToolpathPreviewJoint joint = new ToolpathPreviewJoint();
+            var dimensions = new Vector2d(toolpath[vertexIndex].Dimensions.x, toolpath[vertexIndex].Dimensions.y);
 
-            //joint.InRight = joint.OutRight = AddVertex(vertices, toolpath[toolpathIndex], point, miterNormal, new Vector2d(0.5f, -0.5f), miterSecant, 0f);
-            //joint.InTop = joint.OutTop = AddVertex(vertices, toolpath[toolpathIndex], point, miterNormal, new Vector2d(0, 0), miterSecant, 1);
+            var frameMitre = new Frame3f(toolpath[vertexIndex].Position);
+            frameMitre.AlignAxis(1, ToVector3f(averageDirection));
 
-            //var bevelNormalIn = GetNormalAndSecant(ab, miterTangent, out double bevelSecantIn);
-            //joint.InLeft = AddVertex(vertices, toolpath[toolpathIndex], point, bevelNormalIn, new Vector2d(-0.5f, -0.5f), bevelSecantIn, 0);
+            var frameSegBefore = new Frame3f(toolpath[vertexIndex].Position);
+            frameSegBefore.AlignAxis(1, ToVector3f(segBefore.Direction));
 
-            //var bevelNormalOut = GetNormalAndSecant(miterTangent, bc, out double bevelSecantOut);
-            //joint.OutLeft = AddVertex(vertices, toolpath[toolpathIndex], point, bevelNormalOut, new Vector2d(-0.5f, -0.5f), bevelSecantOut, 0);
+            var frameSegAfter = new Frame3f(toolpath[vertexIndex].Position);
+            frameSegAfter.AlignAxis(1, ToVector3f(segAfter.Direction));
 
-            //joint.InBottom = joint.OutBotttom = AddVertex(vertices, toolpath[toolpathIndex], point, miterNormal, new Vector2d(0, -1), miterSecant, 1);
 
-            triangles.Add(joint.InLeft);
-            triangles.Add(joint.InBottom);
-            triangles.Add(joint.OutLeft);
+            double angle = Math.Abs(segBefore.Direction.AngleR(segAfter.Direction));
 
-            triangles.Add(joint.InLeft);
-            triangles.Add(joint.OutLeft);
+            double miterExtensions = Math.Tan(angle / 4) * dimensions.x / 2;
+
+            var joint = new ToolpathPreviewJoint();
+
+            joint.InTop = joint.OutTop = AddVertex(vertices, toolpath[vertexIndex],
+                frameMitre.FromFrameP(new Vector3d(0, 0, 0)), brightnessMax);
+
+            joint.InLeft = joint.OutLeft = AddVertex(vertices, toolpath[vertexIndex],
+                frameMitre.FromFrameP(new Vector3d(dimensions.x / 2 * scaleFactor, 0, -dimensions.y / 2)), brightnessMin);
+
+            joint.InBottom = joint.OutBottom = AddVertex(vertices, toolpath[vertexIndex],
+                frameMitre.FromFrameP(new Vector3d(0, 0, -dimensions.y)), brightnessMax);
+
+            joint.InRight = AddVertex(vertices, toolpath[vertexIndex],
+                frameSegBefore.FromFrameP(new Vector3d(-dimensions.x / 2, miterExtensions, -dimensions.y / 2)), brightnessMin);
+
+            joint.OutRight = AddVertex(vertices, toolpath[vertexIndex],
+                frameSegAfter.FromFrameP(new Vector3d(-dimensions.x / 2, -miterExtensions, -dimensions.y / 2)), brightnessMin);
+
+            triangles.Add(joint.InRight);
             triangles.Add(joint.InTop);
+            triangles.Add(joint.OutRight);
+
+            triangles.Add(joint.InRight);
+            triangles.Add(joint.OutRight);
+            triangles.Add(joint.InBottom);
 
             return joint;
+
         }
 
-        protected ToolpathPreviewJoint GenerateRightBevelJoint(LinearToolpath3<TPrintVertex> toolpath, int toolpathIndex,
+        protected ToolpathPreviewJoint GenerateLeftBevelJoint(LinearToolpath3<TPrintVertex> toolpath, int vertexIndex,
             List<ToolpathPreviewVertex> vertices, List<int> triangles)
         {
-            throw new NotImplementedException();
-            Vector3d a = toolpath[toolpathIndex - 1].Position;
-            Vector3d b = toolpath[toolpathIndex].Position;
-            Vector3d c = toolpath[toolpathIndex + 1].Position;
-            Vector3d ab = (b - a).Normalized;
-            Vector3d bc = (c - b).Normalized;
-            Vector3d miterNormal = GetNormalAndSecant(ab, bc, out double miterSecant);
-            Vector3d miterTangent = ab + bc;
+            var segBefore = new Segment3d(toolpath[vertexIndex - 1].Position, toolpath[vertexIndex].Position);
+            var segAfter = new Segment3d(toolpath[vertexIndex].Position, toolpath[vertexIndex + 1].Position);
 
-            var point = toolpath[toolpathIndex].Position;
+            var averageDirection = (segBefore.Direction + segAfter.Direction).Normalized;
+            var scaleFactor = 1 / segBefore.Direction.Dot(averageDirection);
 
-            ToolpathPreviewJoint joint = new ToolpathPreviewJoint();
+            var dimensions = new Vector2d(toolpath[vertexIndex].Dimensions.x, toolpath[vertexIndex].Dimensions.y);
 
-            var bevelNormalIn = GetNormalAndSecant(ab, miterTangent, out double bevelSecantIn);
-            //joint.InRight = AddVertex(vertices, toolpath[toolpathIndex], point, bevelNormalIn, new Vector2d(0.5, -0.5), bevelSecantIn, 0);
+            var frameMitre = new Frame3f(toolpath[vertexIndex].Position);
+            frameMitre.AlignAxis(1, ToVector3f(averageDirection));
 
-            //var bevelNormalOut = GetNormalAndSecant(miterTangent, bc, out double bevelSecantOut);
-            //joint.OutRight = AddVertex(vertices, toolpath[toolpathIndex], point, bevelNormalOut, new Vector2d(0.5, -0.5), bevelSecantOut, 0);
+            var frameSegBefore = new Frame3f(toolpath[vertexIndex].Position);
+            frameSegBefore.AlignAxis(1, ToVector3f(segBefore.Direction));
 
-            //joint.InTop = joint.OutTop = AddVertex(vertices, toolpath[toolpathIndex], point, miterNormal, new Vector2d(0, 0), miterSecant, 1);
-            //joint.InLeft = joint.OutLeft = AddVertex(vertices, toolpath[toolpathIndex], point, miterNormal, new Vector2d(-0.5, -0.5), miterSecant, 0);
-            //joint.InBottom = joint.OutBotttom = AddVertex(vertices, toolpath[toolpathIndex], point, miterNormal, new Vector2d(0, -1), miterSecant, 1);
+            var frameSegAfter = new Frame3f(toolpath[vertexIndex].Position);
+            frameSegAfter.AlignAxis(1, ToVector3f(segAfter.Direction));
 
-            triangles.Add(joint.InRight);
+
+            double angle = segBefore.Direction.AngleR(segAfter.Direction);
+
+            double miterExtensions = Math.Tan(angle / 4) * dimensions.x / 2; 
+
+            var joint = new ToolpathPreviewJoint();
+
+            joint.InTop = joint.OutTop = AddVertex(vertices, toolpath[vertexIndex],
+                frameMitre.FromFrameP(new Vector3d(0, 0, 0)), brightnessMax);
+
+            joint.InRight = joint.OutRight = AddVertex(vertices, toolpath[vertexIndex],
+                frameMitre.FromFrameP(new Vector3d(-dimensions.x / 2 * scaleFactor, 0, -dimensions.y / 2)), brightnessMin);
+
+            joint.InBottom = joint.OutBottom = AddVertex(vertices, toolpath[vertexIndex],
+                frameMitre.FromFrameP(new Vector3d(0, 0, -dimensions.y)), brightnessMax);
+
+            joint.InLeft = AddVertex(vertices, toolpath[vertexIndex],
+                frameSegBefore.FromFrameP(new Vector3d(dimensions.x / 2, miterExtensions, -dimensions.y / 2)), brightnessMin);
+
+            joint.OutLeft = AddVertex(vertices, toolpath[vertexIndex],
+                frameSegAfter.FromFrameP(new Vector3d(dimensions.x / 2, -miterExtensions, -dimensions.y / 2)), brightnessMin);
+
+            triangles.Add(joint.InLeft);
+            triangles.Add(joint.OutLeft);
             triangles.Add(joint.InTop);
-            triangles.Add(joint.OutRight);
 
-            triangles.Add(joint.InRight);
-            triangles.Add(joint.OutRight);
+            triangles.Add(joint.InLeft);
             triangles.Add(joint.InBottom);
+            triangles.Add(joint.OutLeft);
 
             return joint;
         }
@@ -223,43 +274,38 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             return vertices.Count - 1;
         }
 
-        protected virtual ToolpathPreviewJoint GenerateMiterJoint(LinearToolpath3<TPrintVertex> toolpath, int toolpathIndex, int startPointCount, List<ToolpathPreviewVertex> vertices)
+        protected virtual ToolpathPreviewJoint GenerateMiterJoint(LinearToolpath3<TPrintVertex> toolpath, int vertexIndex, List<ToolpathPreviewVertex> vertices, List<int> triangles)
         {
-            throw new NotImplementedException();
-            double miterSecant = 1;
-            Vector3d miterNormal;
+            var segBefore = new Segment3d(toolpath[vertexIndex - 1].Position, toolpath[vertexIndex].Position);
+            var segAfter = new Segment3d(toolpath[vertexIndex].Position, toolpath[vertexIndex + 1].Position);
 
-            if (toolpathIndex == 0)
-            {
-                Vector3d miterTangent = toolpath[1].Position - toolpath[0].Position;
-                miterNormal = new Vector3d(-miterTangent.y, miterTangent.x, 0).Normalized;
-            }
-            else if (toolpathIndex == toolpath.VertexCount - 1)
-            {
-                Vector3d miterTangent = toolpath[toolpathIndex].Position - toolpath[toolpathIndex - 1].Position;
-                miterNormal = new Vector3d(-miterTangent.y, miterTangent.x, 0).Normalized;
-            }
-            else
-            {
-                Vector3d a = toolpath[toolpathIndex - 1].Position;
-                Vector3d b = toolpath[toolpathIndex].Position;
-                Vector3d c = toolpath[toolpathIndex + 1].Position;
-                Vector3d ab = (b - a).Normalized;
-                Vector3d bc = (c - b).Normalized;
-                miterNormal = GetNormalAndSecant(ab, bc, out miterSecant);
-            }
+            var averageDirection = (segBefore.Direction + segAfter.Direction).Normalized;
+            var scaleFactor = 1 / segBefore.Direction.Dot(averageDirection);
+            var dimensions = new Vector2d(toolpath[vertexIndex].Dimensions.x * scaleFactor, toolpath[vertexIndex].Dimensions.y);
 
-            var pointCount = startPointCount + toolpathIndex;
-            var point = toolpath[toolpathIndex].Position;
+            var frame = new Frame3f(toolpath[vertexIndex].Position);
+            frame.AlignAxis(1, ToVector3f(averageDirection));
 
-            ToolpathPreviewJoint joint = new ToolpathPreviewJoint();
+            var joint = new ToolpathPreviewJoint();
 
-            //joint.InRight = joint.OutRight = AddVertex(vertices, toolpath[toolpathIndex], point, miterNormal, new Vector2d(0.5f, -0.5f), miterSecant, 0);
-            //joint.InTop = joint.OutTop = AddVertex(vertices, toolpath[toolpathIndex], point, miterNormal, new Vector2d(0, 0), miterSecant, 1);
-            //joint.InLeft = joint.OutLeft = AddVertex(vertices, toolpath[toolpathIndex], point, miterNormal, new Vector2d(-0.5f, -0.5f), miterSecant, 0);
-            //joint.InBottom = joint.OutBotttom = AddVertex(vertices, toolpath[toolpathIndex], point, miterNormal, new Vector2d(0, -1), miterSecant, 1);
+            joint.InTop = joint.OutTop = AddVertex(vertices, toolpath[vertexIndex],
+                frame.FromFrameP(new Vector3d(0, 0, 0)), brightnessMax);
+
+            joint.InRight = joint.OutRight = AddVertex(vertices, toolpath[vertexIndex],
+                frame.FromFrameP(new Vector3d(-dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
+
+            joint.InBottom = joint.OutBottom = AddVertex(vertices, toolpath[vertexIndex],
+                frame.FromFrameP(new Vector3d(0, 0, -dimensions.y)), brightnessMax);
+
+            joint.InLeft = joint.OutLeft = AddVertex(vertices, toolpath[vertexIndex],
+                frame.FromFrameP(new Vector3d(dimensions.x / 2, 0, -dimensions.y / 2)), brightnessMin);
 
             return joint;
+        }
+
+        private Vector3f ToVector3f(Vector3d vector)
+        {
+            return new Vector3f(vector.x, vector.y, vector.z);
         }
 
         protected virtual void AddEdges(ToolpathPreviewJoint[] joints, List<int> triangles)
