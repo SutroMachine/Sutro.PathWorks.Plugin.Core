@@ -1,16 +1,28 @@
 ﻿using Sutro.PathWorks.Plugins.API.Visualizers;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Sutro.PathWorks.Plugins.Core.Meshers
 {
     public class ToolpathPreviewMesh
     {
-        public ToolpathPreviewVertex[] Vertices;
-        public int[] Triangles;
+        private readonly List<int> triangles = new List<int>();
+        private readonly List<ToolpathPreviewVertex> vertices = new List<ToolpathPreviewVertex>();
 
-        public ToolpathPreviewMesh(ToolpathPreviewVertex[] vertices, int[] triangles)
+        public ReadOnlyCollection<int> Triangles => triangles.AsReadOnly();
+        public ReadOnlyCollection<ToolpathPreviewVertex> Vertices => vertices.AsReadOnly();
+
+        public void AddTriangle(int a, int b, int c)
         {
-            Vertices = vertices;
-            Triangles = triangles;
+            triangles.Add(a);
+            triangles.Add(b);
+            triangles.Add(c);
+        }
+
+        public int AddVertex(ToolpathPreviewVertex vertex)
+        {
+            vertices.Add(vertex);
+            return vertices.Count - 1;
         }
     }
 }
