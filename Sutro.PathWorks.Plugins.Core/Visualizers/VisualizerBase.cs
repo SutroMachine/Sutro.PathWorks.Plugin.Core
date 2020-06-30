@@ -7,6 +7,7 @@ using Sutro.PathWorks.Plugins.Core.CustomData;
 using Sutro.PathWorks.Plugins.Core.Meshers;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Sutro.PathWorks.Plugins.Core.Visualizers
 {
@@ -98,7 +99,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             var mesh = mesher.Generate(toolpath, VertexFactory);
             pointCount += toolpath.VertexCount;
 
-            EndEmit(Tuple.Create(mesh.Vertices, mesh.Triangles), layerIndex);
+            EndEmit(Tuple.Create(mesh.Vertices.ToArray(), mesh.Triangles.ToArray()), layerIndex);
         }
 
         protected abstract ToolpathPreviewVertex VertexFactory(TPrintVertex printVertex, Vector3d position, float brightness);

@@ -45,7 +45,7 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
             foreach (var vertex in mesh.Vertices)
                 dmesh3.AppendVertex(vertex.Point);
 
-            for (int i = 0; i < mesh.Triangles.Length; i += 3)
+            for (int i = 0; i < mesh.Triangles.Count; i += 3)
             {
                 dmesh3.AppendTriangle(mesh.Triangles[i], mesh.Triangles[i + 1], mesh.Triangles[i + 2]);
             }
