@@ -7,6 +7,7 @@ using Sutro.PathWorks.Plugins.Core.Visualizers;
 using Sutro.PathWorks.Plugins.FFF;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Sutro.PathWorks.Plugins.Core.Tests
 {
@@ -33,11 +34,20 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
         {
             var gcode = CreateGCode();
 
-            var visualizer = engine.Visualizers[0];
-            visualizer.BeginGCodeLineStream();
-            foreach (var line in gcode.AllLines())
-                visualizer.ProcessGCodeLine(line);
-            visualizer.EndGCodeLineStream();
+            int nRuns = 100;
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            for (int i = 0; i < nRuns; i++)
+            {
+                var visualizer = engine.Visualizers[0];
+                visualizer.BeginGCodeLineStream();
+                foreach (var line in gcode.AllLines())
+                    visualizer.ProcessGCodeLine(line);
+                visualizer.EndGCodeLineStream();
+            }
+            stopwatch.Stop();
+
+            Console.WriteLine($"Average of {stopwatch.ElapsedMilliseconds / nRuns} ms per visualizer run");
         }
 
         private GCodeFile CreateGCode()
