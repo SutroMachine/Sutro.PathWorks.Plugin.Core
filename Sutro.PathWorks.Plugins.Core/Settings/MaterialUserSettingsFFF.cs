@@ -11,6 +11,45 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
     [SuppressMessage("NDepend", "ND1002:AvoidTypesWithTooManyFields", Justification = "...")]
     public class MaterialUserSettingsFFF<TSettings> : UserSettingCollectionBase<TSettings> where TSettings : SingleMaterialFFFSettings
     {
+        #region Identifiers
+
+        public static readonly UserSettingGroup GroupIdentifiers =
+            new UserSettingGroup(() => UserSettingTranslations.GroupMaterialIdentifiers);
+
+        public UserSettingString<TSettings> MaterialName => new UserSettingString<TSettings>(
+            "MaterialUserSettingsFFF.MaterialName",
+            () => UserSettingTranslations.MaterialName_Name,
+            () => UserSettingTranslations.MaterialName_Description,
+            GroupIdentifiers,
+            (settings) => settings.MaterialName,
+            (settings, val) => settings.MaterialName = val);
+
+        public UserSettingString<TSettings> MaterialSource => new UserSettingString<TSettings>(
+            "MaterialUserSettingsFFF.MaterialSource",
+            () => UserSettingTranslations.MaterialSource_Name,
+            () => UserSettingTranslations.MaterialSource_Description,
+            GroupIdentifiers,
+            (settings) => settings.MaterialSource,
+            (settings, val) => settings.MaterialSource = val);
+
+        public UserSettingString<TSettings> MaterialType => new UserSettingString<TSettings>(
+            "MaterialUserSettingsFFF.MaterialType",
+            () => UserSettingTranslations.MaterialType_Name,
+            () => UserSettingTranslations.MaterialType_Description,
+            GroupIdentifiers,
+            (settings) => settings.MaterialType,
+            (settings, val) => settings.MaterialType = val);
+
+        public UserSettingString<TSettings> MaterialColor => new UserSettingString<TSettings>(
+            "MaterialUserSettingsFFF.MaterialColor",
+            () => UserSettingTranslations.MaterialColor_Name,
+            () => UserSettingTranslations.MaterialColor_Description,
+            GroupIdentifiers,
+            (settings) => settings.MaterialColor,
+            (settings, val) => settings.MaterialColor = val);
+
+        #endregion
+
         #region Basic
 
         public static readonly UserSettingGroup GroupBasic =

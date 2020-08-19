@@ -36,8 +36,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             () => UserSettingTranslations.Identifier_Name,
             () => UserSettingTranslations.Identifier_Description,
             GroupBasic,
-            (settings) => settings.Identifier,
-            (settings, val) => settings.Identifier = val);
+            (settings) => settings.ProfileName,
+            (settings, val) => settings.ProfileName = val);
 
         public UserSettingBool<TSettings> EnableBridging => new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.EnableBridging",
