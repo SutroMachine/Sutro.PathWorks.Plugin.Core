@@ -247,7 +247,7 @@
     <value>Make &amp; Model</value>
   </data>
   <data name="GroupMaterialIdentifiers" xml:space="preserve">
-    <value>Material Identifiers</value>
+    <value>Material</value>
   </data>
   <data name="GroupMiscellaneous" xml:space="preserve">
     <value>Miscellaneous</value>
@@ -324,11 +324,20 @@
   <data name="ManufacturerUUID.Name" xml:space="preserve">
     <value>Manufacturer UUID</value>
   </data>
+  <data name="Material" xml:space="preserve">
+    <value />
+  </data>
   <data name="MaterialColor.Description" xml:space="preserve">
     <value>Filament color</value>
   </data>
   <data name="MaterialColor.Name" xml:space="preserve">
     <value>Color</value>
+  </data>
+  <data name="MaterialName.Description" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MaterialName.Name" xml:space="preserve">
+    <value>Name</value>
   </data>
   <data name="MaterialSource.Description" xml:space="preserve">
     <value>Filament material supplier</value>
