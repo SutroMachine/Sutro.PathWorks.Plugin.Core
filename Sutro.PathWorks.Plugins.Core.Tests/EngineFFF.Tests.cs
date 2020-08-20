@@ -95,5 +95,21 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
             Assert.IsNotNull(engine.Visualizers[0].FillTypes);
             Assert.IsTrue(engine.Visualizers[0].FillTypes.Count > 0);
         }
+
+        [TestMethod]
+        public void SettingsJSONSerializeDeserialize()
+        {
+            // Arrange
+            var settings = engine.SettingsManager.FactorySettings[0];
+            settings.RapidExtrudeSpeed = 555;
+
+            // Act
+            var json = engine.SettingsManager.SerializeJSON(settings);
+            var settingsDeserialized = engine.SettingsManager.DeserializeJSON(json);
+
+            // Act
+            Assert.AreEqual(555, settingsDeserialized.RapidExtrudeSpeed);
+        }
+
     }
 }

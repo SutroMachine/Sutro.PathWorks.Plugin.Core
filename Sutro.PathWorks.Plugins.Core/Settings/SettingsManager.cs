@@ -1,10 +1,12 @@
 ﻿using gs;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Sutro.Core.Models.Profiles;
 using Sutro.PathWorks.Plugins.API.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Sutro.PathWorks.Plugins.Core.Settings
 {
@@ -31,14 +33,17 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         IUserSettingCollection ISettingsManager.MaterialUserSettings => MaterialUserSettings;
         IUserSettingCollection ISettingsManager.PrintUserSettings => PrintUserSettings;
 
-        private readonly static JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings
+        protected virtual JsonSerializerSettings SerializerSettings()
         {
-            MissingMemberHandling = MissingMemberHandling.Error,
-        };
+            return new JsonSerializerSettings()
+            {
+                MissingMemberHandling = MissingMemberHandling.Error,
+            };
+        }
 
         public virtual void ApplyJSON(TSettings settings, string json)
         {
-            JsonConvert.PopulateObject(json, settings, jsonSerializerSettings);
+            JsonConvert.PopulateObject(json, settings, SerializerSettings());
         }
 
         public void ApplyJSON(IProfile settings, string json)
@@ -50,7 +55,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         {
             // TODO: Make this more strict to avoid converting values unintentionally
             var sFormatted = StringUtil.FormatSettingOverride(keyValue);
-            JsonConvert.PopulateObject(sFormatted, settings, jsonSerializerSettings);
+            JsonConvert.PopulateObject(sFormatted, settings, SerializerSettings());
         }
 
         public void ApplyKeyValuePair(IProfile settings, string keyValue)
@@ -78,6 +83,38 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         IProfile ISettingsManager.FactorySettingByManufacturerAndModel(string manufacturer, string model)
         {
             return FactorySettingByManufacturerAndModel(manufacturer, model);
+        }
+
+        public TSettings DeserializeJSON(string json)
+        {
+            JObject o = JsonConvert.DeserializeObject<JObject>(json, SerializerSettings());
+            var typeprop = o.Property("ClassTypeName");
+            var typestring = typeprop.Value.Value<string>();
+            var settings = CreateSettingsFromTypeName(typestring);
+            JsonConvert.PopulateObject(json, settings);
+            return settings;
+        }
+
+        private TSettings CreateSettingsFromTypeName(string typestring)
+        {
+            foreach (var assemblyName in Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+            {
+                try
+                {
+                    var settings = Activator.CreateInstance(assemblyName.Name, typestring).Unwrap();
+                    return (TSettings)settings;
+                }
+                catch (TypeLoadException)
+                {
+
+                }
+            }
+            throw new InvalidCastException($"Can't create instance of settings file with type {typestring}.");
+        }
+
+        public string SerializeJSON(TSettings settings)
+        {
+            return JsonConvert.SerializeObject(settings, SerializerSettings());
         }
     }
 }
