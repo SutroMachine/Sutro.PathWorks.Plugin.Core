@@ -1,16 +1,25 @@
-name: Build
+name: Build & Publish NuGet Package
 
 on:
   push:
     branches:
       - '*'
-    tags-ignore:
-      - '*'
 
 jobs:
-  build:
+  publish:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
+
       - name: Build project
         run: dotnet build -c Release
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+      - name: Publish on version change
+        uses: rohith/publish-nuget@v2
+        with:
+          PROJECT_FILE_PATH: Sutro.PathWorks.Plugins.Core/Sutro.PathWorks.Plugins.Core.csproj # Relative to repository root
+          VERSION_REGEX: <Version>(.*)<\/Version> # Regex pattern to extract version info in a capturing group
+          TAG_COMMIT: true # Flag to enable / disable git tagging
+          TAG_FORMAT: v* # Format of the git tag, [*] gets replaced with version
+          NUGET_KEY: ${{secrets.NUGET_API_KEY}} # nuget.org API key
