@@ -97,19 +97,14 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 
         private TSettings CreateSettingsFromTypeName(string typestring)
         {
-            foreach (var assemblyName in Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+            foreach (var setting in FactorySettings)
             {
-                try
+                if (setting.GetType().Name == typestring.Split(".")[^1])
                 {
-                    var settings = Activator.CreateInstance(assemblyName.Name, typestring).Unwrap();
-                    return (TSettings)settings;
-                }
-                catch (TypeLoadException)
-                {
-
+                    return (TSettings)setting.Clone();
                 }
             }
-            throw new InvalidCastException($"Can't create instance of settings file with type {typestring}.");
+            throw new InvalidCastException($"Couldn't find factory setting of type {typestring}.");
         }
 
         public string SerializeJSON(TSettings settings)
