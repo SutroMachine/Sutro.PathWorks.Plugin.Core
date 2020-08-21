@@ -116,5 +116,15 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         {
             return JsonConvert.SerializeObject(settings, SerializerSettings());
         }
+
+        IProfile ISettingsManager.DeserializeJSON(string json)
+        {
+            return DeserializeJSON(json);
+        }
+
+        public string SerializeJSON(IProfile settings)
+        {
+            return SerializeJSON((TSettings)settings);
+        }
     }
 }
