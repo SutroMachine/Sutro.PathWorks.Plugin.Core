@@ -26,5 +26,7 @@ namespace Sutro.PathWorks.Plugins.FFF
         public override string Name => "FFF";
 
         public override string Description => "Basic thermoplastic extrusion deposition";
+
+        public override List<string> FileExtensions => new List<string>() { "gcode", "gco" };
     }
 }

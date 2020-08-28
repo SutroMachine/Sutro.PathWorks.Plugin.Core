@@ -107,9 +107,18 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
             var json = engine.SettingsManager.SerializeJSON(settings);
             var settingsDeserialized = engine.SettingsManager.DeserializeJSON(json);
 
-            // Act
+            // Assert
             Assert.AreEqual(555, settingsDeserialized.RapidExtrudeSpeed);
         }
 
+        [TestMethod]
+        public void GetMultipleFileExtensions()
+        {
+            // Act
+            var extensions = engine.FileExtensions;
+
+            // Assert
+            Assert.AreEqual(2, extensions.Count);
+        }
     }
 }

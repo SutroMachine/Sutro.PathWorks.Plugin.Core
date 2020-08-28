@@ -15,6 +15,7 @@ namespace Sutro.PathWorks.Plugins.Core.Engines
         public abstract IGenerator<TSettings> Generator { get; }
         public abstract ISettingsManager<TSettings> SettingsManager { get; }
         public abstract List<IVisualizer> Visualizers { get; }
+        public abstract List<string> FileExtensions { get; }
 
         IGenerator IEngine.Generator => Generator;
         ISettingsManager IEngine.SettingsManager => SettingsManager;

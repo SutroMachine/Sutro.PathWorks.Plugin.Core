@@ -6,7 +6,6 @@ using Sutro.PathWorks.Plugins.API.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Sutro.PathWorks.Plugins.Core.Settings
 {
