@@ -8,7 +8,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
     public class MaterialProfileManagerFFF : MaterialProfileManagerBase<MaterialProfileFFF>
     {
         public override List<MaterialProfileFFF> FactoryProfiles =>
-            FactoryPrintProfiles.EnumerateFactoryProfiles().Select(p => p.MaterialProfile).ToList();
+            FactoryPrintProfiles.EnumerateFactoryProfiles().Select(p => p.Material).ToList();
 
         public override IUserSettingCollection<MaterialProfileFFF> UserSettings =>
             new MaterialUserSettingsFFF<MaterialProfileFFF>();

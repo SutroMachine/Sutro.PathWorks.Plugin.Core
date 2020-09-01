@@ -8,7 +8,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
     public class MachineProfileManagerFFF : MachineProfileManagerBase<MachineProfileFFF>
     {
         public override List<MachineProfileFFF> FactoryProfiles =>
-            FactoryPrintProfiles.EnumerateFactoryProfiles().Select(p => p.MachineProfile).ToList();
+            FactoryPrintProfiles.EnumerateFactoryProfiles().Select(p => p.Machine).ToList();
 
         public override IUserSettingCollection<MachineProfileFFF> UserSettings =>
             new MachineUserSettingsFFF<MachineProfileFFF>();
