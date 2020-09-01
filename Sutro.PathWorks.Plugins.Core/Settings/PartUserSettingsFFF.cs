@@ -1,4 +1,5 @@
 ﻿using gs;
+using Sutro.Core.Settings.Part;
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;
 using Sutro.PathWorks.Plugins.Core.UserSettings;
@@ -9,23 +10,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 {
     [SuppressMessage("NDepend", "ND1000:AvoidTypesTooBig", Justification = "...")]
     [SuppressMessage("NDepend", "ND1002:AvoidTypesWithTooManyFields", Justification = "...")]
-    public class PrintUserSettingsFFF<TSettings> : UserSettingCollectionBase<TSettings> where TSettings : SingleMaterialFFFSettings
+    public class PartUserSettingsFFF<TSettings> : UserSettingCollectionBase<TSettings> where TSettings : PartProfileFFF
     {
-        #region Advanced
-
-        public static readonly UserSettingGroup GroupAdvanced =
-            new UserSettingGroup(() => UserSettingTranslations.GroupAdvanced);
-
-        public UserSettingBool<TSettings> EnableAutoBedLeveling => new UserSettingBool<TSettings>(
-            "PrintUserSettingsFFF.EnableAutoBedLeveling",
-            () => UserSettingTranslations.EnableAutoBedLeveling_Name,
-            () => UserSettingTranslations.EnableAutoBedLeveling_Description,
-            GroupAdvanced,
-            (settings) => settings.Machine.EnableAutoBedLeveling,
-            (settings, val) => settings.Machine.EnableAutoBedLeveling = val);
-
-        #endregion Advanced
-
         #region Basic
 
         public static readonly UserSettingGroup GroupBasic =
@@ -36,8 +22,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             () => UserSettingTranslations.Identifier_Name,
             () => UserSettingTranslations.Identifier_Description,
             GroupBasic,
-            (settings) => settings.ProfileName,
-            (settings, val) => settings.ProfileName = val);
+            (settings) => settings.Name,
+            (settings, val) => settings.Name = val);
 
         public UserSettingBool<TSettings> EnableBridging => new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.EnableBridging",
@@ -480,6 +466,40 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
         #endregion Support
+
+        #region Retraction
+
+        public static readonly UserSettingGroup GroupRetraction =
+            new UserSettingGroup(() => UserSettingTranslations.GroupRetraction);
+
+        public UserSettingDouble<TSettings> MinRetractTravelLength => new UserSettingDouble<TSettings>(
+            "MaterialUserSettingsFFF.MinRetractTravelLength",
+            () => UserSettingTranslations.MinRetractTravelLength_Name,
+            () => UserSettingTranslations.MinRetractTravelLength_Description,
+            GroupRetraction,
+            (settings) => settings.MinRetractTravelLength,
+            (settings, val) => settings.MinRetractTravelLength = val,
+            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+
+        public UserSettingDouble<TSettings> RetractDistanceMM => new UserSettingDouble<TSettings>(
+            "MaterialUserSettingsFFF.RetractDistanceMM",
+            () => UserSettingTranslations.RetractDistanceMM_Name,
+            () => UserSettingTranslations.RetractDistanceMM_Description,
+            GroupRetraction,
+            (settings) => settings.RetractDistanceMM,
+            (settings, val) => settings.RetractDistanceMM = val,
+            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+
+        public UserSettingDouble<TSettings> RetractSpeed => new UserSettingDouble<TSettings>(
+            "MaterialUserSettingsFFF.RetractSpeed",
+            () => UserSettingTranslations.RetractSpeed_Name,
+            () => UserSettingTranslations.RetractSpeed_Description,
+            GroupRetraction,
+            (settings) => settings.RetractSpeed,
+            (settings, val) => settings.RetractSpeed = val,
+            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+
+        # endregion
 
         /// <summary>
         /// Sets the culture for name & description strings.

@@ -1,4 +1,5 @@
 ﻿using gs;
+using Sutro.Core.Settings.Material;
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;
 using Sutro.PathWorks.Plugins.Core.UserSettings;
@@ -9,7 +10,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 {
     [SuppressMessage("NDepend", "ND1000:AvoidTypesTooBig", Justification = "...")]
     [SuppressMessage("NDepend", "ND1002:AvoidTypesWithTooManyFields", Justification = "...")]
-    public class MaterialUserSettingsFFF<TSettings> : UserSettingCollectionBase<TSettings> where TSettings : SingleMaterialFFFSettings
+    public class MaterialUserSettingsFFF<TSettings> : UserSettingCollectionBase<TSettings> where TSettings : MaterialProfileFFF
     {
         #region Identifiers
 
@@ -29,24 +30,24 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             () => UserSettingTranslations.MaterialSource_Name,
             () => UserSettingTranslations.MaterialSource_Description,
             GroupIdentifiers,
-            (settings) => settings.MaterialSource,
-            (settings, val) => settings.MaterialSource = val);
+            (settings) => settings.Supplier,
+            (settings, val) => settings.Supplier = val);
 
         public UserSettingString<TSettings> MaterialType => new UserSettingString<TSettings>(
             "MaterialUserSettingsFFF.MaterialType",
             () => UserSettingTranslations.MaterialType_Name,
             () => UserSettingTranslations.MaterialType_Description,
             GroupIdentifiers,
-            (settings) => settings.MaterialType,
-            (settings, val) => settings.MaterialType = val);
+            (settings) => settings.Supplier,
+            (settings, val) => settings.Supplier = val);
 
         public UserSettingString<TSettings> MaterialColor => new UserSettingString<TSettings>(
             "MaterialUserSettingsFFF.MaterialColor",
             () => UserSettingTranslations.MaterialColor_Name,
             () => UserSettingTranslations.MaterialColor_Description,
             GroupIdentifiers,
-            (settings) => settings.MaterialColor,
-            (settings, val) => settings.MaterialColor = val);
+            (settings) => settings.Color,
+            (settings, val) => settings.Color = val);
 
         #endregion
 
@@ -60,8 +61,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             () => UserSettingTranslations.FilamentDiamMM_Name,
             () => UserSettingTranslations.FilamentDiamMM_Description,
             GroupBasic,
-            (settings) => settings.Machine.FilamentDiamMM,
-            (settings, val) => settings.Machine.FilamentDiamMM = val,
+            (settings) => settings.FilamentDiamMM,
+            (settings, val) => settings.FilamentDiamMM = val,
             UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
 
         #endregion Basic
@@ -90,40 +91,6 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
 
         #endregion Temperature
-
-        #region Retraction
-
-        public static readonly UserSettingGroup GroupRetraction =
-            new UserSettingGroup(() => UserSettingTranslations.GroupRetraction);
-
-        public UserSettingDouble<TSettings> MinRetractTravelLength => new UserSettingDouble<TSettings>(
-            "MaterialUserSettingsFFF.MinRetractTravelLength",
-            () => UserSettingTranslations.MinRetractTravelLength_Name,
-            () => UserSettingTranslations.MinRetractTravelLength_Description,
-            GroupRetraction,
-            (settings) => settings.MinRetractTravelLength,
-            (settings, val) => settings.MinRetractTravelLength = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
-
-        public UserSettingDouble<TSettings> RetractDistanceMM => new UserSettingDouble<TSettings>(
-            "MaterialUserSettingsFFF.RetractDistanceMM",
-            () => UserSettingTranslations.RetractDistanceMM_Name,
-            () => UserSettingTranslations.RetractDistanceMM_Description,
-            GroupRetraction,
-            (settings) => settings.RetractDistanceMM,
-            (settings, val) => settings.RetractDistanceMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
-
-        public UserSettingDouble<TSettings> RetractSpeed => new UserSettingDouble<TSettings>(
-            "MaterialUserSettingsFFF.RetractSpeed",
-            () => UserSettingTranslations.RetractSpeed_Name,
-            () => UserSettingTranslations.RetractSpeed_Description,
-            GroupRetraction,
-            (settings) => settings.RetractSpeed,
-            (settings, val) => settings.RetractSpeed = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
-
-        # endregion
 
         /// <summary>
         /// Sets the culture for name & description strings.

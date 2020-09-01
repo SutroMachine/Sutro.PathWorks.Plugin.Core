@@ -1,6 +1,8 @@
 ﻿using g3;
 using gs;
+using Sutro.Core.FunctionalTest;
 using Sutro.Core.Models.GCode;
+using Sutro.Core.Settings;
 using Sutro.PathWorks.Plugins.API;
 using System;
 using System.Collections.Generic;
@@ -11,7 +13,7 @@ namespace Sutro.PathWorks.Plugins.Core.Engines
 {
     public class WrappedGenerator<TGenerator, TSettings> : IGenerator<TSettings>
         where TGenerator : IPrintGenerator<TSettings>, new()
-        where TSettings : SettingsPrototype, IPlanarAdditiveSettings, new()
+        where TSettings : PrintProfileBase, new()
     {
         private readonly PrintGeneratorManager<TGenerator, TSettings> printGeneratorManager;
 

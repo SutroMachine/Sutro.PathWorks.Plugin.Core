@@ -1,9 +1,8 @@
 using g3;
-using gs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sutro.Core.Models.GCode;
-using Sutro.PathWorks.Plugins.Core.Settings;
-using Sutro.PathWorks.Plugins.Core.Visualizers;
+using Sutro.Core.Settings;
+using Sutro.Core.Settings.Part;
 using Sutro.PathWorks.Plugins.FFF;
 using System;
 using System.Collections.Generic;
@@ -55,9 +54,9 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
             var boxGenerator = new TrivialBox3Generator();
             boxGenerator.Box = new Box3d(new Vector3d(0, 0, 5), new Vector3d(5, 5, 5));
             var mesh = boxGenerator.Generate().MakeDMesh();
-            var parts = new List<Tuple<DMesh3, SingleMaterialFFFSettings>>();
-            parts.Add(new Tuple<DMesh3, SingleMaterialFFFSettings>(mesh, null));
-            var settings = engine.SettingsManager.FactorySettings[0];
+            var parts = new List<Tuple<DMesh3, PrintProfileFFF>>();
+            parts.Add(new Tuple<DMesh3, PrintProfileFFF>(mesh, null));
+            var settings = (PrintProfileFFF)engine.SettingsManager.CreateSettingsInstance();
             var gcode = engine.Generator.GenerateGCode(parts, settings, out var generationReport);
             return gcode;
         }
@@ -65,21 +64,21 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
         [TestMethod]
         public void UserSettings_MachineFFF()
         {
-            var settings = engine.SettingsManager.MachineUserSettings;
+            var settings = engine.SettingsManager.MachineProfileManager.FactoryProfiles[0];
             Assert.IsNotNull(settings);
         }
 
         [TestMethod]
         public void UserSettings_MaterialFFF()
         {
-            var settings = engine.SettingsManager.MaterialUserSettings;
+            var settings = engine.SettingsManager.MaterialProfileManager.FactoryProfiles[0];
             Assert.IsNotNull(settings);
         }
 
         [TestMethod]
         public void UserSettings_PrintFFF()
         {
-            var settings = engine.SettingsManager.PrintUserSettings;
+            var settings = engine.SettingsManager.PartProfileManager.FactoryProfiles[0];
             Assert.IsNotNull(settings);
         }
 
@@ -100,15 +99,15 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
         public void SettingsJSONSerializeDeserialize()
         {
             // Arrange
-            var settings = engine.SettingsManager.FactorySettings[0];
+            var settings = (PartProfileFFF)engine.SettingsManager.PartProfileManager.FactoryProfiles[0];
             settings.RapidExtrudeSpeed = 555;
 
             // Act
-            var json = engine.SettingsManager.SerializeJSON(settings);
-            var settingsDeserialized = engine.SettingsManager.DeserializeJSON(json);
+            var json = engine.SettingsManager.PartProfileManager.SerializeJSON(settings);
+            var settingsDeserialized = (PartProfileFFF)engine.SettingsManager.PartProfileManager.DeserializeJSON(json);
 
             // Assert
-            Assert.AreEqual(555, settingsDeserialized.RapidExtrudeSpeed);
+            Assert.AreEqual(555, settingsDeserialized.RapidExtrudeSpeed, 1e-6);
         }
 
         [TestMethod]
