@@ -13,7 +13,7 @@ namespace Sutro.PathWorks.Plugins.Core.Engines
 {
     public class WrappedGenerator<TGenerator, TSettings> : IGenerator<TSettings>
         where TGenerator : IPrintGenerator<TSettings>, new()
-        where TSettings : PrintProfileBase, new()
+        where TSettings : class, IPrintProfileFFF, new()
     {
         private readonly PrintGeneratorManager<TGenerator, TSettings> printGeneratorManager;
 

@@ -29,17 +29,13 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 
         public TProfile DeserializeJSON(string json)
         {
-            JObject o = JsonConvert.DeserializeObject<JObject>(json, SerializerSettings());
-            var typeprop = o.Property("ClassTypeName");
-            var typestring = typeprop.Value.Value<string>();
-            var settings = CreateProfileFromTypeName(typestring);
-            JsonConvert.PopulateObject(json, settings);
-            return settings;
+            var profile = JsonConvert.DeserializeObject<TProfile>(json, SerializerSettings());
+            return profile;
         }
 
         public string SerializeJSON(TProfile settings)
         {
-            return JsonConvert.SerializeObject(settings, SerializerSettings());
+            return JsonConvert.SerializeObject(settings, settings.GetType(), SerializerSettings());
         }
 
         protected virtual JsonSerializerSettings SerializerSettings()
@@ -47,6 +43,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             return new JsonSerializerSettings()
             {
                 MissingMemberHandling = MissingMemberHandling.Error,
+                TypeNameHandling = TypeNameHandling.Auto
             };
         }
 
