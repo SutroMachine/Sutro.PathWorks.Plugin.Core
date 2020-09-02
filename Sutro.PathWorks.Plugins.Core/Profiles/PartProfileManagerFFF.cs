@@ -1,5 +1,6 @@
 ﻿using Sutro.Core.Settings.Part;
 using Sutro.PathWorks.Plugins.API.Settings;
+using Sutro.PathWorks.Plugins.Core.UserSettings;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,7 +11,6 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public override List<PartProfileFFF> FactoryProfiles =>
             FactoryPrintProfiles.EnumerateFactoryProfiles().Select(p => p.Part).ToList();
 
-        public override IUserSettingCollection<PartProfileFFF> UserSettings =>
-            new PartUserSettingsFFF<PartProfileFFF>();
+        public override UserSettingCollectionBase<PartProfileFFF> UserSettings => new PartUserSettingsFFF<PartProfileFFF>();
     }
 }

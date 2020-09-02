@@ -62,6 +62,20 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
         }
 
         [TestMethod]
+        public void ProfileManager_Machine_FactoryProfiles()
+        {
+            var settings = engine.SettingsManager.MachineProfileManager.FactoryProfiles[0];
+            Assert.IsNotNull(settings);
+        }
+
+        [TestMethod]
+        public void ProfileManager_Machine_UserSettings()
+        {
+            var userSettings = engine.SettingsManager.MachineProfileManager.UserSettings;
+            Assert.IsNotNull(userSettings);
+        }
+
+        [TestMethod]
         public void UserSettings_MachineFFF()
         {
             var settings = engine.SettingsManager.MachineProfileManager.FactoryProfiles[0];

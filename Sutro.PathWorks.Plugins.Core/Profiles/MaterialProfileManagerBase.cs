@@ -6,13 +6,12 @@ using System.Linq;
 namespace Sutro.PathWorks.Plugins.Core.Settings
 {
     public abstract class MaterialProfileManagerBase<TProfile> :
-        ProfileManager<TProfile>, IProfileManager<IMaterialProfile>
+        ProfileManager<TProfile>, IMaterialProfileManager
         where TProfile : IMaterialProfile
     {
-        List<IMaterialProfile> IProfileManager<IMaterialProfile>.FactoryProfiles =>
-            FactoryProfiles.Select(p => (IMaterialProfile)p).ToList();
+        List<IMaterialProfile> IProfileManager<IMaterialProfile>.FactoryProfiles => FactoryProfiles.Select(p => (IMaterialProfile)p).ToList();
 
-        IUserSettingCollection<IMaterialProfile> IProfileManager<IMaterialProfile>.UserSettings => throw new System.NotImplementedException();
+        IUserSettingCollection IProfileManager<IMaterialProfile>.UserSettings => UserSettings;
 
         public void ApplyJSON(IMaterialProfile settings, string json)
         {

@@ -6,13 +6,13 @@ using System.Linq;
 namespace Sutro.PathWorks.Plugins.Core.Settings
 {
     public abstract class MachineProfileManagerBase<TProfile> :
-        ProfileManager<TProfile>, IProfileManager<IMachineProfile>
+        ProfileManager<TProfile>, IMachineProfileManager
         where TProfile : IMachineProfile
     {
         List<IMachineProfile> IProfileManager<IMachineProfile>.FactoryProfiles => 
             FactoryProfiles.Select(p => (IMachineProfile)p).ToList();
 
-        IUserSettingCollection<IMachineProfile> IProfileManager<IMachineProfile>.UserSettings => throw new System.NotImplementedException();
+        IUserSettingCollection IProfileManager<IMachineProfile>.UserSettings => UserSettings;
 
         public void ApplyJSON(IMachineProfile settings, string json)
         {

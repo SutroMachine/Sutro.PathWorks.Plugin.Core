@@ -1,4 +1,5 @@
 ﻿using gs;
+using Sutro.Core.Models.Profiles;
 using Sutro.Core.Settings.Machine;
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Sutro.Core.Models.Profiles;
 using Sutro.PathWorks.Plugins.API.Settings;
+using Sutro.PathWorks.Plugins.Core.UserSettings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
     {
         public abstract List<TProfile> FactoryProfiles { get; }
 
-        public abstract IUserSettingCollection<TProfile> UserSettings { get; }
+        public abstract UserSettingCollectionBase<TProfile> UserSettings { get; }
+
+        IUserSettingCollection IProfileManager<TProfile>.UserSettings => UserSettings;
 
         public void ApplyJSON(TProfile settings, string json)
         {
