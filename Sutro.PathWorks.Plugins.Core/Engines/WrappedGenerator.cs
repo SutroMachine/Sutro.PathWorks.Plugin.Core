@@ -1,6 +1,5 @@
 ﻿using g3;
 using gs;
-using Sutro.Core.FunctionalTest;
 using Sutro.Core.Models.GCode;
 using Sutro.Core.Settings;
 using Sutro.PathWorks.Plugins.API;

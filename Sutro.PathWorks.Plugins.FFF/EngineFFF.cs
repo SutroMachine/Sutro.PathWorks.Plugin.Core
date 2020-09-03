@@ -12,22 +12,22 @@ namespace Sutro.PathWorks.Plugins.FFF
 {
     public class EngineFFF : EngineBase<PrintProfileFFF>
     {
-        public override ISettingsManager SettingsManager =>
+        public override ISettingsManager SettingsManager { get; } =
             new SettingsManagerFFF();
 
-        public override List<IVisualizer> Visualizers => new List<IVisualizer>() {
+        public override List<IVisualizer> Visualizers { get; } = new List<IVisualizer>() {
             TubeVisualizerFFF.Create(),
         };
 
-        public override IGenerator<PrintProfileFFF> Generator =>
+        public override IGenerator<PrintProfileFFF> Generator { get; } =
             new WrappedGenerator<SingleMaterialFFFPrintGenerator, PrintProfileFFF>(
                 new PrintGeneratorManager<SingleMaterialFFFPrintGenerator, PrintProfileFFF>(
                     new PrintProfileFFF(), default, default, new ConsoleLogger(), true));
 
-        public override string Name => "FFF";
+        public override string Name { get; } = "FFF";
 
-        public override string Description => "Basic thermoplastic extrusion deposition";
+        public override string Description { get; } = "Basic thermoplastic extrusion deposition";
 
-        public override List<string> FileExtensions => new List<string>() { "gcode", "gco" };
+        public override List<string> FileExtensions { get; } = new List<string>() { "gcode", "gco" };
     }
 }

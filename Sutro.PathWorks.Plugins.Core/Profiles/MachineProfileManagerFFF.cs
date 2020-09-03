@@ -17,9 +17,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             FactoryProfiles.AddRange(MachineProfilesFactoryFFF.Printrbot.EnumerateDefaults());
         }
 
-
         public override List<MachineProfileFFF> FactoryProfiles { get; }
 
-        public override UserSettingCollectionBase<MachineProfileFFF> UserSettings => new MachineUserSettingsFFF<MachineProfileFFF>();
+        public override UserSettingCollectionBase<MachineProfileFFF> UserSettings { get; } = new MachineUserSettingsFFF<MachineProfileFFF>();
     }
 }

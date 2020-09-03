@@ -1,5 +1,4 @@
-﻿using gs;
-using Sutro.Core.Settings.Material;
+﻿using Sutro.Core.Settings.Material;
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;
 using Sutro.PathWorks.Plugins.Core.UserSettings;
@@ -17,7 +16,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupIdentifiers =
             new UserSettingGroup(() => UserSettingTranslations.GroupMaterialIdentifiers);
 
-        public UserSettingString<TSettings> MaterialName => new UserSettingString<TSettings>(
+        public UserSettingString<TSettings> MaterialName { get; } = new UserSettingString<TSettings>(
             "MaterialUserSettingsFFF.Name",
             () => UserSettingTranslations.Name_Name,
             () => UserSettingTranslations.Name_Description,
@@ -25,7 +24,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.Name,
             (settings, val) => settings.Name = val);
 
-        public UserSettingString<TSettings> MaterialSource => new UserSettingString<TSettings>(
+        public UserSettingString<TSettings> MaterialSource { get; } = new UserSettingString<TSettings>(
             "MaterialUserSettingsFFF.MaterialSource",
             () => UserSettingTranslations.MaterialSource_Name,
             () => UserSettingTranslations.MaterialSource_Description,
@@ -33,7 +32,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.Supplier,
             (settings, val) => settings.Supplier = val);
 
-        public UserSettingString<TSettings> MaterialType => new UserSettingString<TSettings>(
+        public UserSettingString<TSettings> MaterialType { get; } = new UserSettingString<TSettings>(
             "MaterialUserSettingsFFF.MaterialType",
             () => UserSettingTranslations.MaterialType_Name,
             () => UserSettingTranslations.MaterialType_Description,
@@ -41,7 +40,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.Supplier,
             (settings, val) => settings.Supplier = val);
 
-        public UserSettingString<TSettings> MaterialColor => new UserSettingString<TSettings>(
+        public UserSettingString<TSettings> MaterialColor { get; } = new UserSettingString<TSettings>(
             "MaterialUserSettingsFFF.MaterialColor",
             () => UserSettingTranslations.MaterialColor_Name,
             () => UserSettingTranslations.MaterialColor_Description,
@@ -49,14 +48,14 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.Color,
             (settings, val) => settings.Color = val);
 
-        #endregion
+        #endregion Identifiers
 
         #region Basic
 
         public static readonly UserSettingGroup GroupBasic =
             new UserSettingGroup(() => UserSettingTranslations.GroupBasic);
 
-        public UserSettingDouble<TSettings> FilamentDiamMM => new UserSettingDouble<TSettings>(
+        public UserSettingDouble<TSettings> FilamentDiamMM { get; } = new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.FilamentDiamMM",
             () => UserSettingTranslations.FilamentDiamMM_Name,
             () => UserSettingTranslations.FilamentDiamMM_Description,
@@ -72,7 +71,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupTemperature =
             new UserSettingGroup(() => UserSettingTranslations.GroupTemperature);
 
-        public UserSettingInt<TSettings> ExtruderTempC => new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> ExtruderTempC { get; } = new UserSettingInt<TSettings>(
             "MaterialUserSettingsFFF.FilamentDiamMM",
             () => UserSettingTranslations.ExtruderTempC_Name,
             () => UserSettingTranslations.ExtruderTempC_Description,
@@ -81,7 +80,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.ExtruderTempC = val,
             UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
 
-        public UserSettingInt<TSettings> HeatedBedTempC => new UserSettingInt<TSettings>(
+        public UserSettingInt<TSettings> HeatedBedTempC { get; } = new UserSettingInt<TSettings>(
             "MaterialUserSettingsFFF.HeatedBedTempC",
             () => UserSettingTranslations.HeatedBedTempC_Name,
             () => UserSettingTranslations.HeatedBedTempC_Description,

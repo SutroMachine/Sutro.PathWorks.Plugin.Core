@@ -9,7 +9,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         ProfileManager<TProfile>, IMachineProfileManager
         where TProfile : IMachineProfile
     {
-        List<IMachineProfile> IProfileManager<IMachineProfile>.FactoryProfiles => 
+        List<IMachineProfile> IProfileManager<IMachineProfile>.FactoryProfiles =>
             FactoryProfiles.Select(p => (IMachineProfile)p).ToList();
 
         IUserSettingCollection IProfileManager<IMachineProfile>.UserSettings => UserSettings;
