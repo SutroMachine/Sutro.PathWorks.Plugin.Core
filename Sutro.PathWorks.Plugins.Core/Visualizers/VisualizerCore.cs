@@ -1,11 +1,9 @@
 ﻿using g3;
 using gs;
 using Sutro.Core.Decompilers;
-using Sutro.Core.Models.GCode;
 using Sutro.PathWorks.Plugins.API.Visualizers;
 using Sutro.PathWorks.Plugins.Core.CustomData;
 using Sutro.PathWorks.Plugins.Core.Meshers;
-using System.Collections.Generic;
 
 namespace Sutro.PathWorks.Plugins.Core.Visualizers
 {
@@ -32,9 +30,9 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
         public VisualizerCore(
             string name,
-            FillTypeMapper mapper, 
+            FillTypeMapper mapper,
             DecompilerBase<PrintVertex> decompiler,
-            IToolpathPreviewMesher<PrintVertex> mesher) 
+            IToolpathPreviewMesher<PrintVertex> mesher)
             : base(name, mapper, decompiler, mesher)
         {
             decompiler.OnToolpathComplete += ProcessToolpath;

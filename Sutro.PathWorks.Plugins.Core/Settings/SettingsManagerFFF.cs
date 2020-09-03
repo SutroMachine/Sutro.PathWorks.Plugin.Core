@@ -1,36 +1,20 @@
-﻿using gs;
-using gs.info;
+﻿using Sutro.Core.Models.Profiles;
+using Sutro.Core.Settings;
 using Sutro.PathWorks.Plugins.API.Settings;
-using System.Collections.Generic;
 
 namespace Sutro.PathWorks.Plugins.Core.Settings
 {
-    public class SettingsManagerFFF : SettingsManager<SingleMaterialFFFSettings>
+    public class SettingsManagerFFF : ISettingsManager
     {
-        public override List<SingleMaterialFFFSettings> FactorySettings
+        public IMachineProfileManager MachineProfileManager => new MachineProfileManagerFFF();
+
+        public IMaterialProfileManager MaterialProfileManager => new MaterialProfileManagerFFF();
+
+        public IPartProfileManager PartProfileManager => new PartProfileManagerFFF();
+
+        public IPrintProfile CreateSettingsInstance()
         {
-            get
-            {
-                var factory_profiles = new List<SingleMaterialFFFSettings>();
-
-                factory_profiles.Add(new RepRapSettings(RepRap.Models.Unknown));
-                factory_profiles.AddRange(FlashforgeSettings.EnumerateDefaults());
-                factory_profiles.AddRange(PrusaSettings.EnumerateDefaults());
-                factory_profiles.AddRange(MakerbotSettings.EnumerateDefaults());
-                factory_profiles.AddRange(MonopriceSettings.EnumerateDefaults());
-                factory_profiles.AddRange(PrintrbotSettings.EnumerateDefaults());
-
-                return factory_profiles;
-            }
+            return new PrintProfileFFF();
         }
-
-        public override IUserSettingCollection<SingleMaterialFFFSettings> MachineUserSettings =>
-            new MachineUserSettingsFFF<SingleMaterialFFFSettings>();
-
-        public override IUserSettingCollection<SingleMaterialFFFSettings> MaterialUserSettings =>
-            new MaterialUserSettingsFFF<SingleMaterialFFFSettings>();
-
-        public override IUserSettingCollection<SingleMaterialFFFSettings> PrintUserSettings =>
-            new PrintUserSettingsFFF<SingleMaterialFFFSettings>();
     }
 }

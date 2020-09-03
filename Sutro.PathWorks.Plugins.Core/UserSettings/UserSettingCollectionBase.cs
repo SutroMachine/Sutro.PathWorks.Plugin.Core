@@ -5,12 +5,12 @@ using System.Reflection;
 
 namespace Sutro.PathWorks.Plugins.Core.UserSettings
 {
-    public abstract class UserSettingCollectionBase<TSettings> : IUserSettingCollection<TSettings>
+    public abstract class UserSettingCollectionBase<TSettings> : IUserSettingCollection
     {
         /// <summary>
         /// Provides iteration through user settings typed with underlying raw settings type.
         /// </summary>
-        public IEnumerable<UserSettingBase<TSettings>> Settings()
+        public IEnumerable<UserSettingBase> Settings()
         {
             foreach (var setting in EnumerateProperties())
                 yield return setting;
@@ -42,20 +42,6 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
                     if (!setting.Hidden)
                         yield return setting;
                 }
-            }
-        }
-
-        /// <summary>
-        /// Provides iteration through user settings without needing underlying raw settings type.
-        /// </summary>
-        /// <remarks>
-        /// Common version of generic method IUserSettingCollection<TSettings>.Settings()
-        /// </remarks>
-        IEnumerable<UserSettingBase> IUserSettingCollection.Settings()
-        {
-            foreach (var setting in Settings())
-            {
-                yield return setting;
             }
         }
 

@@ -108,7 +108,6 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
             ExportMesh(mesh, "Square.stl");
         }
 
-
         [TestMethod]
         public void ShortBackJogLeft()
         {
@@ -136,7 +135,6 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
 
             ExportMesh(mesh, "ShortBackJogRight.stl");
         }
-
 
         [TestMethod]
         public void GearTooth()
