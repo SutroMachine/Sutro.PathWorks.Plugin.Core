@@ -1,8 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sutro.PathWorks.Plugins.Core.CustomData;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Sutro.PathWorks.Plugins.Core.Tests.CustomData
 {

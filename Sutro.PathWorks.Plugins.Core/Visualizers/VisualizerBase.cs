@@ -19,6 +19,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
         // Track current properties
         protected int layerIndex;
+
         protected int pointCount;
         protected int fillTypeInteger;
         protected Vector3f color;
@@ -27,7 +28,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
 
         public VisualizerBase(
             string name,
-            FillTypeMapper fillTypeMapper, 
+            FillTypeMapper fillTypeMapper,
             DecompilerBase<TPrintVertex> decompiler,
             IToolpathPreviewMesher<TPrintVertex> mesher)
         {
