@@ -9,8 +9,19 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 {
     public class MachineProfileManagerFFF : MachineProfileManagerBase<MachineProfileFFF>
     {
-        public override List<MachineProfileFFF> FactoryProfiles =>
-            FactoryPrintProfiles.EnumerateFactoryProfiles().Select(p => p.Machine).ToList();
+        public MachineProfileManagerFFF()
+        {
+            FactoryProfiles = new List<MachineProfileFFF>();
+            FactoryProfiles.AddRange(MachineProfilesFactoryFFF.RepRap.EnumerateDefaults());
+            FactoryProfiles.AddRange(MachineProfilesFactoryFFF.Makerbot.EnumerateDefaults());
+            FactoryProfiles.AddRange(MachineProfilesFactoryFFF.Prusa.EnumerateDefaults());
+            FactoryProfiles.AddRange(MachineProfilesFactoryFFF.Monoprice.EnumerateDefaults());
+            FactoryProfiles.AddRange(MachineProfilesFactoryFFF.Flashforge.EnumerateDefaults());
+            FactoryProfiles.AddRange(MachineProfilesFactoryFFF.Printrbot.EnumerateDefaults());
+        }
+
+
+        public override List<MachineProfileFFF> FactoryProfiles { get; }
 
         public override UserSettingCollectionBase<MachineProfileFFF> UserSettings => new MachineUserSettingsFFF<MachineProfileFFF>();
     }

@@ -8,8 +8,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 {
     public class PartProfileManagerFFF : PartProfileManagerBase<PartProfileFFF>
     {
-        public override List<PartProfileFFF> FactoryProfiles =>
-            FactoryPrintProfiles.EnumerateFactoryProfiles().Select(p => p.Part).ToList();
+        public override List<PartProfileFFF> FactoryProfiles => PartProfileFactoryFFF.EnumerateDefaults().ToList();
 
         public override UserSettingCollectionBase<PartProfileFFF> UserSettings => new PartUserSettingsFFF<PartProfileFFF>();
     }
