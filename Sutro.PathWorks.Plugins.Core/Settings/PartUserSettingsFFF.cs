@@ -17,10 +17,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupBasic =
             new UserSettingGroup(() => UserSettingTranslations.GroupBasic);
 
-        public UserSettingString<TSettings> Identifier => new UserSettingString<TSettings>(
-            "PrintUserSettingsFFF.Identifier",
-            () => UserSettingTranslations.Identifier_Name,
-            () => UserSettingTranslations.Identifier_Description,
+        public UserSettingString<TSettings> Name => new UserSettingString<TSettings>(
+            "PrintUserSettingsFFF.Name",
+            () => UserSettingTranslations.Name_Name,
+            () => UserSettingTranslations.Name_Description,
             GroupBasic,
             (settings) => settings.Name,
             (settings, val) => settings.Name = val);

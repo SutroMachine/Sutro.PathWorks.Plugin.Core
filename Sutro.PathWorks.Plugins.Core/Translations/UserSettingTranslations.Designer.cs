@@ -1107,6 +1107,24 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string Name_Description {
+            get {
+                return ResourceManager.GetString("Name.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Name_Name {
+            get {
+                return ResourceManager.GetString("Name.Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string NozzleDiamMM_Description {
             get {
                 return ResourceManager.GetString("NozzleDiamMM.Description", resourceCulture);

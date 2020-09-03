@@ -466,6 +466,12 @@
   <data name="ModelUUID.Name" xml:space="preserve">
     <value>Model UUID</value>
   </data>
+  <data name="Name.Description" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Name.Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
   <data name="NozzleDiamMM.Description" xml:space="preserve">
     <value />
   </data>

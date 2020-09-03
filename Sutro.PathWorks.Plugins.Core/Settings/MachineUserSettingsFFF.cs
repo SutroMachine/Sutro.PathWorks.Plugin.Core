@@ -18,6 +18,14 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupIdentifiers =
             new UserSettingGroup(() => UserSettingTranslations.GroupIdentifiers);
 
+        public UserSettingString<TSettings> Name => new UserSettingString<TSettings>(
+             "MachineUserSettingsFFF.Name",
+             () => UserSettingTranslations.Name_Name,
+             () => UserSettingTranslations.Name_Description,
+             GroupIdentifiers,
+             (settings) => settings.Name,
+             (settings, val) => settings.Name = val);
+
         public UserSettingString<TSettings> ManufacturerName => new UserSettingString<TSettings>(
             "MachineUserSettingsFFF.ManufacturerName",
             () => UserSettingTranslations.ManufacturerName_Name,

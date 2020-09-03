@@ -18,12 +18,12 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             new UserSettingGroup(() => UserSettingTranslations.GroupMaterialIdentifiers);
 
         public UserSettingString<TSettings> MaterialName => new UserSettingString<TSettings>(
-            "MaterialUserSettingsFFF.MaterialName",
-            () => UserSettingTranslations.MaterialName_Name,
-            () => UserSettingTranslations.MaterialName_Description,
+            "MaterialUserSettingsFFF.Name",
+            () => UserSettingTranslations.Name_Name,
+            () => UserSettingTranslations.Name_Description,
             GroupIdentifiers,
-            (settings) => settings.MaterialName,
-            (settings, val) => settings.MaterialName = val);
+            (settings) => settings.Name,
+            (settings, val) => settings.Name = val);
 
         public UserSettingString<TSettings> MaterialSource => new UserSettingString<TSettings>(
             "MaterialUserSettingsFFF.MaterialSource",
