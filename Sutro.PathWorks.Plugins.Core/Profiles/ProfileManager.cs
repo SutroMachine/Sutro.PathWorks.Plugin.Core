@@ -43,8 +43,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         {
             return new JsonSerializerSettings()
             {
-                MissingMemberHandling = MissingMemberHandling.Error,
-                TypeNameHandling = TypeNameHandling.Auto
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                TypeNameHandling = TypeNameHandling.Auto,
+                 
             };
         }
 
