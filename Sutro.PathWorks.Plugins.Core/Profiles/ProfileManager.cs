@@ -41,24 +41,15 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 
         protected virtual JsonSerializerSettings SerializerSettings()
         {
+            var contractResolver = new Sutro.Core.Persistence.IgnoreablePropertiesContractResolver();
+            contractResolver.Ignore(typeof(string), new string[] {"$schema" });
+
             return new JsonSerializerSettings()
             {
-                MissingMemberHandling = MissingMemberHandling.Ignore,
+                MissingMemberHandling = MissingMemberHandling.Error,
                 TypeNameHandling = TypeNameHandling.Auto,
-                 
+                ContractResolver = contractResolver,                 
             };
-        }
-
-        private TProfile CreateProfileFromTypeName(string typestring)
-        {
-            foreach (var profile in FactoryProfiles)
-            {
-                if (profile.GetType().Name == typestring.Split(".")[^1])
-                {
-                    return (TProfile)profile.Clone();
-                }
-            }
-            throw new InvalidCastException($"Couldn't find factory setting of type {typestring}.");
         }
     }
 }
