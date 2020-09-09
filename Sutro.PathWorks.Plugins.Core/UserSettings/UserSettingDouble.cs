@@ -40,8 +40,8 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
 
         private static Func<double, ValidationResult> CreateValidationFunction(double? minimumValue, double? maximumValue, ValidationResultLevel validationResultLevel)
         {
-            if (minimumValue != null && maximumValue != null)
-                return UserSettingNumericValidations<double>.ValidateMinMax(minimumValue.Value, maximumValue.Value, validationResultLevel);
+            if (minimumValue == null && maximumValue == null)
+                return null;
 
             if (minimumValue == null)
                 return UserSettingNumericValidations<double>.ValidateMax(maximumValue.Value, validationResultLevel);
@@ -49,7 +49,7 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
             if (maximumValue == null)
                 return UserSettingNumericValidations<double>.ValidateMin(minimumValue.Value, validationResultLevel);
 
-            return null;
+            return UserSettingNumericValidations<double>.ValidateMinMax(minimumValue.Value, maximumValue.Value, validationResultLevel);
         }
     }
 }
