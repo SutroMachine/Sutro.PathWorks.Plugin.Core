@@ -1627,6 +1627,60 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to deg.
+        /// </summary>
+        public static string Units_Degrees {
+            get {
+                return ResourceManager.GetString("Units.Degrees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to °C.
+        /// </summary>
+        public static string Units_DegreesCelsius {
+            get {
+                return ResourceManager.GetString("Units.DegreesCelsius", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mm.
+        /// </summary>
+        public static string Units_Millimeters {
+            get {
+                return ResourceManager.GetString("Units.Millimeters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mm/minute.
+        /// </summary>
+        public static string Units_MillimetersPerMinute {
+            get {
+                return ResourceManager.GetString("Units.MillimetersPerMinute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mm/s.
+        /// </summary>
+        public static string Units_MillimetersPerSecond {
+            get {
+                return ResourceManager.GetString("Units.MillimetersPerSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to s.
+        /// </summary>
+        public static string Units_Seconds {
+            get {
+                return ResourceManager.GetString("Units.Seconds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         public static string ZipperAlignedToPoint_Description {

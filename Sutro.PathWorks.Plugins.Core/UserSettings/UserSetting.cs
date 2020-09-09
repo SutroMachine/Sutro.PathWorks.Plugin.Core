@@ -18,7 +18,8 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
             UserSettingGroup group,
             Func<TSettings, TValue> loadF,
             Action<TSettings, TValue> applyF,
-            Func<TValue, ValidationResult> validateF = null) : base(id, nameF, descriptionF, group)
+            Func<TValue, ValidationResult> validateF = null,
+            Func<string> unitsF = null) : base(id, nameF, descriptionF, group, unitsF)
         {
             this.validateF = validateF;
             this.applyF = applyF;

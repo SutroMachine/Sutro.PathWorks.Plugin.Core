@@ -640,6 +640,24 @@
   <data name="SupportVolumeScale.Name" xml:space="preserve">
     <value>Volume Scale (%)</value>
   </data>
+  <data name="Units.Degrees" xml:space="preserve">
+    <value>deg</value>
+  </data>
+  <data name="Units.DegreesCelsius" xml:space="preserve">
+    <value>°C</value>
+  </data>
+  <data name="Units.Millimeters" xml:space="preserve">
+    <value>mm</value>
+  </data>
+  <data name="Units.MillimetersPerMinute" xml:space="preserve">
+    <value>mm/minute</value>
+  </data>
+  <data name="Units.MillimetersPerSecond" xml:space="preserve">
+    <value>mm/s</value>
+  </data>
+  <data name="Units.Seconds" xml:space="preserve">
+    <value>s</value>
+  </data>
   <data name="ZipperAlignedToPoint.Description" xml:space="preserve">
     <value />
   </data>

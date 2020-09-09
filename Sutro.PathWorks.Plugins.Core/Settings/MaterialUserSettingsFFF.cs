@@ -62,7 +62,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBasic,
             (settings) => settings.FilamentDiamMM,
             (settings, val) => settings.FilamentDiamMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_Millimeters);
 
         #endregion Basic
 
@@ -78,7 +79,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupTemperature,
             (settings) => settings.ExtruderTempC,
             (settings, val) => settings.ExtruderTempC = val,
-            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
+            minimumValue: -273,
+            unitsF: () => UserSettingTranslations.Units_DegreesCelsius);
 
         public UserSettingInt<TSettings> HeatedBedTempC { get; } = new UserSettingInt<TSettings>(
             "MaterialUserSettingsFFF.HeatedBedTempC",
@@ -87,7 +89,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupTemperature,
             (settings) => settings.HeatedBedTempC,
             (settings, val) => settings.HeatedBedTempC = val,
-            UserSettingNumericValidations<int>.ValidateMin(-273, ValidationResultLevel.Error));
+            minimumValue: -273,
+            unitsF: () => UserSettingTranslations.Units_DegreesCelsius);
 
         #endregion Temperature
 

@@ -5,49 +5,52 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
 {
     public class UserSettingInt<TSettings> : UserSetting<TSettings, int>
     {
+        private readonly string range;
+
+        public override string Range => range;
+
         public UserSettingInt(
-            string id,
+                    string id,
             Func<string> nameF,
             Func<string> descriptionF,
             UserSettingGroup group,
             Func<TSettings, int> loadF,
             Action<TSettings, int> applyF,
-            Func<int, ValidationResult> validateF = null) : base(id, nameF, descriptionF, group, loadF, applyF, validateF)
+            int? minimumValue = null,
+            int? maximumValue = null,
+            ValidationResultLevel validationResultLevel = ValidationResultLevel.Error,
+            Func<string> unitsF = null) : base(id, nameF, descriptionF, group, loadF, applyF, CreateValidationFunction(minimumValue, maximumValue, validationResultLevel),
+                unitsF)
         {
-        }
-    }
-
-    public static class UserSettingNumericValidations<T> where T : IComparable<T>
-    {
-        public static Func<T, ValidationResult> ValidateMin(T min, ValidationResultLevel level)
-        {
-            return (val) =>
-            {
-                if (val.CompareTo(min) < 0)
-                    return new ValidationResult(level, string.Format("Must be at least {0}", min));
-                return new ValidationResult();
-            };
+            range = CreateRangeString(minimumValue, maximumValue);
         }
 
-        public static Func<T, ValidationResult> ValidateMax(T max, ValidationResultLevel level)
+        private static string CreateRangeString(int? minimumValue, int? maximumValue)
         {
-            return (val) =>
-            {
-                if (val.CompareTo(max) > 0)
-                    return new ValidationResult(level, string.Format("Must be no more than {0}", max));
-                return new ValidationResult();
-            };
+            if (minimumValue != null && maximumValue != null)
+                return $"{minimumValue} - {maximumValue}";
+
+            if (minimumValue == null)
+                return $"<{maximumValue}";
+
+            if (maximumValue == null)
+                return $">{minimumValue}";
+
+            return null;
         }
 
-        public static Func<T, ValidationResult> ValidateMinMax(T min, T max, ValidationResultLevel level)
+        private static Func<int, ValidationResult> CreateValidationFunction(int? minimumValue, int? maximumValue, ValidationResultLevel validationResultLevel)
         {
-            return (val) =>
-            {
-                var result = ValidateMin(min, level).Invoke(val);
-                if (result.Severity == ValidationResultLevel.Message)
-                    result = ValidateMax(max, level).Invoke(val);
-                return result;
-            };
+            if (minimumValue != null && maximumValue != null)
+                return UserSettingNumericValidations<int>.ValidateMinMax(minimumValue.Value, maximumValue.Value, validationResultLevel);
+
+            if (minimumValue == null)
+                return UserSettingNumericValidations<int>.ValidateMax(maximumValue.Value, validationResultLevel);
+
+            if (maximumValue == null)
+                return UserSettingNumericValidations<int>.ValidateMin(minimumValue.Value, validationResultLevel);
+
+            return null;
         }
     }
 }
