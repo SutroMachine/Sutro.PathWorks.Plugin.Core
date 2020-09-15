@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Sutro.PathWorks.Plugins.Core.Engines
 {
@@ -27,16 +28,16 @@ namespace Sutro.PathWorks.Plugins.Core.Engines
 
         public Version Version => printGeneratorManager.PrintGeneratorAssemblyVersion;
 
-        public GCodeFile GenerateGCode(IList<Tuple<DMesh3, TSettings>> parts, TSettings globalSettings, out IEnumerable<string> generationReport, Action<string> gcodeLineReadyF = null, Action<string> progressMessageF = null)
+        public GCodeFile GenerateGCode(IList<Tuple<DMesh3, TSettings>> parts, TSettings globalSettings, out IEnumerable<string> generationReport, Action<string> gcodeLineReadyF = null, Action<string> progressMessageF = null, CancellationToken? cancellationToken = null)
         {
             var meshes = parts.Select(p => p.Item1);
-            return printGeneratorManager.GCodeFromMeshes(meshes, out generationReport, globalSettings);
+            return printGeneratorManager.GCodeFromMeshes(meshes, out generationReport, globalSettings, cancellationToken);
         }
 
-        public GCodeFile GenerateGCode(IList<Tuple<DMesh3, object>> parts, object globalSettings, out IEnumerable<string> generationReport, Action<string> gcodeLineReadyF = null, Action<string> progressMessageF = null)
+        public GCodeFile GenerateGCode(IList<Tuple<DMesh3, object>> parts, object globalSettings, out IEnumerable<string> generationReport, Action<string> gcodeLineReadyF = null, Action<string> progressMessageF = null, CancellationToken? cancellationToken = null)
         {
             var meshes = parts.Select(p => p.Item1);
-            return printGeneratorManager.GCodeFromMeshes(meshes, out generationReport, (TSettings)globalSettings);
+            return printGeneratorManager.GCodeFromMeshes(meshes, out generationReport, (TSettings)globalSettings, cancellationToken);
         }
 
         public GCodeFile LoadGCode(TextReader input)
