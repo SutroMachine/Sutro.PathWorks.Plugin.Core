@@ -70,7 +70,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Width (mm).
+        ///   Looks up a localized string similar to Width.
         /// </summary>
         public static string BedSizeXMM_Name {
             get {
@@ -88,7 +88,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Depth (mm).
+        ///   Looks up a localized string similar to Depth.
         /// </summary>
         public static string BedSizeYMM_Name {
             get {
@@ -106,7 +106,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bridge Extrusion Speed (%).
+        ///   Looks up a localized string similar to Bridge Extrusion Speed.
         /// </summary>
         public static string BridgeExtrudeSpeedX_Name {
             get {
@@ -124,7 +124,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bridge Fill Spacing (%).
+        ///   Looks up a localized string similar to Bridge Fill Spacing.
         /// </summary>
         public static string BridgeFillNozzleDiamStepX_Name {
             get {
@@ -142,7 +142,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bridge Volume (%).
+        ///   Looks up a localized string similar to Bridge Volume.
         /// </summary>
         public static string BridgeVolumeScale_Name {
             get {
@@ -160,7 +160,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Speed (mm/s).
+        ///   Looks up a localized string similar to Speed.
         /// </summary>
         public static string CarefulExtrudeSpeed_Name {
             get {
@@ -304,7 +304,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Extrusion Temperature (°C).
+        ///   Looks up a localized string similar to Extrusion Temperature.
         /// </summary>
         public static string ExtruderTempC_Name {
             get {
@@ -322,7 +322,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Filament Diameter (mm).
+        ///   Looks up a localized string similar to Filament Diameter.
         /// </summary>
         public static string FilamentDiamMM_Name {
             get {
@@ -583,7 +583,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Bed Temperature (°C).
+        ///   Looks up a localized string similar to Bed Temperature.
         /// </summary>
         public static string HeatedBedTempC_Name {
             get {
@@ -637,7 +637,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Layer Height (mm).
+        ///   Looks up a localized string similar to Layer Height.
         /// </summary>
         public static string LayerHeightMM_Name {
             get {
@@ -772,7 +772,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximum Bed Temperature (°C).
+        ///   Looks up a localized string similar to Maximum Bed Temperature.
         /// </summary>
         public static string MaxBedTempC_Name {
             get {
@@ -790,7 +790,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximum Bridge Distance (mm).
+        ///   Looks up a localized string similar to Maximum Bridge Distance.
         /// </summary>
         public static string MaxBridgeWidthMM_Name {
             get {
@@ -799,7 +799,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The maxium temperature the extruder can sustain during printing..
         /// </summary>
         public static string MaxExtruderTempC_Description {
             get {
@@ -808,7 +808,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximum Extruder Temperature (°C).
+        ///   Looks up a localized string similar to Maximum Extruder Temperature.
         /// </summary>
         public static string MaxExtruderTempC_Name {
             get {
@@ -817,7 +817,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The maximum extrusion rate the print head can sustain..
         /// </summary>
         public static string MaxExtrudeSpeedMMM_Description {
             get {
@@ -826,7 +826,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximum Extrusion Speed (mm/s).
+        ///   Looks up a localized string similar to Maximum Extrusion Speed.
         /// </summary>
         public static string MaxExtrudeSpeedMMM_Name {
             get {
@@ -835,7 +835,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Vertical size of the print volume..
         /// </summary>
         public static string MaxHeightMM_Description {
             get {
@@ -844,7 +844,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Height (mm).
+        ///   Looks up a localized string similar to Height.
         /// </summary>
         public static string MaxHeightMM_Name {
             get {
@@ -853,7 +853,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The thickest layer the machine can successuflly deposit..
         /// </summary>
         public static string MaxLayerHeightMM_Description {
             get {
@@ -862,7 +862,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximum Layer Height (mm).
+        ///   Looks up a localized string similar to Maximum Layer Height.
         /// </summary>
         public static string MaxLayerHeightMM_Name {
             get {
@@ -871,7 +871,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The maximum speed the print head can retract filament..
         /// </summary>
         public static string MaxRetractSpeedMMM_Description {
             get {
@@ -880,7 +880,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximum Retraction Speed (mm/s).
+        ///   Looks up a localized string similar to Maximum Retraction Speed.
         /// </summary>
         public static string MaxRetractSpeedMMM_Name {
             get {
@@ -889,7 +889,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The maximum horizontal move speed..
         /// </summary>
         public static string MaxTravelSpeedMMM_Description {
             get {
@@ -898,7 +898,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximum X/Y Travel Speed (mm/s).
+        ///   Looks up a localized string similar to Maximum X/Y Travel Speed.
         /// </summary>
         public static string MaxTravelSpeedMMM_Name {
             get {
@@ -907,7 +907,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to The maxium vertical move speed..
         /// </summary>
         public static string MaxZTravelSpeedMMM_Description {
             get {
@@ -916,7 +916,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Maximum Z Travel Speed (mm/s).
+        ///   Looks up a localized string similar to Maximum Z Travel Speed.
         /// </summary>
         public static string MaxZTravelSpeedMMM_Name {
             get {
@@ -934,7 +934,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minimum Bed Temperature (°C).
+        ///   Looks up a localized string similar to Minimum Bed Temperature.
         /// </summary>
         public static string MinBedTempC_Name {
             get {
@@ -952,7 +952,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minimum Extruder Temperature (°C).
+        ///   Looks up a localized string similar to Minimum Extruder Temperature.
         /// </summary>
         public static string MinExtruderTempC_Name {
             get {
@@ -970,7 +970,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minimum Extrusion Speed (mm/s).
+        ///   Looks up a localized string similar to Minimum Extrusion Speed.
         /// </summary>
         public static string MinExtrudeSpeed_Name {
             get {
@@ -988,7 +988,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minimum Layer Height (mm).
+        ///   Looks up a localized string similar to Minimum Layer Height.
         /// </summary>
         public static string MinLayerHeightMM_Name {
             get {
@@ -1006,7 +1006,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minimum Layer Time (s).
+        ///   Looks up a localized string similar to Minimum Layer Time.
         /// </summary>
         public static string MinLayerTime_Name {
             get {
@@ -1024,7 +1024,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Minimum Point Spacing (mm).
+        ///   Looks up a localized string similar to Minimum Point Spacing.
         /// </summary>
         public static string MinPointSpacingMM_Name {
             get {
@@ -1042,7 +1042,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Travel Retraction Threshold (mm).
+        ///   Looks up a localized string similar to Travel Retraction Threshold.
         /// </summary>
         public static string MinRetractTravelLength_Name {
             get {
@@ -1132,7 +1132,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Nozzle Diameter (mm).
+        ///   Looks up a localized string similar to Nozzle Diameter.
         /// </summary>
         public static string NozzleDiamMM_Name {
             get {
@@ -1150,7 +1150,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Exterior Perimeter Speed (%).
+        ///   Looks up a localized string similar to Exterior Perimeter Speed.
         /// </summary>
         public static string OuterPerimeterSpeedX_Name {
             get {
@@ -1186,7 +1186,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Default (mm/s).
+        ///   Looks up a localized string similar to Default.
         /// </summary>
         public static string RapidExtrudeSpeed_Name {
             get {
@@ -1204,7 +1204,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Travel (mm/s).
+        ///   Looks up a localized string similar to Travel.
         /// </summary>
         public static string RapidTravelSpeed_Name {
             get {
@@ -1222,7 +1222,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Retraction Amount (mm).
+        ///   Looks up a localized string similar to Retraction Amount.
         /// </summary>
         public static string RetractDistanceMM_Name {
             get {
@@ -1240,7 +1240,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Retraction Speed (mm/s).
+        ///   Looks up a localized string similar to Retraction Speed.
         /// </summary>
         public static string RetractSpeed_Name {
             get {
@@ -1330,7 +1330,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Perimeter Spacing (%).
+        ///   Looks up a localized string similar to Perimeter Spacing.
         /// </summary>
         public static string ShellsFillNozzleDiamStepX_Name {
             get {
@@ -1348,7 +1348,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Solid Fill to Perimeter Overlap (%).
+        ///   Looks up a localized string similar to Solid Fill to Perimeter Overlap.
         /// </summary>
         public static string SolidFillBorderOverlapX_Name {
             get {
@@ -1366,7 +1366,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Solid Fill Spacing (%).
+        ///   Looks up a localized string similar to Solid Fill Spacing.
         /// </summary>
         public static string SolidFillNozzleDiamStepX_Name {
             get {
@@ -1384,7 +1384,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sparse Fill to Perimeter Overlap (%).
+        ///   Looks up a localized string similar to Sparse Fill to Perimeter Overlap.
         /// </summary>
         public static string SparseFillBorderOverlapX_Name {
             get {
@@ -1402,7 +1402,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sparse Fill Spacing (%).
+        ///   Looks up a localized string similar to Sparse Fill Spacing.
         /// </summary>
         public static string SparseLinearInfillStepX_Name {
             get {
@@ -1420,7 +1420,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Layer Height (mm).
+        ///   Looks up a localized string similar to Layer Height.
         /// </summary>
         public static string StartLayerHeightMM_Name {
             get {
@@ -1456,7 +1456,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Area Offset (%).
+        ///   Looks up a localized string similar to Area Offset.
         /// </summary>
         public static string SupportAreaOffsetX_Name {
             get {
@@ -1492,7 +1492,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Overhang Threshold (deg).
+        ///   Looks up a localized string similar to Overhang Threshold.
         /// </summary>
         public static string SupportOverhangAngleDeg_Name {
             get {
@@ -1510,7 +1510,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Z Tip Diameter (mm).
+        ///   Looks up a localized string similar to Z Tip Diameter.
         /// </summary>
         public static string SupportPointDiam_Name {
             get {
@@ -1546,7 +1546,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Region Merge Tolerance (%).
+        ///   Looks up a localized string similar to Region Merge Tolerance.
         /// </summary>
         public static string SupportRegionJoinTolX_Name {
             get {
@@ -1564,7 +1564,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Release Z-Gap (mm).
+        ///   Looks up a localized string similar to Release Z-Gap.
         /// </summary>
         public static string SupportReleaseGap_Name {
             get {
@@ -1600,7 +1600,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fill Spacing (%).
+        ///   Looks up a localized string similar to Fill Spacing.
         /// </summary>
         public static string SupportSpacingStepX_Name {
             get {
@@ -1618,7 +1618,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Volume Scale (%).
+        ///   Looks up a localized string similar to Volume Scale.
         /// </summary>
         public static string SupportVolumeScale_Name {
             get {
@@ -1627,7 +1627,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to deg.
+        ///   Looks up a localized string similar to degrees.
         /// </summary>
         public static string Units_Degrees {
             get {
@@ -1636,7 +1636,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to °C.
+        ///   Looks up a localized string similar to degrees °C.
         /// </summary>
         public static string Units_DegreesCelsius {
             get {
@@ -1645,7 +1645,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to mm.
+        ///   Looks up a localized string similar to millimeters.
         /// </summary>
         public static string Units_Millimeters {
             get {
@@ -1654,7 +1654,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to mm/minute.
+        ///   Looks up a localized string similar to millimeters/minute.
         /// </summary>
         public static string Units_MillimetersPerMinute {
             get {
@@ -1663,7 +1663,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to mm/s.
+        ///   Looks up a localized string similar to millimeters/second.
         /// </summary>
         public static string Units_MillimetersPerSecond {
             get {
@@ -1672,7 +1672,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to s.
+        ///   Looks up a localized string similar to seconds.
         /// </summary>
         public static string Units_Seconds {
             get {
@@ -1744,7 +1744,7 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Z Travel Speed (mm/s).
+        ///   Looks up a localized string similar to Z Travel Speed.
         /// </summary>
         public static string ZTravelSpeed_Name {
             get {
