@@ -39,7 +39,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBasic,
             (settings) => settings.FloorLayers,
             (settings, val) => settings.FloorLayers = val,
-            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_Millimeters);
 
         public UserSettingBool<TSettings> GenerateSupport { get; } = new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.GenerateSupport",
@@ -56,7 +57,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBasic,
             (settings) => settings.LayerHeightMM,
             (settings, val) => settings.LayerHeightMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_Millimeters);
 
         public UserSettingDouble<TSettings> MinExtrudeSpeed { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.MinExtrudeSpeed",
@@ -65,7 +67,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBasic,
             (settings) => settings.MinExtrudeSpeed,
             (settings, val) => settings.MinExtrudeSpeed = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
 
         public UserSettingInt<TSettings> RoofLayers { get; } = new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.RoofLayers",
@@ -74,7 +77,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBasic,
             (settings) => settings.RoofLayers,
             (settings, val) => settings.RoofLayers = val,
-            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingInt<TSettings> Shells { get; } = new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.Shells",
@@ -83,7 +86,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBasic,
             (settings) => settings.Shells,
             (settings, val) => settings.Shells = val,
-            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         #endregion Basic
 
@@ -99,7 +102,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBridging,
             (settings) => settings.BridgeExtrudeSpeedX,
             (settings, val) => settings.BridgeExtrudeSpeedX = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingDouble<TSettings> BridgeFillNozzleDiamStepX { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.BridgeFillNozzleDiamStepX",
@@ -108,7 +111,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBridging,
             (settings) => settings.BridgeFillNozzleDiamStepX,
             (settings, val) => settings.BridgeFillNozzleDiamStepX = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingDouble<TSettings> BridgeVolumeScale { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.BridgeVolumeScale",
@@ -117,7 +120,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBridging,
             (settings) => settings.BridgeVolumeScale,
             (settings, val) => settings.BridgeVolumeScale = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingDouble<TSettings> MaxBridgeWidthMM { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.MaxBridgeWidthMM",
@@ -126,7 +129,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBridging,
             (settings) => settings.MaxBridgeWidthMM,
             (settings, val) => settings.MaxBridgeWidthMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         #endregion Bridging
 
@@ -142,7 +145,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupFirstLayer,
             (settings) => settings.CarefulExtrudeSpeed,
             (settings, val) => settings.CarefulExtrudeSpeed = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
 
         public UserSettingDouble<TSettings> StartLayerHeightMM { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.StartLayerHeightMM",
@@ -151,7 +155,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupFirstLayer,
             (settings) => settings.StartLayerHeightMM,
             (settings, val) => settings.StartLayerHeightMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_Millimeters);
 
         public UserSettingInt<TSettings> StartLayers { get; } = new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.StartLayers",
@@ -160,7 +165,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupFirstLayer,
             (settings) => settings.StartLayers,
             (settings, val) => settings.StartLayers = val,
-            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         #endregion FirstLayer
 
@@ -176,7 +181,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupMiscellaneous,
             (settings) => settings.MinLayerTime,
             (settings, val) => settings.MinLayerTime = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_Seconds);
 
         #endregion Miscellaneous
 
@@ -200,7 +206,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupPerimeters,
             (settings) => settings.InteriorSolidRegionShells,
             (settings, val) => settings.InteriorSolidRegionShells = val,
-            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingBool<TSettings> OuterShellLast { get; } = new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.OuterShellLast",
@@ -217,7 +223,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupPerimeters,
             (settings) => settings.SelfOverlapToleranceX,
             (settings, val) => settings.SelfOverlapToleranceX = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingDouble<TSettings> ShellsFillNozzleDiamStepX { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.ShellsFillNozzleDiamStepX",
@@ -226,7 +232,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupPerimeters,
             (settings) => settings.ShellsFillNozzleDiamStepX,
             (settings, val) => settings.ShellsFillNozzleDiamStepX = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingBool<TSettings> ShellRandomizeStart { get; } = new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.ShellRandomizeStart",
@@ -274,7 +280,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSolidFill,
             (settings) => settings.SolidFillBorderOverlapX,
             (settings, val) => settings.SolidFillBorderOverlapX = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingDouble<TSettings> SolidFillNozzleDiamStepX { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SolidFillNozzleDiamStepX",
@@ -283,7 +289,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSolidFill,
             (settings) => settings.SolidFillNozzleDiamStepX,
             (settings, val) => settings.SolidFillNozzleDiamStepX = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         #endregion SolidFill
 
@@ -299,7 +305,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
            GroupSparseFill,
            (settings) => settings.SparseFillBorderOverlapX,
            (settings, val) => settings.SparseFillBorderOverlapX = val,
-           UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingDouble<TSettings> SparseLinearInfillStepX { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SparseLinearInfillStepX",
@@ -308,7 +314,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
            GroupSparseFill,
            (settings) => settings.SparseLinearInfillStepX,
            (settings, val) => settings.SparseLinearInfillStepX = val,
-           UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         #endregion SparseFill
 
@@ -324,7 +330,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.OuterPerimeterSpeedX,
             (settings, val) => settings.OuterPerimeterSpeedX = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingDouble<TSettings> RapidExtrudeSpeed { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.RapidExtrudeSpeed",
@@ -333,7 +339,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.RapidExtrudeSpeed,
             (settings, val) => settings.RapidExtrudeSpeed = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingDouble<TSettings> RapidTravelSpeed { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.RapidTravelSpeed",
@@ -342,7 +348,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.RapidTravelSpeed,
             (settings, val) => settings.RapidTravelSpeed = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
 
         public UserSettingDouble<TSettings> ZTravelSpeed { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.ZTravelSpeed",
@@ -351,7 +358,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.ZTravelSpeed,
             (settings, val) => settings.ZTravelSpeed = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
 
         #endregion Speeds
 
@@ -399,7 +407,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportOverhangAngleDeg,
             (settings, val) => settings.SupportOverhangAngleDeg = val,
-            UserSettingNumericValidations<double>.ValidateMinMax(0, 90, ValidationResultLevel.Error));
+            minimumValue: 0,
+            maximumValue: 90,
+            unitsF: () => UserSettingTranslations.Units_Degrees);
 
         public UserSettingDouble<TSettings> SupportPointDiam { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportPointDiam",
@@ -408,7 +418,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportPointDiam,
             (settings, val) => settings.SupportPointDiam = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_Millimeters);
 
         public UserSettingInt<TSettings> SupportPointSides { get; } = new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.SupportPointSides",
@@ -417,7 +428,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportPointSides,
             (settings, val) => settings.SupportPointSides = val,
-            UserSettingNumericValidations<int>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingDouble<TSettings> SupportRegionJoinTolX { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportRegionJoinTolX",
@@ -426,7 +437,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportRegionJoinTolX,
             (settings, val) => settings.SupportRegionJoinTolX = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingDouble<TSettings> SupportReleaseGap { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportReleaseGap",
@@ -435,7 +446,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportReleaseGap,
             (settings, val) => settings.SupportReleaseGap = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_Millimeters);
 
         public UserSettingDouble<TSettings> SupportSolidSpace { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportSolidSpace",
@@ -444,7 +456,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportSolidSpace,
             (settings, val) => settings.SupportSolidSpace = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_Millimeters);
 
         public UserSettingDouble<TSettings> SupportSpacingStepX { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportSpacingStepX",
@@ -453,7 +466,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportSpacingStepX,
             (settings, val) => settings.SupportSpacingStepX = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         public UserSettingDouble<TSettings> SupportVolumeScale { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportVolumeScale",
@@ -462,7 +475,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportVolumeScale,
             (settings, val) => settings.SupportVolumeScale = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0);
 
         #endregion Support
 
@@ -478,7 +491,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupRetraction,
             (settings) => settings.MinRetractTravelLength,
             (settings, val) => settings.MinRetractTravelLength = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_Millimeters);
 
         public UserSettingDouble<TSettings> RetractDistanceMM { get; } = new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.RetractDistanceMM",
@@ -487,7 +501,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupRetraction,
             (settings) => settings.RetractDistanceMM,
             (settings, val) => settings.RetractDistanceMM = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_Millimeters);
 
         public UserSettingDouble<TSettings> RetractSpeed { get; } = new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.RetractSpeed",
@@ -496,7 +511,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupRetraction,
             (settings) => settings.RetractSpeed,
             (settings, val) => settings.RetractSpeed = val,
-            UserSettingNumericValidations<double>.ValidateMin(0, ValidationResultLevel.Error));
+            minimumValue: 0,
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
 
         # endregion
 
