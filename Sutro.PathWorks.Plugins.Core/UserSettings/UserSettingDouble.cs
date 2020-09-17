@@ -5,9 +5,13 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
 {
     public class UserSettingDouble<TSettings> : UserSetting<TSettings, double>
     {
-        private readonly string range;
+        private readonly string rangeText;
+        private readonly string rangeMin;
+        private readonly string rangeMax;
 
-        public override string Range => range;
+        public override string RangeText => rangeText;
+        public override string RangeMin => rangeMin;
+        public override string RangeMax => rangeMax;
 
         public UserSettingDouble(
                     string id,
@@ -21,7 +25,9 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
             ValidationResultLevel validationResultLevel = ValidationResultLevel.Error,
             Func<string> unitsF = null) : base(id, nameF, descriptionF, group, loadF, applyF, CreateValidationFunction(minimumValue, maximumValue, validationResultLevel), unitsF)
         {
-            range = CreateRangeString(minimumValue, maximumValue);
+            rangeText = CreateRangeString(minimumValue, maximumValue);
+            rangeMin = minimumValue?.ToString();
+            rangeMax = maximumValue?.ToString();
         }
 
         private static string CreateRangeString(double? minimumValue, double? maximumValue)
