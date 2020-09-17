@@ -32,13 +32,13 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
 
         private static string CreateRangeString(double? minimumValue, double? maximumValue)
         {
-            if (minimumValue != null && maximumValue != null)
+            if (minimumValue.HasValue && maximumValue.HasValue)
                 return $"{minimumValue} - {maximumValue}";
 
-            if (minimumValue == null)
+            if (maximumValue.HasValue)
                 return $"<{maximumValue}";
 
-            if (maximumValue == null)
+            if (minimumValue.HasValue)
                 return $">{minimumValue}";
 
             return null;

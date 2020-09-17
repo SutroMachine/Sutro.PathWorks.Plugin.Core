@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sutro.Core.Models.GCode;
 using Sutro.Core.Settings;
 using Sutro.Core.Settings.Part;
+using Sutro.PathWorks.Plugins.Core.Settings;
 using Sutro.PathWorks.Plugins.FFF;
 using System;
 using System.Collections.Generic;
@@ -90,10 +91,20 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
         }
 
         [TestMethod]
-        public void UserSettings_PrintFFF()
+        public void UserSettings_PartFFF()
         {
             var settings = engine.SettingsManager.PartProfileManager.FactoryProfiles[0];
             Assert.IsNotNull(settings);
+        }
+
+        [TestMethod]
+        public void UserSettings_RangeString()
+        {
+            var settings = (PartUserSettingsFFF<PartProfileFFF>)engine.SettingsManager.PartProfileManager.UserSettings;
+            
+            Assert.AreEqual("0 - 90", settings.SupportOverhangAngleDeg.RangeText);
+            Assert.AreEqual(">0", settings.SupportPointDiam.RangeText);
+            Assert.IsNull(settings.SupportAreaOffsetX.RangeText);
         }
 
         [TestMethod]
