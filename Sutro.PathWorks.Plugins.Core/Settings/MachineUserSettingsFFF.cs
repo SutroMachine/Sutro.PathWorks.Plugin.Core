@@ -2,6 +2,8 @@
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;
 using Sutro.PathWorks.Plugins.Core.UserSettings;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
@@ -244,6 +246,29 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupAdvanced,
             (settings) => settings.EnableAutoBedLeveling,
             (settings, val) => settings.EnableAutoBedLeveling = val);
+
+        public UserSettingEnum<TSettings> Firmware { get; } = new UserSettingEnum<TSettings>(
+            "Machine.Firmware",
+            () => "Firmware",
+            () => "Firmware description",
+            GroupAdvanced,
+            (settings) => settings.Firmware.ToString(),
+            (settings, val) => settings.Firmware = (FirmwareOptions)Enum.Parse(typeof(FirmwareOptions), val, true),
+            () => new List<Tuple<int, string, string>>()
+            {
+                CreateEnumTuple(FirmwareOptions.RepRap, "RepRap"),
+                CreateEnumTuple(FirmwareOptions.Prusa, "Smoothie"),
+                CreateEnumTuple(FirmwareOptions.Printrbot, "Duet (PB)"),
+                CreateEnumTuple(FirmwareOptions.Monoprice, "Duet (MP)"),
+                CreateEnumTuple(FirmwareOptions.Makerbot, "Sailfish"),
+                CreateEnumTuple(FirmwareOptions.Flashforge, "Duet (FF)"),
+            }
+        );
+
+        private static Tuple<int, string, string> CreateEnumTuple<T> (T entry, string translation) where T : Enum
+        {
+            return Tuple.Create((int)entry.GetTypeCode(), entry.ToString(), translation);
+        }
 
         #endregion Advanced
 
