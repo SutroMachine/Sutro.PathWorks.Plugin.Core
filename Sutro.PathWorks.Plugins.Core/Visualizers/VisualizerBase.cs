@@ -65,10 +65,10 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
             OnPointsGenerated?.Invoke(points, layerIndex);
         }
 
-        protected void RaiseNewLayer(int newLayerIndex)
+        protected void RaiseNewLayer(int newLayerIndex, double newLayerHeight = 0)
         {
             layerIndex = newLayerIndex;
-            OnNewPlane?.Invoke(0, newLayerIndex);
+            OnNewPlane?.Invoke(newLayerHeight, newLayerIndex);
         }
 
         protected IEnumerable<IVisualizerCustomDataDetails> EnumerateCustomFields()
