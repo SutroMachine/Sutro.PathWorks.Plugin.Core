@@ -17,7 +17,7 @@ namespace Sutro.PathWorks.Plugins.Core.Visualizers
         protected readonly AdaptiveRange customDataFeedRate =
             new AdaptiveRange(
                 () => "Feed Rate",
-                (value) => $"{value:F0} mm/min");
+                (value) => $"{value:F0} mm/min", ColorSpectrumFactory.CyanToPink());
 
         protected readonly NormalizedAdaptiveRange customDataCompletion =
             new NormalizedAdaptiveRange(

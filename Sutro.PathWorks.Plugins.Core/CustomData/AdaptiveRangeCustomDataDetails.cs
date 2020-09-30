@@ -1,4 +1,5 @@
 ﻿using g3;
+using Sutro.PathWorks.Plugins.API.Visualizers;
 using System;
 
 namespace Sutro.PathWorks.Plugins.Core.CustomData
@@ -8,8 +9,8 @@ namespace Sutro.PathWorks.Plugins.Core.CustomData
         protected Interval1d interval;
 
         public AdaptiveRange(
-            Func<string> labelF, Func<float, string> colorScaleLabelerF)
-            : base(labelF, colorScaleLabelerF)
+            Func<string> labelF, Func<float, string> colorScaleLabelerF, ColorSpectrum spectrum = null)
+            : base(labelF, colorScaleLabelerF, spectrum: spectrum)
         {
             Reset();
         }

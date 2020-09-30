@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sutro.PathWorks.Plugins.API.Visualizers;
+using System;
 
 namespace Sutro.PathWorks.Plugins.Core.CustomData
 {
@@ -6,8 +7,8 @@ namespace Sutro.PathWorks.Plugins.Core.CustomData
     {
         public FixedRange(
             Func<string> labelF, Func<float, string> colorScaleLabelerF,
-            float rangeMin, float rangeMax)
-            : base(labelF, colorScaleLabelerF, rangeMin, rangeMax)
+            float rangeMin, float rangeMax, ColorSpectrum spectrum = null)
+            : base(labelF, colorScaleLabelerF, rangeMin, rangeMax, spectrum)
         {
         }
     }
