@@ -7,7 +7,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 {
     public abstract class MaterialProfileManagerBase<TProfile> :
         ProfileManager<TProfile>, IMaterialProfileManager
-        where TProfile : IMaterialProfile
+        where TProfile : class, IMaterialProfile
     {
         List<IMaterialProfile> IProfileManager<IMaterialProfile>.FactoryProfiles => FactoryProfiles.Select(p => (IMaterialProfile)p).ToList();
 

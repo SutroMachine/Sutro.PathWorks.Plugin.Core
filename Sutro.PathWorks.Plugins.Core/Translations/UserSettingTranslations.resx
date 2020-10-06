@@ -312,6 +312,12 @@
   <data name="LayerHeightMM.Name" xml:space="preserve">
     <value>Layer Height</value>
   </data>
+  <data name="Machine.Firmware.Description" xml:space="preserve">
+    <value>The type of firmware on the printer controller; affects gcode formatting and other machine-specific syntax.</value>
+  </data>
+  <data name="Machine.Firmware.Name" xml:space="preserve">
+    <value>Firmware</value>
+  </data>
   <data name="ManufacturerName.Description" xml:space="preserve">
     <value />
   </data>
@@ -640,6 +646,9 @@
   <data name="SupportVolumeScale.Name" xml:space="preserve">
     <value>Volume Scale</value>
   </data>
+  <data name="Units.Count" xml:space="preserve">
+    <value>#</value>
+  </data>
   <data name="Units.Degrees" xml:space="preserve">
     <value>degrees</value>
   </data>
@@ -654,6 +663,9 @@
   </data>
   <data name="Units.MillimetersPerSecond" xml:space="preserve">
     <value>millimeters/second</value>
+  </data>
+  <data name="Units.Percentage" xml:space="preserve">
+    <value>%</value>
   </data>
   <data name="Units.Seconds" xml:space="preserve">
     <value>seconds</value>

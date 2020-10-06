@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Sutro.PathWorks.Plugins.Core.Settings
 {
-    public abstract class ProfileManager<TProfile> : IProfileManager<TProfile> where TProfile : IProfile
+    public abstract class ProfileManager<TProfile> : IProfileManager<TProfile> where TProfile : class, IProfile
     {
         public abstract List<TProfile> FactoryProfiles { get; }
 

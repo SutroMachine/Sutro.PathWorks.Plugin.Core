@@ -1,16 +1,17 @@
-﻿using Sutro.PathWorks.Plugins.API.Settings;
+﻿using Sutro.Core.Models.Profiles;
+using Sutro.PathWorks.Plugins.API.Settings;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 
 namespace Sutro.PathWorks.Plugins.Core.UserSettings
 {
-    public abstract class UserSettingCollectionBase<TSettings> : IUserSettingCollection
+    public abstract class UserSettingCollectionBase<TProfile> : IUserSettingCollection where TProfile : class, IProfile
     {
         /// <summary>
         /// Provides iteration through user settings typed with underlying raw settings type.
         /// </summary>
-        public IEnumerable<UserSettingBase> Settings()
+        public IEnumerable<IUserSetting> Settings()
         {
             foreach (var setting in EnumerateProperties())
                 yield return setting;
@@ -19,26 +20,26 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
                 yield return setting;
         }
 
-        private IEnumerable<UserSettingBase<TSettings>> EnumerateProperties()
+        private IEnumerable<IUserSetting> EnumerateProperties()
         {
             foreach (PropertyInfo property in GetType().GetProperties())
             {
-                if (typeof(UserSettingBase<TSettings>).IsAssignableFrom(property.PropertyType))
+                if (typeof(IUserSetting).IsAssignableFrom(property.PropertyType))
                 {
-                    var setting = (UserSettingBase<TSettings>)property.GetValue(this);
+                    var setting = (IUserSetting)property.GetValue(this);
                     if (!setting.Hidden)
                         yield return setting;
                 }
             }
         }
 
-        private IEnumerable<UserSettingBase<TSettings>> EnumerateFields()
+        private IEnumerable<IUserSetting> EnumerateFields()
         {
             foreach (FieldInfo field in GetType().GetFields())
             {
-                if (typeof(UserSettingBase<TSettings>).IsAssignableFrom(field.FieldType))
+                if (typeof(IUserSetting).IsAssignableFrom(field.FieldType))
                 {
-                    var setting = (UserSettingBase<TSettings>)field.GetValue(this);
+                    var setting = (IUserSetting)field.GetValue(this);
                     if (!setting.Hidden)
                         yield return setting;
                 }
@@ -52,13 +53,20 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
         /// This method can be overridden in derived classes to add validations
         /// between combinations of user settings in addition to the individual checks.
         /// </remarks>
-        public virtual List<ValidationResult> Validate(TSettings settings)
+        public virtual List<ValidationResult> Validate(TProfile settings)
         {
             var validations = new List<ValidationResult>();
             foreach (var userSetting in Settings())
             {
                 userSetting.LoadFromRaw(settings);
-                var validation = userSetting.Validation;
+
+                var validation = userSetting switch
+                {
+                    IUserSettingString o => o.Validate(),
+                    IUserSettingInt o => o.Validate(),
+                    IUserSettingDouble o => o.Validate(),
+                    _ => new ValidationResult(),
+                };
 
                 if (validation.Severity != ValidationResultLevel.Message)
                 {
@@ -70,13 +78,13 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
 
         public List<ValidationResult> Validate(object rawSettings)
         {
-            return Validate((TSettings)rawSettings);
+            return Validate((TProfile)rawSettings);
         }
 
         /// <summary>
         /// Loads values from raw settings into a collection of user settings.
         /// </summary>
-        public void LoadFromRaw(TSettings rawSettings, IEnumerable<UserSettingBase<TSettings>> userSettings)
+        public void LoadFromRaw(TProfile rawSettings, IEnumerable<IUserSetting> userSettings)
         {
             foreach (var setting in userSettings)
             {
@@ -87,18 +95,15 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
         /// <summary>
         /// Loads values from raw settings into a collection of user settings.
         /// </summary>
-        public void LoadFromRaw(object rawSettings, IEnumerable<UserSettingBase> userSettings)
+        public void LoadFromRaw(object rawSettings, IEnumerable<IUserSetting> userSettings)
         {
-            var userSettingsTyped = new List<UserSettingBase<TSettings>>();
-            foreach (var setting in userSettings)
-                userSettingsTyped.Add((UserSettingBase<TSettings>)setting);
-            LoadFromRaw((TSettings)rawSettings, userSettingsTyped);
+            LoadFromRaw((TProfile)rawSettings, userSettings);
         }
 
         /// <summary>
         /// Loads values from collection of user settings into raw settings.
         /// </summary>
-        public void ApplyToRaw(TSettings rawSettings, IEnumerable<UserSettingBase<TSettings>> userSettings)
+        public void ApplyToRaw(TProfile rawSettings, IEnumerable<IUserSettingGeneric<TProfile>> userSettings)
         {
             foreach (var setting in userSettings)
             {
@@ -109,9 +114,9 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
         /// <summary>
         /// Loads values from collection of user settings into raw settings.
         /// </summary>
-        public void ApplyToRaw(object rawSettings, IEnumerable<UserSettingBase> userSettings)
+        public void ApplyToRaw(object rawSettings, IEnumerable<IUserSetting> userSettings)
         {
-            ApplyToRaw((TSettings)rawSettings, (IEnumerable<UserSettingBase<TSettings>>)userSettings);
+            ApplyToRaw((TProfile)rawSettings, userSettings);
         }
 
         public abstract void SetCulture(CultureInfo cultureInfo);

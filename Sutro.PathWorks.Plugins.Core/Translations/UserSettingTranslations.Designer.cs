@@ -646,6 +646,24 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The type of firmware on the printer controller; affects gcode formatting and other machine-specific syntax..
+        /// </summary>
+        public static string Machine_Firmware_Description {
+            get {
+                return ResourceManager.GetString("Machine.Firmware.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Firmware.
+        /// </summary>
+        public static string Machine_Firmware_Name {
+            get {
+                return ResourceManager.GetString("Machine.Firmware.Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         public static string ManufacturerName_Description {
@@ -1627,6 +1645,15 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to #.
+        /// </summary>
+        public static string Units_Count {
+            get {
+                return ResourceManager.GetString("Units.Count", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to degrees.
         /// </summary>
         public static string Units_Degrees {
@@ -1668,6 +1695,15 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         public static string Units_MillimetersPerSecond {
             get {
                 return ResourceManager.GetString("Units.MillimetersPerSecond", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to %.
+        /// </summary>
+        public static string Units_Percentage {
+            get {
+                return ResourceManager.GetString("Units.Percentage", resourceCulture);
             }
         }
         

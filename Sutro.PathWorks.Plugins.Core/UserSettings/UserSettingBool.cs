@@ -3,16 +3,15 @@ using System;
 
 namespace Sutro.PathWorks.Plugins.Core.UserSettings
 {
-    public class UserSettingBool<TSettings> : UserSetting<TSettings, bool>
+    public class UserSettingBool<TProfile> : UserSettingBase<TProfile, bool>, IUserSettingBool where TProfile : class
     {
         public UserSettingBool(
             string id,
             Func<string> nameF,
             Func<string> descriptionF,
             UserSettingGroup group,
-            Func<TSettings, bool> loadF,
-            Action<TSettings, bool> applyF,
-            Func<bool, ValidationResult> validateF = null) : base(id, nameF, descriptionF, group, loadF, applyF, validateF)
+            Func<TProfile, bool> loadF,
+            Action<TProfile, bool> applyF) : base(id, nameF, descriptionF, group, loadF, applyF)
         {
         }
     }

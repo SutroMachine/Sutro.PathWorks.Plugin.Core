@@ -7,7 +7,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 {
     public abstract class MachineProfileManagerBase<TProfile> :
         ProfileManager<TProfile>, IMachineProfileManager
-        where TProfile : IMachineProfile
+        where TProfile : class, IMachineProfile
     {
         List<IMachineProfile> IProfileManager<IMachineProfile>.FactoryProfiles =>
             FactoryProfiles.Select(p => (IMachineProfile)p).ToList();
