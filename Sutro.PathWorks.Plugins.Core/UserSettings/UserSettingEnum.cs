@@ -8,15 +8,15 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
 {
     public class UserSettingEnum<TProfile> : UserSettingBase<TProfile, int>, IUserSettingEnum where TProfile : class
     {
-       public UserSettingEnum(
-            string id,
-            Func<string> nameF,
-            Func<string> descriptionF,
-            UserSettingGroup group,
-            Func<TProfile, int> loadF,
-            Action<TProfile, int> applyF,
-            IEnumerable<UserSettingEnumOption> options) :
-            base(id, nameF, descriptionF, group, loadF, applyF)
+        public UserSettingEnum(
+             string id,
+             Func<string> nameF,
+             Func<string> descriptionF,
+             UserSettingGroup group,
+             Func<TProfile, int> loadF,
+             Action<TProfile, int> applyF,
+             IEnumerable<UserSettingEnumOption> options) :
+             base(id, nameF, descriptionF, group, loadF, applyF)
         {
             Options = new ReadOnlyCollection<UserSettingEnumOption>(options.ToList());
         }

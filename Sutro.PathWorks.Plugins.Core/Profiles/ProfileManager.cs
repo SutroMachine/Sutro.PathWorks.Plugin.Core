@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Sutro.Core.Models.Profiles;
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.UserSettings;
-using System;
 using System.Collections.Generic;
 
 namespace Sutro.PathWorks.Plugins.Core.Settings
@@ -42,13 +41,13 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         protected virtual JsonSerializerSettings SerializerSettings()
         {
             var contractResolver = new Sutro.Core.Persistence.IgnoreablePropertiesContractResolver();
-            contractResolver.Ignore(typeof(string), new string[] {"$schema" });
+            contractResolver.Ignore(typeof(string), new string[] { "$schema" });
 
             return new JsonSerializerSettings()
             {
                 MissingMemberHandling = MissingMemberHandling.Error,
                 TypeNameHandling = TypeNameHandling.Auto,
-                ContractResolver = contractResolver,                 
+                ContractResolver = contractResolver,
             };
         }
     }

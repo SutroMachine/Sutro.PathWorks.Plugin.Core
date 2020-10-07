@@ -1,5 +1,4 @@
-﻿using Sutro.Core.Models.Profiles;
-using Sutro.PathWorks.Plugins.API.Settings;
+﻿using Sutro.PathWorks.Plugins.API.Settings;
 using System;
 using System.Collections.Generic;
 
@@ -23,7 +22,6 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
             if (validations != null)
                 Validations.AddRange(validations);
         }
-
 
         public ValidationResult Validate()
         {

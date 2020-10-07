@@ -78,8 +78,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.NozzleDiamMM = val,
             unitsF: () => UserSettingTranslations.Units_Millimeters,
             numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
-            decimalDigits:3);
-
+            decimalDigits: 3);
 
         #endregion Extruder
 
@@ -109,6 +108,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             unitsF: () => UserSettingTranslations.Units_Millimeters,
             numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(10, false), Increment = 5 },
             decimalDigits: 0);
+
         public UserSettingDouble<TSettings> MaxHeightMM { get; } = new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.MaxHeightMM",
             () => UserSettingTranslations.MaxHeightMM_Name,
@@ -135,8 +135,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.MaxExtrudeSpeedMMM,
             (settings, val) => settings.MaxExtrudeSpeedMMM = val,
             unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
-            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(0, false), Increment = 10 } );
-
+            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(0, false), Increment = 10 });
 
         public UserSettingInt<TSettings> MaxRetractSpeedMMM { get; } = new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxRetractSpeedMMM",
@@ -156,7 +155,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.MaxTravelSpeedMMM,
             (settings, val) => settings.MaxTravelSpeedMMM = val,
             unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
-            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(0, false), Increment = 10 } );
+            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(0, false), Increment = 10 });
 
         public UserSettingInt<TSettings> MaxZTravelSpeedMMM { get; } = new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxZTravelSpeedMMM",
@@ -273,7 +272,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             }
         );
 
-        private static UserSettingEnumOption CreateEnumOption<T> (T entry, Func<string> translation) where T : Enum
+        private static UserSettingEnumOption CreateEnumOption<T>(T entry, Func<string> translation) where T : Enum
         {
             int typecode;
             checked

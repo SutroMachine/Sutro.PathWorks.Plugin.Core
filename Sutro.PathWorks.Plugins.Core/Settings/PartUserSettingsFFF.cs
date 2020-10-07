@@ -1,5 +1,4 @@
-﻿using g3;
-using Sutro.Core.Settings.Part;
+﻿using Sutro.Core.Settings.Part;
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;
 using Sutro.PathWorks.Plugins.Core.UserSettings;
@@ -70,7 +69,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.MinExtrudeSpeed,
             (settings, val) => settings.MinExtrudeSpeed = val,
             unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
-            new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5},
+            new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5 },
             decimalDigits: 0);
 
         public UserSettingInt<TSettings> RoofLayers { get; } = new UserSettingInt<TSettings>(
@@ -109,7 +108,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.BridgeExtrudeSpeedX = val,
             convertToPercentage: true,
             unitsF: () => UserSettingTranslations.Units_Percentage,
-            numericInfo: new NumericInfoDouble() {Minimum = new NumericBound<double>(0, false) },
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
             decimalDigits: 2);
 
         public UserSettingDouble<TSettings> BridgeFillNozzleDiamStepX { get; } = new UserSettingDouble<TSettings>(
@@ -161,7 +160,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupFirstLayer,
             (settings) => settings.CarefulExtrudeSpeed,
             (settings, val) => settings.CarefulExtrudeSpeed = val,
-            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5},
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5 },
             unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
             decimalDigits: 0);
 
@@ -244,7 +243,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupPerimeters,
             (settings) => settings.SelfOverlapToleranceX,
             (settings, val) => settings.SelfOverlapToleranceX = val,
-            unitsF: () => UserSettingTranslations.Units_Percentage, 
+            unitsF: () => UserSettingTranslations.Units_Percentage,
             numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
             convertToPercentage: true,
             decimalDigits: 2);
@@ -395,7 +394,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.RapidTravelSpeed,
             (settings, val) => settings.RapidTravelSpeed = val,
             unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
-            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5},
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5 },
             decimalDigits: 0);
 
         public UserSettingDouble<TSettings> ZTravelSpeed { get; } = new UserSettingDouble<TSettings>(
@@ -406,7 +405,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.ZTravelSpeed,
             (settings, val) => settings.ZTravelSpeed = val,
             unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
-            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5},
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5 },
             decimalDigits: 0);
 
         #endregion Speeds
@@ -458,7 +457,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.SupportOverhangAngleDeg,
             (settings, val) => settings.SupportOverhangAngleDeg = val,
             unitsF: () => UserSettingTranslations.Units_Degrees,
-            numericInfo: new NumericInfoDouble() {
+            numericInfo: new NumericInfoDouble()
+            {
                 Minimum = new NumericBound<double>(0, false),
                 Maximum = new NumericBound<double>(90, false),
                 Increment = 5
@@ -580,7 +580,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupRetraction,
             (settings) => settings.RetractSpeed,
             (settings, val) => settings.RetractSpeed = val,
-            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5},
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5 },
             unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
             decimalDigits: 0);
 

@@ -1,5 +1,4 @@
-﻿using Sutro.Core.Models.Profiles;
-using Sutro.PathWorks.Plugins.API.Settings;
+﻿using Sutro.PathWorks.Plugins.API.Settings;
 using System;
 
 namespace Sutro.PathWorks.Plugins.Core.UserSettings
@@ -48,7 +47,6 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
             var value = loadF(sourceProfile as TProfile);
             applyF(targetProfile as TProfile, value);
         }
-
 
         public TValue GetFromRaw(object settings)
         {

@@ -19,7 +19,7 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
                 else
                 {
                     if (comparison <= 0)
-                    return new ValidationResult(ValidationResultLevel.Error, $"Must be greater than {numericInfo.Minimum}");
+                        return new ValidationResult(ValidationResultLevel.Error, $"Must be greater than {numericInfo.Minimum}");
                 }
             }
 

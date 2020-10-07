@@ -3,7 +3,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sutro.Core.Models.GCode;
 using Sutro.Core.Settings;
 using Sutro.Core.Settings.Part;
-using Sutro.PathWorks.Plugins.Core.Settings;
 using Sutro.PathWorks.Plugins.FFF;
 using System;
 using System.Collections.Generic;
@@ -106,7 +105,6 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
 
             var userSettingsList = userSettings.Settings().ToList();
             Assert.AreNotEqual(0, userSettingsList.Count);
-
         }
 
         [TestMethod]

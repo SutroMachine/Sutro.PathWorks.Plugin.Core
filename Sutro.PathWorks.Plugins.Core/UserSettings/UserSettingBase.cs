@@ -25,7 +25,7 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
 
         public abstract void LoadAndApply<T>(T targetProfile, T sourceProfile) where T : IProfile;
 
-        protected UserSettingBase(string id, 
+        protected UserSettingBase(string id,
             Func<string> nameF,
             Func<string> descriptionF = null,
             UserSettingGroup group = null,
