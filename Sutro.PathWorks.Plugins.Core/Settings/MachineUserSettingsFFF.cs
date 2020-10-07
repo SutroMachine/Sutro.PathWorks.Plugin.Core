@@ -56,8 +56,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupExtruder,
             (settings) => settings.MaxExtruderTempC,
             (settings, val) => settings.MaxExtruderTempC = val,
-            minimumValue: -273,
-            unitsF: () => UserSettingTranslations.Units_DegreesCelsius);
+            unitsF: () => UserSettingTranslations.Units_DegreesCelsius,
+            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(20, true) });
 
         public UserSettingInt<TSettings> MinExtruderTempC { get; } = new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MinExtruderTempC",
@@ -66,8 +66,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupExtruder,
             (settings) => settings.MinExtruderTempC,
             (settings, val) => settings.MinExtruderTempC = val,
-            minimumValue: -273,
-            unitsF: () => UserSettingTranslations.Units_DegreesCelsius);
+            unitsF: () => UserSettingTranslations.Units_DegreesCelsius,
+            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(20, true) });
 
         public UserSettingDouble<TSettings> NozzleDiamMM { get; } = new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.NozzleDiamMM",
@@ -76,8 +76,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupExtruder,
             (settings) => settings.NozzleDiamMM,
             (settings, val) => settings.NozzleDiamMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            decimalDigits: 3);
 
         #endregion Extruder
 
@@ -93,8 +94,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupPrintVolume,
             (settings) => settings.BedSizeXMM,
             (settings, val) => settings.BedSizeXMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(10, false), Increment = 5 },
+            decimalDigits: 0);
 
         public UserSettingDouble<TSettings> BedSizeYMM { get; } = new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.BedSizeYMM",
@@ -103,8 +105,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupPrintVolume,
             (settings) => settings.BedSizeYMM,
             (settings, val) => settings.BedSizeYMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(10, false), Increment = 5 },
+            decimalDigits: 0);
+
         public UserSettingDouble<TSettings> MaxHeightMM { get; } = new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.MaxHeightMM",
             () => UserSettingTranslations.MaxHeightMM_Name,
@@ -112,8 +116,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupPrintVolume,
             (settings) => settings.MaxHeightMM,
             (settings, val) => settings.MaxHeightMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(10, false), Increment = 5 },
+            decimalDigits: 0);
 
         #endregion PrintVolume
 
@@ -129,9 +134,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.MaxExtrudeSpeedMMM,
             (settings, val) => settings.MaxExtrudeSpeedMMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
-
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
+            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(0, false), Increment = 10 });
 
         public UserSettingInt<TSettings> MaxRetractSpeedMMM { get; } = new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxRetractSpeedMMM",
@@ -140,8 +144,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.MaxRetractSpeedMMM,
             (settings, val) => settings.MaxRetractSpeedMMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
+            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(0, false), Increment = 10 });
 
         public UserSettingInt<TSettings> MaxTravelSpeedMMM { get; } = new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxTravelSpeedMMM",
@@ -150,8 +154,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.MaxTravelSpeedMMM,
             (settings, val) => settings.MaxTravelSpeedMMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
+            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(0, false), Increment = 10 });
 
         public UserSettingInt<TSettings> MaxZTravelSpeedMMM { get; } = new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MaxZTravelSpeedMMM",
@@ -160,8 +164,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.MaxZTravelSpeedMMM,
             (settings, val) => settings.MaxZTravelSpeedMMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
+            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(0, false), Increment = 10 });
 
         #endregion Speeds
 
@@ -193,8 +197,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupCapabilities,
             (settings) => settings.MaxLayerHeightMM,
             (settings, val) => settings.MaxLayerHeightMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 0.05 },
+            decimalDigits: 3);
+
         public UserSettingDouble<TSettings> MinLayerHeightMM { get; } = new UserSettingDouble<TSettings>(
             "MachineUserSettingsFFF.MinLayerHeightMM",
             () => UserSettingTranslations.MinLayerHeightMM_Name,
@@ -202,8 +208,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupCapabilities,
             (settings) => settings.MinLayerHeightMM,
             (settings, val) => settings.MinLayerHeightMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 0.05 },
+            decimalDigits: 3);
 
         #endregion Capabilities
 
@@ -219,8 +226,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupHeatedBed,
             (settings) => settings.MaxBedTempC,
             (settings, val) => settings.MaxBedTempC = val,
-            minimumValue: -273,
-            unitsF: () => UserSettingTranslations.Units_DegreesCelsius);
+            unitsF: () => UserSettingTranslations.Units_DegreesCelsius,
+            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
 
         public UserSettingInt<TSettings> MinBedTempC { get; } = new UserSettingInt<TSettings>(
             "MachineUserSettingsFFF.MinBedTempC",
@@ -229,8 +236,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupHeatedBed,
             (settings) => settings.MinBedTempC,
             (settings, val) => settings.MinBedTempC = val,
-            minimumValue: -273,
-            unitsF: () => UserSettingTranslations.Units_DegreesCelsius);
+            unitsF: () => UserSettingTranslations.Units_DegreesCelsius,
+            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
 
         #endregion HeatedBed
 
@@ -249,25 +256,31 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 
         public UserSettingEnum<TSettings> Firmware { get; } = new UserSettingEnum<TSettings>(
             "Machine.Firmware",
-            () => "Firmware",
-            () => "Firmware description",
+            () => UserSettingTranslations.Machine_Firmware_Name,
+            () => UserSettingTranslations.Machine_Firmware_Description,
             GroupAdvanced,
-            (settings) => settings.Firmware.ToString(),
-            (settings, val) => settings.Firmware = (FirmwareOptions)Enum.Parse(typeof(FirmwareOptions), val, true),
-            () => new List<Tuple<int, string, string>>()
+            (settings) => (int)settings.Firmware,
+            (settings, val) => settings.Firmware = (FirmwareOptions)Enum.ToObject(typeof(FirmwareOptions), val),
+            options: new List<UserSettingEnumOption>()
             {
-                CreateEnumTuple(FirmwareOptions.RepRap, "RepRap"),
-                CreateEnumTuple(FirmwareOptions.Prusa, "Smoothie"),
-                CreateEnumTuple(FirmwareOptions.Printrbot, "Duet (PB)"),
-                CreateEnumTuple(FirmwareOptions.Monoprice, "Duet (MP)"),
-                CreateEnumTuple(FirmwareOptions.Makerbot, "Sailfish"),
-                CreateEnumTuple(FirmwareOptions.Flashforge, "Duet (FF)"),
+                CreateEnumOption(FirmwareOptions.RepRap, () => "RepRap"),
+                CreateEnumOption(FirmwareOptions.Prusa, () => "Smoothie"),
+                CreateEnumOption(FirmwareOptions.Printrbot, () => "Duet (PB)"),
+                CreateEnumOption(FirmwareOptions.Monoprice, () => "Duet (MP)"),
+                CreateEnumOption(FirmwareOptions.Makerbot, () => "Sailfish"),
+                CreateEnumOption(FirmwareOptions.Flashforge, () => "Duet (FF)"),
             }
         );
 
-        private static Tuple<int, string, string> CreateEnumTuple<T> (T entry, string translation) where T : Enum
+        private static UserSettingEnumOption CreateEnumOption<T>(T entry, Func<string> translation) where T : Enum
         {
-            return Tuple.Create((int)entry.GetTypeCode(), entry.ToString(), translation);
+            int typecode;
+            checked
+            {
+                typecode = Convert.ToInt32(entry.GetTypeCode());
+            }
+
+            return new UserSettingEnumOption(typecode, entry.ToString(), translation);
         }
 
         #endregion Advanced

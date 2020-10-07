@@ -3,59 +3,35 @@ using System;
 
 namespace Sutro.PathWorks.Plugins.Core.UserSettings
 {
-    public class UserSettingDouble<TSettings> : UserSetting<TSettings, double>
+    public class UserSettingDouble<TProfile> : UserSettingBase<TProfile, double>, IUserSettingDouble where TProfile : class
     {
-        private readonly string rangeText;
-        private readonly string rangeMin;
-        private readonly string rangeMax;
+        public bool ConvertToPercentage { get; set; }
 
-        public override string RangeText => rangeText;
-        public override string RangeMin => rangeMin;
-        public override string RangeMax => rangeMax;
+        public int DecimalDigits { get; set; }
+
+        public NumericInfoDouble NumericInfo { get; set; }
 
         public UserSettingDouble(
-                    string id,
+                            string id,
             Func<string> nameF,
             Func<string> descriptionF,
             UserSettingGroup group,
-            Func<TSettings, double> loadF,
-            Action<TSettings, double> applyF,
-            double? minimumValue = null,
-            double? maximumValue = null,
-            ValidationResultLevel validationResultLevel = ValidationResultLevel.Error,
-            Func<string> unitsF = null) : base(id, nameF, descriptionF, group, loadF, applyF, CreateValidationFunction(minimumValue, maximumValue, validationResultLevel), unitsF)
+            Func<TProfile, double> loadF,
+            Action<TProfile, double> applyF,
+            Func<string> unitsF = null,
+            NumericInfoDouble numericInfo = null,
+            bool convertToPercentage = false,
+            int decimalDigits = 2) :
+            base(id, nameF, descriptionF, group, loadF, applyF, unitsF)
         {
-            rangeText = CreateRangeString(minimumValue, maximumValue);
-            rangeMin = minimumValue?.ToString();
-            rangeMax = maximumValue?.ToString();
+            NumericInfo = numericInfo;
+            ConvertToPercentage = convertToPercentage;
+            DecimalDigits = decimalDigits;
         }
 
-        private static string CreateRangeString(double? minimumValue, double? maximumValue)
+        public ValidationResult Validate()
         {
-            if (minimumValue.HasValue && maximumValue.HasValue)
-                return $"{minimumValue} - {maximumValue}";
-
-            if (maximumValue.HasValue)
-                return $"<{maximumValue}";
-
-            if (minimumValue.HasValue)
-                return $">{minimumValue}";
-
-            return null;
-        }
-
-        private static Func<double, ValidationResult> CreateValidationFunction(double? minimumValue, double? maximumValue, ValidationResultLevel validationResultLevel)
-        {
-            if (minimumValue == null && maximumValue == null)
-                return null;
-
-            if (minimumValue == null)
-                return UserSettingNumericValidations<double>.ValidateMax(maximumValue.Value, validationResultLevel);
-
-            if (maximumValue == null)
-                return UserSettingNumericValidations<double>.ValidateMin(minimumValue.Value, validationResultLevel);
-
-            return UserSettingNumericValidations<double>.ValidateMinMax(minimumValue.Value, maximumValue.Value, validationResultLevel);
+            return NumericValidation.Validate(NumericInfo, Value);
         }
     }
 }

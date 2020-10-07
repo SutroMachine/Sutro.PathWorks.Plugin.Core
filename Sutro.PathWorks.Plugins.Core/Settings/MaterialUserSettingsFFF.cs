@@ -32,14 +32,6 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.Supplier,
             (settings, val) => settings.Supplier = val);
 
-        public UserSettingString<TSettings> MaterialType { get; } = new UserSettingString<TSettings>(
-            "MaterialUserSettingsFFF.MaterialType",
-            () => UserSettingTranslations.MaterialType_Name,
-            () => UserSettingTranslations.MaterialType_Description,
-            GroupIdentifiers,
-            (settings) => settings.Supplier,
-            (settings, val) => settings.Supplier = val);
-
         public UserSettingString<TSettings> MaterialColor { get; } = new UserSettingString<TSettings>(
             "MaterialUserSettingsFFF.MaterialColor",
             () => UserSettingTranslations.MaterialColor_Name,
@@ -62,8 +54,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBasic,
             (settings) => settings.FilamentDiamMM,
             (settings, val) => settings.FilamentDiamMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            decimalDigits: 3);
 
         #endregion Basic
 
@@ -73,14 +66,14 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             new UserSettingGroup(() => UserSettingTranslations.GroupTemperature);
 
         public UserSettingInt<TSettings> ExtruderTempC { get; } = new UserSettingInt<TSettings>(
-            "MaterialUserSettingsFFF.FilamentDiamMM",
+            "MaterialUserSettingsFFF.ExtruderTempC",
             () => UserSettingTranslations.ExtruderTempC_Name,
             () => UserSettingTranslations.ExtruderTempC_Description,
             GroupTemperature,
             (settings) => settings.ExtruderTempC,
             (settings, val) => settings.ExtruderTempC = val,
-            minimumValue: -273,
-            unitsF: () => UserSettingTranslations.Units_DegreesCelsius);
+            unitsF: () => UserSettingTranslations.Units_DegreesCelsius,
+            new NumericInfoInt() { Minimum = new NumericBound<int>(0, false) });
 
         public UserSettingInt<TSettings> HeatedBedTempC { get; } = new UserSettingInt<TSettings>(
             "MaterialUserSettingsFFF.HeatedBedTempC",
@@ -89,8 +82,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupTemperature,
             (settings) => settings.HeatedBedTempC,
             (settings, val) => settings.HeatedBedTempC = val,
-            minimumValue: -273,
-            unitsF: () => UserSettingTranslations.Units_DegreesCelsius);
+            unitsF: () => UserSettingTranslations.Units_DegreesCelsius,
+            new NumericInfoInt() { Minimum = new NumericBound<int>(0, false) });
 
         #endregion Temperature
 

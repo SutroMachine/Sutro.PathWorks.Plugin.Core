@@ -39,8 +39,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBasic,
             (settings) => settings.FloorLayers,
             (settings, val) => settings.FloorLayers = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            unitsF: () => UserSettingTranslations.Units_Count,
+            new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
 
         public UserSettingBool<TSettings> GenerateSupport { get; } = new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.GenerateSupport",
@@ -57,8 +57,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBasic,
             (settings) => settings.LayerHeightMM,
             (settings, val) => settings.LayerHeightMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 0.05 },
+            decimalDigits: 3);
 
         public UserSettingDouble<TSettings> MinExtrudeSpeed { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.MinExtrudeSpeed",
@@ -67,8 +68,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBasic,
             (settings) => settings.MinExtrudeSpeed,
             (settings, val) => settings.MinExtrudeSpeed = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
+            new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5 },
+            decimalDigits: 0);
 
         public UserSettingInt<TSettings> RoofLayers { get; } = new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.RoofLayers",
@@ -77,7 +79,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBasic,
             (settings) => settings.RoofLayers,
             (settings, val) => settings.RoofLayers = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Count,
+            new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
 
         public UserSettingInt<TSettings> Shells { get; } = new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.Shells",
@@ -86,7 +89,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBasic,
             (settings) => settings.Shells,
             (settings, val) => settings.Shells = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Count,
+            new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
 
         #endregion Basic
 
@@ -102,7 +106,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBridging,
             (settings) => settings.BridgeExtrudeSpeedX,
             (settings, val) => settings.BridgeExtrudeSpeedX = val,
-            minimumValue: 0);
+            convertToPercentage: true,
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            decimalDigits: 2);
 
         public UserSettingDouble<TSettings> BridgeFillNozzleDiamStepX { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.BridgeFillNozzleDiamStepX",
@@ -111,7 +118,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBridging,
             (settings) => settings.BridgeFillNozzleDiamStepX,
             (settings, val) => settings.BridgeFillNozzleDiamStepX = val,
-            minimumValue: 0);
+            convertToPercentage: true,
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            decimalDigits: 2);
 
         public UserSettingDouble<TSettings> BridgeVolumeScale { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.BridgeVolumeScale",
@@ -120,7 +130,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBridging,
             (settings) => settings.BridgeVolumeScale,
             (settings, val) => settings.BridgeVolumeScale = val,
-            minimumValue: 0);
+            convertToPercentage: true,
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            decimalDigits: 2);
 
         public UserSettingDouble<TSettings> MaxBridgeWidthMM { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.MaxBridgeWidthMM",
@@ -129,7 +142,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupBridging,
             (settings) => settings.MaxBridgeWidthMM,
             (settings, val) => settings.MaxBridgeWidthMM = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, true) },
+            decimalDigits: 1);
 
         #endregion Bridging
 
@@ -145,8 +160,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupFirstLayer,
             (settings) => settings.CarefulExtrudeSpeed,
             (settings, val) => settings.CarefulExtrudeSpeed = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5 },
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
+            decimalDigits: 0);
 
         public UserSettingDouble<TSettings> StartLayerHeightMM { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.StartLayerHeightMM",
@@ -155,8 +171,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupFirstLayer,
             (settings) => settings.StartLayerHeightMM,
             (settings, val) => settings.StartLayerHeightMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            decimalDigits: 3);
 
         public UserSettingInt<TSettings> StartLayers { get; } = new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.StartLayers",
@@ -165,7 +182,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupFirstLayer,
             (settings) => settings.StartLayers,
             (settings, val) => settings.StartLayers = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Count,
+            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
 
         #endregion FirstLayer
 
@@ -181,8 +199,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupMiscellaneous,
             (settings) => settings.MinLayerTime,
             (settings, val) => settings.MinLayerTime = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Seconds);
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, true) },
+            unitsF: () => UserSettingTranslations.Units_Seconds,
+            decimalDigits: 0);
 
         #endregion Miscellaneous
 
@@ -206,7 +225,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupPerimeters,
             (settings) => settings.InteriorSolidRegionShells,
             (settings, val) => settings.InteriorSolidRegionShells = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Count,
+            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
 
         public UserSettingBool<TSettings> OuterShellLast { get; } = new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.OuterShellLast",
@@ -223,7 +243,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupPerimeters,
             (settings) => settings.SelfOverlapToleranceX,
             (settings, val) => settings.SelfOverlapToleranceX = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            convertToPercentage: true,
+            decimalDigits: 2);
 
         public UserSettingDouble<TSettings> ShellsFillNozzleDiamStepX { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.ShellsFillNozzleDiamStepX",
@@ -232,7 +255,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupPerimeters,
             (settings) => settings.ShellsFillNozzleDiamStepX,
             (settings, val) => settings.ShellsFillNozzleDiamStepX = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            convertToPercentage: true,
+            decimalDigits: 2);
 
         public UserSettingBool<TSettings> ShellRandomizeStart { get; } = new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.ShellRandomizeStart",
@@ -256,7 +282,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             () => UserSettingTranslations.ZipperLocationX_Description,
             GroupPerimeters,
             (settings) => settings.ZipperLocationX,
-            (settings, val) => settings.ZipperLocationX = val);
+            (settings, val) => settings.ZipperLocationX = val,
+            decimalDigits: 1);
 
         public UserSettingDouble<TSettings> ZipperLocationY { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.ZipperLocationY",
@@ -264,7 +291,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             () => UserSettingTranslations.ZipperLocationY_Description,
             GroupPerimeters,
             (settings) => settings.ZipperLocationY,
-            (settings, val) => settings.ZipperLocationY = val);
+            (settings, val) => settings.ZipperLocationY = val,
+            decimalDigits: 1);
 
         #endregion Perimeters
 
@@ -280,7 +308,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSolidFill,
             (settings) => settings.SolidFillBorderOverlapX,
             (settings, val) => settings.SolidFillBorderOverlapX = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            convertToPercentage: true,
+            decimalDigits: 2);
 
         public UserSettingDouble<TSettings> SolidFillNozzleDiamStepX { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SolidFillNozzleDiamStepX",
@@ -289,7 +320,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSolidFill,
             (settings) => settings.SolidFillNozzleDiamStepX,
             (settings, val) => settings.SolidFillNozzleDiamStepX = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            convertToPercentage: true,
+            decimalDigits: 2);
 
         #endregion SolidFill
 
@@ -300,21 +334,27 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 
         public UserSettingDouble<TSettings> SparseFillBorderOverlapX { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SparseFillBorderOverlapX",
-           () => UserSettingTranslations.SparseFillBorderOverlapX_Name,
-           () => UserSettingTranslations.SparseFillBorderOverlapX_Description,
-           GroupSparseFill,
-           (settings) => settings.SparseFillBorderOverlapX,
-           (settings, val) => settings.SparseFillBorderOverlapX = val,
-            minimumValue: 0);
+            () => UserSettingTranslations.SparseFillBorderOverlapX_Name,
+            () => UserSettingTranslations.SparseFillBorderOverlapX_Description,
+            GroupSparseFill,
+            (settings) => settings.SparseFillBorderOverlapX,
+            (settings, val) => settings.SparseFillBorderOverlapX = val,
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            convertToPercentage: true,
+            decimalDigits: 2);
 
         public UserSettingDouble<TSettings> SparseLinearInfillStepX { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SparseLinearInfillStepX",
-           () => UserSettingTranslations.SparseLinearInfillStepX_Name,
-           () => UserSettingTranslations.SparseLinearInfillStepX_Description,
-           GroupSparseFill,
-           (settings) => settings.SparseLinearInfillStepX,
-           (settings, val) => settings.SparseLinearInfillStepX = val,
-            minimumValue: 0);
+            () => UserSettingTranslations.SparseLinearInfillStepX_Name,
+            () => UserSettingTranslations.SparseLinearInfillStepX_Description,
+            GroupSparseFill,
+            (settings) => settings.SparseLinearInfillStepX,
+            (settings, val) => settings.SparseLinearInfillStepX = val,
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            convertToPercentage: true,
+            decimalDigits: 2);
 
         #endregion SparseFill
 
@@ -330,7 +370,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.OuterPerimeterSpeedX,
             (settings, val) => settings.OuterPerimeterSpeedX = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            convertToPercentage: true,
+            decimalDigits: 2);
 
         public UserSettingDouble<TSettings> RapidExtrudeSpeed { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.RapidExtrudeSpeed",
@@ -339,7 +382,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.RapidExtrudeSpeed,
             (settings, val) => settings.RapidExtrudeSpeed = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5 },
+            decimalDigits: 0);
 
         public UserSettingDouble<TSettings> RapidTravelSpeed { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.RapidTravelSpeed",
@@ -348,8 +393,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.RapidTravelSpeed,
             (settings, val) => settings.RapidTravelSpeed = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5 },
+            decimalDigits: 0);
 
         public UserSettingDouble<TSettings> ZTravelSpeed { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.ZTravelSpeed",
@@ -358,8 +404,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSpeeds,
             (settings) => settings.ZTravelSpeed,
             (settings, val) => settings.ZTravelSpeed = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5 },
+            decimalDigits: 0);
 
         #endregion Speeds
 
@@ -390,7 +437,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             () => UserSettingTranslations.SupportAreaOffsetX_Description,
             GroupSupport,
             (settings) => settings.SupportAreaOffsetX,
-            (settings, val) => settings.SupportAreaOffsetX = val);
+            (settings, val) => settings.SupportAreaOffsetX = val,
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            decimalDigits: 2);
 
         public UserSettingBool<TSettings> SupportMinZTips { get; } = new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.SupportMinZTips",
@@ -407,9 +456,14 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportOverhangAngleDeg,
             (settings, val) => settings.SupportOverhangAngleDeg = val,
-            minimumValue: 0,
-            maximumValue: 90,
-            unitsF: () => UserSettingTranslations.Units_Degrees);
+            unitsF: () => UserSettingTranslations.Units_Degrees,
+            numericInfo: new NumericInfoDouble()
+            {
+                Minimum = new NumericBound<double>(0, false),
+                Maximum = new NumericBound<double>(90, false),
+                Increment = 5
+            },
+            decimalDigits: 1);
 
         public UserSettingDouble<TSettings> SupportPointDiam { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportPointDiam",
@@ -418,8 +472,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportPointDiam,
             (settings, val) => settings.SupportPointDiam = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            decimalDigits: 1);
 
         public UserSettingInt<TSettings> SupportPointSides { get; } = new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.SupportPointSides",
@@ -428,7 +483,8 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportPointSides,
             (settings, val) => settings.SupportPointSides = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Count,
+            numericInfo: new NumericInfoInt() { Minimum = new NumericBound<int>(3, true) });
 
         public UserSettingDouble<TSettings> SupportRegionJoinTolX { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportRegionJoinTolX",
@@ -437,7 +493,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportRegionJoinTolX,
             (settings, val) => settings.SupportRegionJoinTolX = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            convertToPercentage: true,
+            decimalDigits: 2);
 
         public UserSettingDouble<TSettings> SupportReleaseGap { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportReleaseGap",
@@ -446,8 +505,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportReleaseGap,
             (settings, val) => settings.SupportReleaseGap = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, true) },
+            decimalDigits: 3);
 
         public UserSettingDouble<TSettings> SupportSolidSpace { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportSolidSpace",
@@ -456,8 +516,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportSolidSpace,
             (settings, val) => settings.SupportSolidSpace = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, true) },
+            decimalDigits: 3);
 
         public UserSettingDouble<TSettings> SupportSpacingStepX { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportSpacingStepX",
@@ -466,7 +527,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportSpacingStepX,
             (settings, val) => settings.SupportSpacingStepX = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            convertToPercentage: true,
+            decimalDigits: 2);
 
         public UserSettingDouble<TSettings> SupportVolumeScale { get; } = new UserSettingDouble<TSettings>(
             "PrintUserSettingsFFF.SupportVolumeScale",
@@ -475,7 +539,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupSupport,
             (settings) => settings.SupportVolumeScale,
             (settings, val) => settings.SupportVolumeScale = val,
-            minimumValue: 0);
+            unitsF: () => UserSettingTranslations.Units_Percentage,
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
+            convertToPercentage: true,
+            decimalDigits: 2);
 
         #endregion Support
 
@@ -491,8 +558,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupRetraction,
             (settings) => settings.MinRetractTravelLength,
             (settings, val) => settings.MinRetractTravelLength = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, true) },
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            decimalDigits: 1);
 
         public UserSettingDouble<TSettings> RetractDistanceMM { get; } = new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.RetractDistanceMM",
@@ -501,8 +569,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupRetraction,
             (settings) => settings.RetractDistanceMM,
             (settings, val) => settings.RetractDistanceMM = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_Millimeters);
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, true) },
+            unitsF: () => UserSettingTranslations.Units_Millimeters,
+            decimalDigits: 2);
 
         public UserSettingDouble<TSettings> RetractSpeed { get; } = new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.RetractSpeed",
@@ -511,8 +580,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             GroupRetraction,
             (settings) => settings.RetractSpeed,
             (settings, val) => settings.RetractSpeed = val,
-            minimumValue: 0,
-            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute);
+            numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5 },
+            unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
+            decimalDigits: 0);
 
         # endregion
 
