@@ -16,22 +16,22 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 
         public void ApplyJSON(IMachineProfile settings, string json)
         {
-            ApplyJSON((TProfile)settings, json);
+            base.ApplyJSON((TProfile)settings, json);
         }
 
         public void ApplyKeyValuePair(IMachineProfile settings, string keyValue)
         {
-            ApplyKeyValuePair((TProfile)settings, keyValue);
+            base.ApplyKeyValuePair((TProfile)settings, keyValue);
         }
 
         public string SerializeJSON(IMachineProfile settings)
         {
-            return ((ProfileManager<TProfile>)this).SerializeJSON((TProfile)settings);
+            return base.SerializeJSON((TProfile)settings);
         }
 
         IMachineProfile IProfileManager<IMachineProfile>.DeserializeJSON(string json)
         {
-            return DeserializeJSON(json);
+            return base.DeserializeJSON(json);
         }
     }
 }

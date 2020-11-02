@@ -2,6 +2,8 @@ using g3;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Sutro.Core.Models.GCode;
 using Sutro.Core.Settings;
+using Sutro.Core.Settings.Machine;
+using Sutro.Core.Settings.Material;
 using Sutro.Core.Settings.Part;
 using Sutro.PathWorks.Plugins.FFF;
 using System;
@@ -133,6 +135,45 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
 
             // Assert
             Assert.AreEqual(555, settingsDeserialized.RapidExtrudeSpeed, 1e-6);
+        }
+
+        [TestMethod]
+        public void PartSettingsApplyJson()
+        {
+            // Arrange
+            var settings = (PartProfileFFF)engine.SettingsManager.PartProfileManager.FactoryProfiles[0];
+
+            // Act
+            engine.SettingsManager.PartProfileManager.ApplyJSON(settings, "{\"RapidExtrudeSpeed\":555}");
+
+            // Assert
+            Assert.AreEqual(555, settings.RapidExtrudeSpeed);
+        }
+
+        [TestMethod]
+        public void MachineSettingsApplyJson()
+        {
+            // Arrange
+            var settings = (MachineProfileFFF)engine.SettingsManager.MachineProfileManager.FactoryProfiles[0];
+
+            // Act
+            engine.SettingsManager.MachineProfileManager.ApplyJSON(settings, "{\"MaxExtruderTempC\":555}");
+
+            // Assert
+            Assert.AreEqual(555, settings.MaxExtruderTempC = 555);
+        }
+
+        [TestMethod]
+        public void MaterialSettingsApplyJson()
+        {
+            // Arrange
+            var settings = (MaterialProfileFFF)engine.SettingsManager.MaterialProfileManager.FactoryProfiles[0];
+
+            // Act
+            engine.SettingsManager.MaterialProfileManager.ApplyJSON(settings, "{\"CostPerKG\":555}");
+
+            // Assert
+            Assert.AreEqual(555, settings.CostPerKG = 555);
         }
 
         [TestMethod]
