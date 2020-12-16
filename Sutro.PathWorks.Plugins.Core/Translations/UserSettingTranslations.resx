@@ -550,6 +550,12 @@
   <data name="ShellsFillNozzleDiamStepX.Name" xml:space="preserve">
     <value>Perimeter Spacing</value>
   </data>
+  <data name="SolidFillAngles.Description" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SolidFillAngles.Name" xml:space="preserve">
+    <value>Angles</value>
+  </data>
   <data name="SolidFillBorderOverlapX.Description" xml:space="preserve">
     <value />
   </data>

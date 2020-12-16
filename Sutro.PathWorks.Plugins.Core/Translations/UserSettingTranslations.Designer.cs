@@ -1359,6 +1359,24 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string SolidFillAngles_Description {
+            get {
+                return ResourceManager.GetString("SolidFillAngles.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Angles.
+        /// </summary>
+        public static string SolidFillAngles_Name {
+            get {
+                return ResourceManager.GetString("SolidFillAngles.Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string SolidFillBorderOverlapX_Description {
             get {
                 return ResourceManager.GetString("SolidFillBorderOverlapX.Description", resourceCulture);

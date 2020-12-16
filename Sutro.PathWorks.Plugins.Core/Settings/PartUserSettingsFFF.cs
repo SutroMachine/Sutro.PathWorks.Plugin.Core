@@ -2,6 +2,7 @@
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;
 using Sutro.PathWorks.Plugins.Core.UserSettings;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
@@ -324,6 +325,39 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             numericInfo: new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false) },
             convertToPercentage: true,
             decimalDigits: 2);
+
+        public UserSettingDoubleListVariableLength<TSettings> SolidFillAngles { get; } = new UserSettingDoubleListVariableLength<TSettings>(
+            "PrintUserSettingsFFF.SolidFillAngles",
+            () => UserSettingTranslations.SolidFillAngles_Name,
+            () => UserSettingTranslations.SolidFillAngles_Description,
+            GroupSolidFill,
+            (settings) => settings.InfillAngles,
+            (settings, val) => settings.InfillAngles = val,
+            unitsF: () => UserSettingTranslations.Units_Degrees,
+            numericInfo: new NumericInfoDouble()
+            { 
+                Minimum = new NumericBound<double>(0, true),
+                Maximum = new NumericBound<double>(360, true)
+            },
+            convertToPercentage: false,
+            decimalDigits: 1);
+
+        public UserSettingDoubleListFixedLength<TSettings> DummyAnglesFixed { get; } = new UserSettingDoubleListFixedLength<TSettings>(
+            "DummyAngles",
+            () => "Dummy Angles",
+            () => "",
+            GroupSolidFill,
+            (settings) => new List<double>() { 0, 10, 20 },
+            (settings, val) => { return; },
+            3,
+            unitsF: () => UserSettingTranslations.Units_Degrees,
+            numericInfo: new NumericInfoDouble()
+            {
+                Minimum = new NumericBound<double>(0, true),
+                Maximum = new NumericBound<double>(360, true)
+            },
+            convertToPercentage: false,
+            decimalDigits: 1);
 
         #endregion SolidFill
 
