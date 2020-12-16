@@ -5,6 +5,7 @@ using Sutro.Core.Settings;
 using Sutro.Core.Settings.Machine;
 using Sutro.Core.Settings.Material;
 using Sutro.Core.Settings.Part;
+using Sutro.PathWorks.Plugins.API.Generators;
 using Sutro.PathWorks.Plugins.FFF;
 using System;
 using System.Collections.Generic;
@@ -60,8 +61,9 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
             var parts = new List<Tuple<DMesh3, PrintProfileFFF>>();
             parts.Add(new Tuple<DMesh3, PrintProfileFFF>(mesh, null));
             var settings = (PrintProfileFFF)engine.SettingsManager.CreateSettingsInstance();
-            var gcode = engine.Generator.GenerateGCode(parts, settings, out var generationReport);
-            return gcode;
+            settings.Part.LayerHeightMM = 1;
+            var result = engine.Generator.GenerateGCode(parts, settings) as GenerationResultSuccess;
+            return result.File;
         }
 
         [TestMethod]
