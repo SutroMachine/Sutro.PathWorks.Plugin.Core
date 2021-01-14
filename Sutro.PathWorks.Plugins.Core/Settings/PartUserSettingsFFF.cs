@@ -33,16 +33,6 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.EnableBridging,
             (settings, val) => settings.EnableBridging = val);
 
-        public UserSettingInt<TSettings> FloorLayers { get; } = new UserSettingInt<TSettings>(
-            "PrintUserSettingsFFF.FloorLayers",
-            () => UserSettingTranslations.FloorLayers_Name,
-            () => UserSettingTranslations.FloorLayers_Description,
-            GroupBasic,
-            (settings) => settings.FloorLayers,
-            (settings, val) => settings.FloorLayers = val,
-            unitsF: () => UserSettingTranslations.Units_Count,
-            new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
-
         public UserSettingBool<TSettings> GenerateSupport { get; } = new UserSettingBool<TSettings>(
             "PrintUserSettingsFFF.GenerateSupport",
             () => UserSettingTranslations.GenerateSupport_Name,
@@ -72,17 +62,6 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
             new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5 },
             decimalDigits: 0);
-
-        public UserSettingInt<TSettings> RoofLayers { get; } = new UserSettingInt<TSettings>(
-            "PrintUserSettingsFFF.RoofLayers",
-            () => UserSettingTranslations.RoofLayers_Name,
-            () => UserSettingTranslations.RoofLayers_Description,
-            GroupBasic,
-            (settings) => settings.RoofLayers,
-            (settings, val) => settings.RoofLayers = val,
-            unitsF: () => UserSettingTranslations.Units_Count,
-            new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
-
         public UserSettingInt<TSettings> Shells { get; } = new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.Shells",
             () => UserSettingTranslations.Shells_Name,
@@ -93,11 +72,30 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             unitsF: () => UserSettingTranslations.Units_Count,
             new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
 
+        public UserSettingInt<TSettings> RoofLayers { get; } = new UserSettingInt<TSettings>(
+            "PrintUserSettingsFFF.RoofLayers",
+            () => UserSettingTranslations.RoofLayers_Name,
+            () => UserSettingTranslations.RoofLayers_Description,
+            GroupBasic,
+            (settings) => settings.RoofLayers,
+            (settings, val) => settings.RoofLayers = val,
+            unitsF: () => UserSettingTranslations.Units_Count,
+            new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
+        public UserSettingInt<TSettings> FloorLayers { get; } = new UserSettingInt<TSettings>(
+            "PrintUserSettingsFFF.FloorLayers",
+            () => UserSettingTranslations.FloorLayers_Name,
+            () => UserSettingTranslations.FloorLayers_Description,
+            GroupBasic,
+            (settings) => settings.FloorLayers,
+            (settings, val) => settings.FloorLayers = val,
+            unitsF: () => UserSettingTranslations.Units_Count,
+            new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
+
         public UserSettingDoubleListVariableLength<TSettings> SolidFillAngles { get; } = new UserSettingDoubleListVariableLength<TSettings>(
             "PrintUserSettingsFFF.FillAngles",
             () => UserSettingTranslations.FillAngles_Name,
             () => UserSettingTranslations.FillAngles_Description,
-            GroupSolidFill,
+            GroupBasic,
             (settings) => settings.InfillAngles,
             (settings, val) => settings.InfillAngles = val,
             unitsF: () => UserSettingTranslations.Units_Degrees,
