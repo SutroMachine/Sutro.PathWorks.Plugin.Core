@@ -2,6 +2,7 @@
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;
 using Sutro.PathWorks.Plugins.Core.UserSettings;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
@@ -92,6 +93,21 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             unitsF: () => UserSettingTranslations.Units_Count,
             new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
 
+        public UserSettingDoubleListVariableLength<TSettings> SolidFillAngles { get; } = new UserSettingDoubleListVariableLength<TSettings>(
+            "PrintUserSettingsFFF.FillAngles",
+            () => UserSettingTranslations.FillAngles_Name,
+            () => UserSettingTranslations.FillAngles_Description,
+            GroupSolidFill,
+            (settings) => settings.InfillAngles,
+            (settings, val) => settings.InfillAngles = val,
+            unitsF: () => UserSettingTranslations.Units_Degrees,
+            numericInfo: new NumericInfoDouble()
+            {
+                Minimum = new NumericBound<double>(0, true),
+                Maximum = new NumericBound<double>(360, true)
+            },
+            convertToPercentage: false,
+            decimalDigits: 1);
         #endregion Basic
 
         #region Bridging

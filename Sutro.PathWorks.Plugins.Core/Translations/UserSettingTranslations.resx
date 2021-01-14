@@ -207,6 +207,12 @@
   <data name="FilamentDiamMM.Name" xml:space="preserve">
     <value>Filament Diameter</value>
   </data>
+  <data name="FillAngles.Description" xml:space="preserve">
+    <value>Angles from x-axis to repeat for generating fill; applies to both solid and sparse fill.</value>
+  </data>
+  <data name="FillAngles.Name" xml:space="preserve">
+    <value>Fill Angles</value>
+  </data>
   <data name="FloorLayers.Description" xml:space="preserve">
     <value />
   </data>
