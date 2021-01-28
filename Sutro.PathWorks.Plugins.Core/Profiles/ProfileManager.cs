@@ -1,6 +1,7 @@
 ﻿using gs;
 using Newtonsoft.Json;
 using Sutro.Core.Models.Profiles;
+using Sutro.PathWorks.Plugins.API;
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.UserSettings;
 using System.Collections.Generic;
@@ -15,9 +16,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 
         IUserSettingCollection IProfileManager<TProfile>.UserSettings => UserSettings;
 
-        public void ApplyJSON(TProfile settings, string json)
+        public virtual Result ApplyJSON(TProfile settings, string json)
         {
             JsonConvert.PopulateObject(json, settings, SerializerSettings());
+            return Result.Ok();
         }
 
         public void ApplyKeyValuePair(TProfile settings, string keyValue)
@@ -27,10 +29,10 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             JsonConvert.PopulateObject(sFormatted, settings, SerializerSettings());
         }
 
-        public TProfile DeserializeJSON(string json)
+        public virtual Result<TProfile> DeserializeJSON(string json)
         {
             var profile = JsonConvert.DeserializeObject<TProfile>(json, SerializerSettings());
-            return profile;
+            return Result<TProfile>.Ok(profile);
         }
 
         public string SerializeJSON(TProfile settings)

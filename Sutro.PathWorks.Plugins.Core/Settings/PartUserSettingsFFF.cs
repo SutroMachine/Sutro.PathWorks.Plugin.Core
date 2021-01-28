@@ -2,7 +2,6 @@
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.Core.Translations;
 using Sutro.PathWorks.Plugins.Core.UserSettings;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
@@ -62,6 +61,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             unitsF: () => UserSettingTranslations.Units_MillimetersPerMinute,
             new NumericInfoDouble() { Minimum = new NumericBound<double>(0, false), Increment = 5 },
             decimalDigits: 0);
+
         public UserSettingInt<TSettings> Shells { get; } = new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.Shells",
             () => UserSettingTranslations.Shells_Name,
@@ -81,6 +81,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings, val) => settings.RoofLayers = val,
             unitsF: () => UserSettingTranslations.Units_Count,
             new NumericInfoInt() { Minimum = new NumericBound<int>(0, true) });
+
         public UserSettingInt<TSettings> FloorLayers { get; } = new UserSettingInt<TSettings>(
             "PrintUserSettingsFFF.FloorLayers",
             () => UserSettingTranslations.FloorLayers_Name,
@@ -106,6 +107,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             },
             convertToPercentage: false,
             decimalDigits: 1);
+
         #endregion Basic
 
         #region Bridging

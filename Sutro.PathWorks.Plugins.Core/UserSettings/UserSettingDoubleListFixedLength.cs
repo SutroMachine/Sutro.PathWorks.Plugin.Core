@@ -21,7 +21,7 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
             UserSettingGroup group,
             Func<TProfile, List<double>> loadF,
             Action<TProfile, List<double>> applyF,
-            int count, 
+            int count,
             Func<string> unitsF = null,
             NumericInfoDouble numericInfo = null,
             bool convertToPercentage = false,

@@ -2,6 +2,7 @@
 using gs;
 using Sutro.Core.Models.GCode;
 using Sutro.Core.Settings;
+using Sutro.PathWorks.Plugins.API;
 using Sutro.PathWorks.Plugins.API.Generators;
 using System;
 using System.Collections.Generic;
@@ -28,32 +29,35 @@ namespace Sutro.PathWorks.Plugins.Core.Engines
 
         public Version Version => printGeneratorManager.PrintGeneratorAssemblyVersion;
 
-        public GenerationResultBase GenerateGCode(IList<Tuple<DMesh3, TSettings>> parts, TSettings globalSettings, CancellationToken? cancellationToken = null)
+        public Result<GenerationOutput> GenerateGCode(IList<Tuple<DMesh3, TSettings>> parts, TSettings globalSettings, CancellationToken? cancellationToken = null)
         {
             var meshes = parts.Select(p => p.Item1);
             try
             {
                 var gcode = printGeneratorManager.GCodeFromMeshes(meshes, out var details, globalSettings, cancellationToken);
-                return new GenerationResultSuccess(gcode, new GCodeInfo(details.MaterialUsageEstimate, details.PrintTimeEstimate), details.Warnings);
+                return Result<GenerationOutput>.Ok(
+                    new GenerationOutput(gcode, details.MaterialUsageEstimate, details.PrintTimeEstimate), details.Warnings);
             }
             catch (Exception e)
             {
-                return new GenerationResultFailure(e.Message);
+                return Result<GenerationOutput>.Fail(e.Message);
             }
         }
 
-        public GenerationResultBase GenerateGCode(IList<Tuple<DMesh3, object>> parts, object globalSettings, CancellationToken? cancellationToken = null)
+        public Result<GenerationOutput> GenerateGCode(IList<Tuple<DMesh3, object>> parts, object globalSettings, CancellationToken? cancellationToken = null)
         {
             var meshes = parts.Select(p => p.Item1);
             try
             {
                 var globalSettingsTyped = (TSettings)globalSettings;
                 var gcode = printGeneratorManager.GCodeFromMeshes(meshes, out var details, globalSettingsTyped, cancellationToken);
-                return new GenerationResultSuccess(gcode, new GCodeInfo(details.MaterialUsageEstimate, details.PrintTimeEstimate), details.Warnings);
+                return Result<GenerationOutput>.Ok(
+                    new GenerationOutput(gcode, details.MaterialUsageEstimate, details.PrintTimeEstimate),
+                    details.Warnings);
             }
             catch (Exception e)
             {
-                return new GenerationResultFailure(e.Message);
+                return Result<GenerationOutput>.Fail(e.Message);
             }
         }
 

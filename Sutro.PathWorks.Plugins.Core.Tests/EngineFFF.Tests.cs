@@ -5,7 +5,6 @@ using Sutro.Core.Settings;
 using Sutro.Core.Settings.Machine;
 using Sutro.Core.Settings.Material;
 using Sutro.Core.Settings.Part;
-using Sutro.PathWorks.Plugins.API.Generators;
 using Sutro.PathWorks.Plugins.FFF;
 using System;
 using System.Collections.Generic;
@@ -62,8 +61,9 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
             parts.Add(new Tuple<DMesh3, PrintProfileFFF>(mesh, null));
             var settings = (PrintProfileFFF)engine.SettingsManager.CreateSettingsInstance();
             settings.Part.LayerHeightMM = 1;
-            var result = engine.Generator.GenerateGCode(parts, settings) as GenerationResultSuccess;
-            return result.File;
+            var result = engine.Generator.GenerateGCode(parts, settings);
+
+            return result.Value?.File;
         }
 
         [TestMethod]
@@ -133,10 +133,11 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
 
             // Act
             var json = engine.SettingsManager.PartProfileManager.SerializeJSON(settings);
-            var settingsDeserialized = (PartProfileFFF)engine.SettingsManager.PartProfileManager.DeserializeJSON(json);
+            var result = engine.SettingsManager.PartProfileManager.DeserializeJSON(json);
 
             // Assert
-            Assert.AreEqual(555, settingsDeserialized.RapidExtrudeSpeed, 1e-6);
+            Assert.IsTrue(result.IsSuccessful);
+            Assert.AreEqual(555, (result.Value as PartProfileFFF).RapidExtrudeSpeed, 1e-6);
         }
 
         [TestMethod]
