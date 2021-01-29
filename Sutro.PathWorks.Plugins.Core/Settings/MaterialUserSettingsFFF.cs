@@ -16,7 +16,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupIdentifiers =
             new UserSettingGroup(() => UserSettingTranslations.GroupMaterialIdentifiers);
 
-        public UserSettingString<TSettings> MaterialName { get; } = new UserSettingString<TSettings>(
+        public virtual UserSettingString<TSettings> MaterialName { get; } = new UserSettingString<TSettings>(
             "MaterialUserSettingsFFF.Name",
             () => UserSettingTranslations.Name_Name,
             () => UserSettingTranslations.Name_Description,
@@ -24,7 +24,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.Name,
             (settings, val) => settings.Name = val);
 
-        public UserSettingString<TSettings> MaterialSource { get; } = new UserSettingString<TSettings>(
+        public virtual UserSettingString<TSettings> MaterialSource { get; } = new UserSettingString<TSettings>(
             "MaterialUserSettingsFFF.MaterialSource",
             () => UserSettingTranslations.MaterialSource_Name,
             () => UserSettingTranslations.MaterialSource_Description,
@@ -32,7 +32,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             (settings) => settings.Supplier,
             (settings, val) => settings.Supplier = val);
 
-        public UserSettingString<TSettings> MaterialColor { get; } = new UserSettingString<TSettings>(
+        public virtual UserSettingString<TSettings> MaterialColor { get; } = new UserSettingString<TSettings>(
             "MaterialUserSettingsFFF.MaterialColor",
             () => UserSettingTranslations.MaterialColor_Name,
             () => UserSettingTranslations.MaterialColor_Description,
@@ -47,7 +47,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupBasic =
             new UserSettingGroup(() => UserSettingTranslations.GroupBasic);
 
-        public UserSettingDouble<TSettings> FilamentDiamMM { get; } = new UserSettingDouble<TSettings>(
+        public virtual UserSettingDouble<TSettings> FilamentDiamMM { get; } = new UserSettingDouble<TSettings>(
             "MaterialUserSettingsFFF.FilamentDiamMM",
             () => UserSettingTranslations.FilamentDiamMM_Name,
             () => UserSettingTranslations.FilamentDiamMM_Description,
@@ -65,7 +65,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
         public static readonly UserSettingGroup GroupTemperature =
             new UserSettingGroup(() => UserSettingTranslations.GroupTemperature);
 
-        public UserSettingInt<TSettings> ExtruderTempC { get; } = new UserSettingInt<TSettings>(
+        public virtual UserSettingInt<TSettings> ExtruderTempC { get; } = new UserSettingInt<TSettings>(
             "MaterialUserSettingsFFF.ExtruderTempC",
             () => UserSettingTranslations.ExtruderTempC_Name,
             () => UserSettingTranslations.ExtruderTempC_Description,
@@ -75,7 +75,7 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             unitsF: () => UserSettingTranslations.Units_DegreesCelsius,
             new NumericInfoInt() { Minimum = new NumericBound<int>(0, false) });
 
-        public UserSettingInt<TSettings> HeatedBedTempC { get; } = new UserSettingInt<TSettings>(
+        public virtual UserSettingInt<TSettings> HeatedBedTempC { get; } = new UserSettingInt<TSettings>(
             "MaterialUserSettingsFFF.HeatedBedTempC",
             () => UserSettingTranslations.HeatedBedTempC_Name,
             () => UserSettingTranslations.HeatedBedTempC_Description,
