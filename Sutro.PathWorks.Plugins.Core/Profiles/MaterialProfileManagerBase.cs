@@ -24,6 +24,11 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             base.ApplyKeyValuePair((TProfile)settings, keyValue);
         }
 
+        public void OnSet(IMaterialProfile profile)
+        {
+            base.OnSet((TProfile)profile);
+        }
+
         public string SerializeJSON(IMaterialProfile settings)
         {
             return base.SerializeJSON((TProfile)settings);

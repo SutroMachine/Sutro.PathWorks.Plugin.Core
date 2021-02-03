@@ -40,6 +40,11 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             return JsonConvert.SerializeObject(settings, settings.GetType(), SerializerSettings());
         }
 
+        public virtual void OnSet(TProfile profile)
+        {
+            // Do nothing
+        }
+
         protected virtual JsonSerializerSettings SerializerSettings()
         {
             var contractResolver = new Sutro.Core.Persistence.IgnoreablePropertiesContractResolver();

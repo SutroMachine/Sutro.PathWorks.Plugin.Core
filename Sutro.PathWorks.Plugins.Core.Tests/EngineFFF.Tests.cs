@@ -125,7 +125,7 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
         }
 
         [TestMethod]
-        public void SettingsJSONSerializeDeserialize()
+        public void PartProfile_SerializeDeserialize()
         {
             // Arrange
             var settings = (PartProfileFFF)engine.SettingsManager.PartProfileManager.FactoryProfiles[0];
@@ -138,6 +138,38 @@ namespace Sutro.PathWorks.Plugins.Core.Tests
             // Assert
             Assert.IsTrue(result.IsSuccessful);
             Assert.AreEqual(555, (result.Value as PartProfileFFF).RapidExtrudeSpeed, 1e-6);
+        }
+
+        [TestMethod]
+        public void MachineProfile_SerializeDeserialize()
+        {
+            // Arrange
+            var settings = (MachineProfileFFF)engine.SettingsManager.MachineProfileManager.FactoryProfiles[0];
+            settings.MaxBedTempC = 555;
+
+            // Act
+            var json = engine.SettingsManager.MachineProfileManager.SerializeJSON(settings);
+            var result = engine.SettingsManager.MachineProfileManager.DeserializeJSON(json);
+
+            // Assert
+            Assert.IsTrue(result.IsSuccessful);
+            Assert.AreEqual(555, (result.Value as MachineProfileFFF).MaxBedTempC, 1e-6);
+        }
+
+        [TestMethod]
+        public void MaterialProfile_SerializeDeserialize()
+        {
+            // Arrange
+            var settings = (MaterialProfileFFF)engine.SettingsManager.MaterialProfileManager.FactoryProfiles[0];
+            settings.FilamentDiamMM = 555;
+
+            // Act
+            var json = engine.SettingsManager.MaterialProfileManager.SerializeJSON(settings);
+            var result = engine.SettingsManager.MaterialProfileManager.DeserializeJSON(json);
+
+            // Assert
+            Assert.IsTrue(result.IsSuccessful);
+            Assert.AreEqual(555, (result.Value as MaterialProfileFFF).FilamentDiamMM, 1e-6);
         }
 
         [TestMethod]
