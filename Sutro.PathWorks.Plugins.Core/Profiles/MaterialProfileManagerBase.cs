@@ -1,4 +1,5 @@
 ﻿using Sutro.Core.Models.Profiles;
+using Sutro.PathWorks.Plugins.API;
 using Sutro.PathWorks.Plugins.API.Settings;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 
         IUserSettingCollection IProfileManager<IMaterialProfile>.UserSettings => UserSettings;
 
-        public void ApplyJSON(IMaterialProfile settings, string json)
+        public Result ApplyJSON(IMaterialProfile settings, string json)
         {
-            base.ApplyJSON((TProfile)settings, json);
+            return base.ApplyJSON((TProfile)settings, json);
         }
 
         public void ApplyKeyValuePair(IMaterialProfile settings, string keyValue)
@@ -23,14 +24,22 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             base.ApplyKeyValuePair((TProfile)settings, keyValue);
         }
 
+        public void OnSet(IMaterialProfile profile)
+        {
+            base.OnSet((TProfile)profile);
+        }
+
         public string SerializeJSON(IMaterialProfile settings)
         {
             return base.SerializeJSON((TProfile)settings);
         }
 
-        IMaterialProfile IProfileManager<IMaterialProfile>.DeserializeJSON(string json)
+        Result<IMaterialProfile> IProfileManager<IMaterialProfile>.DeserializeJSON(string json)
         {
-            return base.DeserializeJSON(json);
+            var result = base.DeserializeJSON(json);
+            return result.IsSuccessful ?
+                Result<IMaterialProfile>.Ok(result.Value, result.Warnings) :
+                Result<IMaterialProfile>.Fail(result.Error);
         }
     }
 }

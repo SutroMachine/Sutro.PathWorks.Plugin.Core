@@ -1,4 +1,5 @@
 ﻿using Sutro.Core.Models.Profiles;
+using Sutro.PathWorks.Plugins.API;
 using Sutro.PathWorks.Plugins.API.Settings;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,9 +15,9 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
 
         IUserSettingCollection IProfileManager<IMachineProfile>.UserSettings => UserSettings;
 
-        public void ApplyJSON(IMachineProfile settings, string json)
+        public Result ApplyJSON(IMachineProfile settings, string json)
         {
-            base.ApplyJSON((TProfile)settings, json);
+            return base.ApplyJSON((TProfile)settings, json);
         }
 
         public void ApplyKeyValuePair(IMachineProfile settings, string keyValue)
@@ -24,14 +25,22 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             base.ApplyKeyValuePair((TProfile)settings, keyValue);
         }
 
+        public void OnSet(IMachineProfile profile)
+        {
+            base.OnSet((TProfile)profile);
+        }
+
         public string SerializeJSON(IMachineProfile settings)
         {
             return base.SerializeJSON((TProfile)settings);
         }
 
-        IMachineProfile IProfileManager<IMachineProfile>.DeserializeJSON(string json)
+        Result<IMachineProfile> IProfileManager<IMachineProfile>.DeserializeJSON(string json)
         {
-            return base.DeserializeJSON(json);
+            var result = base.DeserializeJSON(json);
+            return result.IsSuccessful ?
+                Result<IMachineProfile>.Ok(result.Value, result.Warnings) :
+                Result<IMachineProfile>.Fail(result.Error);
         }
     }
 }

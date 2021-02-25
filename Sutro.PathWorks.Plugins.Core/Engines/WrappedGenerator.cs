@@ -3,6 +3,7 @@ using gs;
 using Sutro.Core.Models.GCode;
 using Sutro.Core.Settings;
 using Sutro.PathWorks.Plugins.API;
+using Sutro.PathWorks.Plugins.API.Generators;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,16 +29,36 @@ namespace Sutro.PathWorks.Plugins.Core.Engines
 
         public Version Version => printGeneratorManager.PrintGeneratorAssemblyVersion;
 
-        public GCodeFile GenerateGCode(IList<Tuple<DMesh3, TSettings>> parts, TSettings globalSettings, out IEnumerable<string> generationReport, Action<string> gcodeLineReadyF = null, Action<string> progressMessageF = null, CancellationToken? cancellationToken = null)
+        public Result<GenerationOutput> GenerateGCode(IList<Tuple<DMesh3, TSettings>> parts, TSettings globalSettings, CancellationToken? cancellationToken = null)
         {
             var meshes = parts.Select(p => p.Item1);
-            return printGeneratorManager.GCodeFromMeshes(meshes, out generationReport, globalSettings, cancellationToken);
+            try
+            {
+                var gcode = printGeneratorManager.GCodeFromMeshes(meshes, out var details, globalSettings, cancellationToken);
+                return Result<GenerationOutput>.Ok(
+                    new GenerationOutput(gcode, details.MaterialUsageEstimate, details.PrintTimeEstimate), details.Warnings);
+            }
+            catch (Exception e)
+            {
+                return Result<GenerationOutput>.Fail(e.Message);
+            }
         }
 
-        public GCodeFile GenerateGCode(IList<Tuple<DMesh3, object>> parts, object globalSettings, out IEnumerable<string> generationReport, Action<string> gcodeLineReadyF = null, Action<string> progressMessageF = null, CancellationToken? cancellationToken = null)
+        public Result<GenerationOutput> GenerateGCode(IList<Tuple<DMesh3, object>> parts, object globalSettings, CancellationToken? cancellationToken = null)
         {
             var meshes = parts.Select(p => p.Item1);
-            return printGeneratorManager.GCodeFromMeshes(meshes, out generationReport, (TSettings)globalSettings, cancellationToken);
+            try
+            {
+                var globalSettingsTyped = (TSettings)globalSettings;
+                var gcode = printGeneratorManager.GCodeFromMeshes(meshes, out var details, globalSettingsTyped, cancellationToken);
+                return Result<GenerationOutput>.Ok(
+                    new GenerationOutput(gcode, details.MaterialUsageEstimate, details.PrintTimeEstimate),
+                    details.Warnings);
+            }
+            catch (Exception e)
+            {
+                return Result<GenerationOutput>.Fail(e.Message);
+            }
         }
 
         public GCodeFile LoadGCode(TextReader input)

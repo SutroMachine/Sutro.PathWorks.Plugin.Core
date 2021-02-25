@@ -331,6 +331,24 @@ namespace Sutro.PathWorks.Plugins.Core.Translations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Angles from x-axis to repeat for generating fill; applies to both solid and sparse fill..
+        /// </summary>
+        public static string FillAngles_Description {
+            get {
+                return ResourceManager.GetString("FillAngles.Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fill Angles.
+        /// </summary>
+        public static string FillAngles_Name {
+            get {
+                return ResourceManager.GetString("FillAngles.Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         public static string FloorLayers_Description {

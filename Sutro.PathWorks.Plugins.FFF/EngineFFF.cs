@@ -1,6 +1,6 @@
 ﻿using gs;
 using Sutro.Core.Settings;
-using Sutro.PathWorks.Plugins.API;
+using Sutro.PathWorks.Plugins.API.Generators;
 using Sutro.PathWorks.Plugins.API.Settings;
 using Sutro.PathWorks.Plugins.API.Visualizers;
 using Sutro.PathWorks.Plugins.Core.Engines;

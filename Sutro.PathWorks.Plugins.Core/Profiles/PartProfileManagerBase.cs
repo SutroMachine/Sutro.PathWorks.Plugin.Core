@@ -1,4 +1,5 @@
 ﻿using Sutro.Core.Models.Profiles;
+using Sutro.PathWorks.Plugins.API;
 using Sutro.PathWorks.Plugins.API.Settings;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,14 +25,27 @@ namespace Sutro.PathWorks.Plugins.Core.Settings
             base.ApplyKeyValuePair((TProfile)settings, keyValue);
         }
 
+        public void OnSet(IPartProfile profile)
+        {
+            base.OnSet((TProfile)profile);
+        }
+
         public string SerializeJSON(IPartProfile settings)
         {
             return base.SerializeJSON((TProfile)settings);
         }
 
-        IPartProfile IProfileManager<IPartProfile>.DeserializeJSON(string json)
+        Result IProfileManager<IPartProfile>.ApplyJSON(IPartProfile settings, string json)
         {
-            return base.DeserializeJSON(json);
+            return base.ApplyJSON((TProfile)settings, json);
+        }
+
+        Result<IPartProfile> IProfileManager<IPartProfile>.DeserializeJSON(string json)
+        {
+            var result = base.DeserializeJSON(json);
+            return result.IsSuccessful ?
+                Result<IPartProfile>.Ok(result.Value, result.Warnings) :
+                Result<IPartProfile>.Fail(result.Error);
         }
     }
 }
