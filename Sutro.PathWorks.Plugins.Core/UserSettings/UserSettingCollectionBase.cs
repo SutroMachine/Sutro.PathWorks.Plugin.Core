@@ -47,13 +47,21 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
         }
 
         /// <summary>
-        /// Checks the individual validations of each user setting.
+        /// Checks the values of all user settings.
         /// </summary>
         /// <remarks>
         /// This method can be overridden in derived classes to add validations
         /// between combinations of user settings in addition to the individual checks.
         /// </remarks>
         public virtual List<ValidationResult> Validate(TProfile settings)
+        {
+            return new List<ValidationResult>();
+        }
+
+        /// <summary>
+        /// Checks the individual validations of each user setting.
+        /// </summary>
+        public virtual List<ValidationResult> ValidateIndivual(TProfile settings)
         {
             var validations = new List<ValidationResult>();
             foreach (var userSetting in Settings())
