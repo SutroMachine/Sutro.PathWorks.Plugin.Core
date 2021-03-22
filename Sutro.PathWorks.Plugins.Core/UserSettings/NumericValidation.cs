@@ -7,7 +7,7 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
     {
         public static ValidationResult Validate<T>(NumericInfoBase<T> numericInfo, T value) where T : IComparable
         {
-            if (numericInfo.Minimum != null)
+            if (numericInfo?.Minimum != null)
             {
                 int comparison = value.CompareTo(numericInfo.Minimum.Value);
 
@@ -23,7 +23,7 @@ namespace Sutro.PathWorks.Plugins.Core.UserSettings
                 }
             }
 
-            if (numericInfo.Maximum != null)
+            if (numericInfo?.Maximum != null)
             {
                 int comparison = value.CompareTo(numericInfo.Maximum.Value);
 
