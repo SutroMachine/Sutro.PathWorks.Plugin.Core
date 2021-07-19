@@ -15,7 +15,7 @@ Includes a plugin for basic FFF printing with translations for all settings.
     <RepositoryUrl>https://github.com/SutroMachine/Sutro.PathWorks.Plugin.Core</RepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <Version>10.0.1</Version>
+    <Version>10.0.2</Version>
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
@@ -49,7 +49,7 @@ Includes a plugin for basic FFF printing with translations for all settings.
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Sutro.Core" Version="2.2.1" />
+    <PackageReference Include="Sutro.Core" Version="[2.2.1, 2.3)" />
     <PackageReference Include="Sutro.PathWorks.Plugins.API" Version="10.0.0" />
   </ItemGroup>
 
