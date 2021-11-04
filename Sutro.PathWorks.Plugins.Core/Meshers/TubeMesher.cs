@@ -7,11 +7,11 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
 {
     public class TubeMesher<TPrintVertex> : IToolpathPreviewMesher<TPrintVertex> where TPrintVertex : IExtrusionVertex
     {
-        private const float brightnessMax = 1f;
-        private const float brightnessMin = 0.2f;
-        private const double miterThreshold = 40 * MathUtil.Deg2Rad;
+        protected const float brightnessMax = 1f;
+        protected const float brightnessMin = 0.2f;
+        protected const double miterThreshold = 40 * MathUtil.Deg2Rad;
 
-        private Func<TPrintVertex, Vector3d, float, ToolpathPreviewVertex> vertexFactory;
+        protected Func<TPrintVertex, Vector3d, float, ToolpathPreviewVertex> vertexFactory;
 
         public ToolpathPreviewMesh Generate(LinearToolpath3<TPrintVertex> toolpath, Func<TPrintVertex, Vector3d, float, ToolpathPreviewVertex> vertexFactory)
         {
@@ -26,15 +26,18 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             for (int i = 0; i < toolpath.VertexCount; i++)
             {
                 Segment3d? segmentAfterJoint = null;
+                var currentVertex = toolpath[i];
+                var nextVertex = toolpath[i];
 
                 if (i < toolpath.VertexCount - 1)
                 {
-                    segmentAfterJoint = new Segment3d(toolpath[i].Position, toolpath[i + 1].Position);
+                    nextVertex = toolpath[i + 1];
+                    segmentAfterJoint = new Segment3d(currentVertex.Position, nextVertex.Position);
                 }
 
                 if (segmentBeforeJoint == null || segmentAfterJoint == null)
                 {
-                    joints[i] = GenerateButtJoint(segmentBeforeJoint, segmentAfterJoint, toolpath[i], mesh);
+                    joints[i] = GenerateButtJoint(segmentBeforeJoint, segmentAfterJoint, currentVertex, nextVertex, mesh);
                 }
                 else
                 {
@@ -42,11 +45,11 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
 
                     if (Math.Abs(angleRad) > miterThreshold)
                     {
-                        joints[i] = GenerateBevelJoint(segmentBeforeJoint.Value, segmentAfterJoint.Value, toolpath[i], mesh);
+                        joints[i] = GenerateBevelJoint(segmentBeforeJoint.Value, segmentAfterJoint.Value, currentVertex, nextVertex, mesh);
                     }
                     else
                     {
-                        joints[i] = GenerateMiterJoint(segmentBeforeJoint.Value, segmentAfterJoint.Value, toolpath[i], mesh);
+                        joints[i] = GenerateMiterJoint(segmentBeforeJoint.Value, segmentAfterJoint.Value, currentVertex, nextVertex, mesh);
                     }
                 }
 
@@ -88,20 +91,20 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             }
         }
 
-        protected ToolpathPreviewJoint GenerateBevelJoint(
+        protected virtual ToolpathPreviewJoint GenerateBevelJoint(
             Segment3d segmentBefore, Segment3d segmentAfter,
-            TPrintVertex printVertex, ToolpathPreviewMesh mesh)
+            TPrintVertex printVertex, TPrintVertex nextPrintVertex, ToolpathPreviewMesh mesh)
         {
             if (segmentBefore.Direction.Cross(segmentAfter.Direction).z > 0)
-                return GenerateRightBevel(segmentBefore, segmentAfter, printVertex, mesh);
+                return GenerateRightBevel(segmentBefore, segmentAfter, printVertex, nextPrintVertex, mesh);
             else
-                return GenerateLeftBevel(segmentBefore, segmentAfter, printVertex, mesh);
+                return GenerateLeftBevel(segmentBefore, segmentAfter, printVertex, nextPrintVertex, mesh);
         }
 
-        protected virtual ToolpathPreviewJoint GenerateMiterJoint(Segment3d segmentBefore, Segment3d segmentAfter, TPrintVertex printVertex, ToolpathPreviewMesh mesh)
+        protected virtual ToolpathPreviewJoint GenerateMiterJoint(Segment3d segmentBefore, Segment3d segmentAfter,
+            TPrintVertex printVertex, TPrintVertex nextPrintVertex, ToolpathPreviewMesh mesh)
         {
             var averageDirection = (segmentBefore.Direction + segmentAfter.Direction).Normalized;
-            var scaleFactor = 1 / segmentBefore.Direction.Dot(averageDirection);
 
             var frame = new Frame3f(printVertex.Position);
             frame.AlignAxis(1, ToVector3f(averageDirection));
@@ -123,14 +126,14 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             return joint;
         }
 
-        private static bool CornerIsInsideTube(Segment3d segmentBeforeJoint, Segment3d segmentAfterJoint, double tubeWidth)
+        protected static bool CornerIsInsideTube(Segment3d segmentBeforeJoint, Segment3d segmentAfterJoint, double tubeWidth)
         {
             var angle = Math.PI - segmentBeforeJoint.Direction.AngleR(segmentAfterJoint.Direction, true);
             var minimumLength = (tubeWidth / 2d) / Math.Tan(angle / 2d);
             return segmentAfterJoint.Length < minimumLength;
         }
 
-        private static void CreateFrames(Segment3d segmentBefore, Segment3d segmentAfter, out Frame3f frameMiter, out Frame3f frameSegBefore, out Frame3f frameSegAfter)
+        protected static void CreateFrames(Segment3d segmentBefore, Segment3d segmentAfter, out Frame3f frameMiter, out Frame3f frameSegBefore, out Frame3f frameSegAfter)
         {
             var averageDirection = (segmentBefore.Direction + segmentAfter.Direction).Normalized;
 
@@ -144,7 +147,7 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             frameSegAfter.AlignAxis(1, ToVector3f(segmentAfter.Direction));
         }
 
-        private static double GetBevelDistance(ref Segment3d segmentBefore, ref Segment3d segmentAfter, Vector2d dimensions)
+        protected static double GetBevelDistance(ref Segment3d segmentBefore, ref Segment3d segmentAfter, Vector2d dimensions)
         {
             double angle2 = Math.Abs(segmentBefore.Direction.AngleR(segmentAfter.Direction));
 
@@ -152,38 +155,38 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             return miterExtensions;
         }
 
-        private static double GetMiterScaleFactor(ref Frame3f frameMiter, ref Frame3f frameSegBefore)
+        protected static double GetMiterScaleFactor(ref Frame3f frameMiter, ref Frame3f frameSegBefore)
         {
             return 1 / frameSegBefore.Y.Dot(frameMiter.Y);
         }
 
-        private static Vector3f ToVector3f(Vector3d vector)
+        protected static Vector3f ToVector3f(Vector3d vector)
         {
             return new Vector3f(vector.x, vector.y, vector.z);
         }
 
-        private void AddCapAfterJoint(Vector3d segmentDirection, TPrintVertex printVertex, ToolpathPreviewJoint joint, ToolpathPreviewMesh mesh)
+        protected void AddCapAfterJoint(Vector3d segmentDirection, TPrintVertex printVertex, TPrintVertex nextPrintVertex, ToolpathPreviewJoint joint, ToolpathPreviewMesh mesh)
         {
             var frame = new Frame3f(printVertex.Position);
             frame.AlignAxis(1, ToVector3f(segmentDirection));
 
-            joint.OutTop = mesh.AddVertex(vertexFactory(printVertex,
-                frame.FromFrameP(DiamondCrossSection.Top(printVertex.Dimensions)), brightnessMax));
+            joint.OutTop = mesh.AddVertex(vertexFactory(nextPrintVertex,
+                frame.FromFrameP(DiamondCrossSection.Top(nextPrintVertex.Dimensions)), brightnessMax));
 
-            joint.OutRight = mesh.AddVertex(vertexFactory(printVertex,
-                frame.FromFrameP(DiamondCrossSection.Right(printVertex.Dimensions)), brightnessMin));
+            joint.OutRight = mesh.AddVertex(vertexFactory(nextPrintVertex,
+                frame.FromFrameP(DiamondCrossSection.Right(nextPrintVertex.Dimensions)), brightnessMin));
 
-            joint.OutBottom = mesh.AddVertex(vertexFactory(printVertex,
-                frame.FromFrameP(DiamondCrossSection.Bottom(printVertex.Dimensions)), brightnessMax));
+            joint.OutBottom = mesh.AddVertex(vertexFactory(nextPrintVertex,
+                frame.FromFrameP(DiamondCrossSection.Bottom(nextPrintVertex.Dimensions)), brightnessMax));
 
-            joint.OutLeft = mesh.AddVertex(vertexFactory(printVertex,
-                frame.FromFrameP(DiamondCrossSection.Left(printVertex.Dimensions)), brightnessMin));
+            joint.OutLeft = mesh.AddVertex(vertexFactory(nextPrintVertex,
+                frame.FromFrameP(DiamondCrossSection.Left(nextPrintVertex.Dimensions)), brightnessMin));
 
             mesh.AddTriangle(joint.OutBottom, joint.OutTop, joint.OutLeft);
             mesh.AddTriangle(joint.OutBottom, joint.OutRight, joint.OutTop);
         }
 
-        private void AddCapBeforeJoint(Vector3d segmentDirection, TPrintVertex printVertex, ToolpathPreviewJoint joint, ToolpathPreviewMesh mesh)
+        protected void AddCapBeforeJoint(Vector3d segmentDirection, TPrintVertex printVertex, ToolpathPreviewJoint joint, ToolpathPreviewMesh mesh)
         {
             var frame = new Frame3f(printVertex.Position);
             frame.AlignAxis(1, ToVector3f(segmentDirection));
@@ -204,14 +207,16 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             mesh.AddTriangle(joint.InBottom, joint.InTop, joint.InRight);
         }
 
-        private void AddLeftMiter(ToolpathPreviewMesh mesh, TPrintVertex printVertex, ref Frame3f frameMiter, ref Frame3f frameSegBefore, ToolpathPreviewJoint joint)
+        protected virtual void AddLeftMiter(ToolpathPreviewMesh mesh, TPrintVertex printVertex, TPrintVertex nextPrintVertex,
+            ref Frame3f frameMiter, ref Frame3f frameSegBefore, ToolpathPreviewJoint joint)
         {
             double miterScaleFactor = GetMiterScaleFactor(ref frameMiter, ref frameSegBefore);
             joint.InLeft = joint.OutLeft = mesh.AddVertex(vertexFactory(printVertex,
                 frameMiter.FromFrameP(DiamondCrossSection.Left(printVertex.Dimensions, miterScaleFactor)), brightnessMin));
         }
 
-        private void AddLeftSquare(ToolpathPreviewMesh mesh, TPrintVertex printVertex, ref Frame3f frameSegBefore, ref Frame3f frameSegAfter, ToolpathPreviewJoint joint)
+        protected virtual void AddLeftSquare(ToolpathPreviewMesh mesh, TPrintVertex printVertex, TPrintVertex nextPrintVertex,
+            ref Frame3f frameSegBefore, ref Frame3f frameSegAfter, ToolpathPreviewJoint joint)
         {
             joint.InLeft = mesh.AddVertex(vertexFactory(printVertex,
                 frameSegBefore.FromFrameP(DiamondCrossSection.Left(printVertex.Dimensions)), brightnessMin));
@@ -220,23 +225,25 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
                 frameSegAfter.FromFrameP(DiamondCrossSection.Left(printVertex.Dimensions)), brightnessMin));
         }
 
-        private void AddRightMiter(TPrintVertex printVertex, ToolpathPreviewMesh mesh, ref Frame3f frameMiter, ref Frame3f frameSegBefore, ToolpathPreviewJoint joint)
+        protected virtual void AddRightMiter(TPrintVertex printVertex, TPrintVertex nextPrintVertex, ToolpathPreviewMesh mesh,
+            ref Frame3f frameMiter, ref Frame3f frameSegBefore, ToolpathPreviewJoint joint)
         {
             double miterScaleFactor = GetMiterScaleFactor(ref frameMiter, ref frameSegBefore);
             joint.InRight = joint.OutRight = mesh.AddVertex(vertexFactory(printVertex,
                 frameMiter.FromFrameP(DiamondCrossSection.Right(printVertex.Dimensions, miterScaleFactor)), brightnessMin));
         }
 
-        private void AddRightSquare(TPrintVertex printVertex, ToolpathPreviewMesh mesh, ref Frame3f frameSegBefore, ref Frame3f frameSegAfter, ToolpathPreviewJoint joint)
+        protected virtual void AddRightSquare(TPrintVertex printVertex, TPrintVertex nextPrintVertex, ToolpathPreviewMesh mesh,
+            ref Frame3f frameSegBefore, ref Frame3f frameSegAfter, ToolpathPreviewJoint joint)
         {
             joint.InRight = mesh.AddVertex(vertexFactory(printVertex,
-                frameSegBefore.FromFrameP(DiamondCrossSection.Left(printVertex.Dimensions)), brightnessMin));
+                frameSegBefore.FromFrameP(DiamondCrossSection.Right(printVertex.Dimensions)), brightnessMin));
 
             joint.OutRight = mesh.AddVertex(vertexFactory(printVertex,
                 frameSegAfter.FromFrameP(DiamondCrossSection.Right(printVertex.Dimensions)), brightnessMin));
         }
 
-        private ToolpathPreviewJoint GenerateButtJoint(Segment3d? segmentBefore, Segment3d? segmentAfter, TPrintVertex printVertex, ToolpathPreviewMesh mesh)
+        private ToolpathPreviewJoint GenerateButtJoint(Segment3d? segmentBefore, Segment3d? segmentAfter, TPrintVertex printVertex, TPrintVertex nextPrintVertex, ToolpathPreviewMesh mesh)
         {
             var joint = new ToolpathPreviewJoint();
 
@@ -244,12 +251,13 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
                 AddCapBeforeJoint(segmentBefore.Value.Direction, printVertex, joint, mesh);
 
             if (segmentAfter.HasValue)
-                AddCapAfterJoint(segmentAfter.Value.Direction, printVertex, joint, mesh);
+                AddCapAfterJoint(segmentAfter.Value.Direction, printVertex, nextPrintVertex, joint, mesh);
 
             return joint;
         }
 
-        private ToolpathPreviewJoint GenerateLeftBevel(Segment3d segBefore, Segment3d segAfter, TPrintVertex printVertex, ToolpathPreviewMesh mesh)
+        protected virtual ToolpathPreviewJoint GenerateLeftBevel(Segment3d segBefore, Segment3d segAfter,
+            TPrintVertex printVertex, TPrintVertex nextPrintVertex, ToolpathPreviewMesh mesh)
         {
             CreateFrames(segBefore, segAfter, out var frameMiter, out var frameSegBefore, out var frameSegAfter);
 
@@ -260,11 +268,11 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
 
             if (CornerIsInsideTube(segBefore, segAfter, printVertex.Dimensions.x))
             {
-                AddRightSquare(printVertex, mesh, ref frameSegBefore, ref frameSegAfter, joint);
+                AddRightSquare(printVertex, nextPrintVertex, mesh, ref frameSegBefore, ref frameSegAfter, joint);
             }
             else
             {
-                AddRightMiter(printVertex, mesh, ref frameMiter, ref frameSegBefore, joint);
+                AddRightMiter(printVertex, nextPrintVertex, mesh, ref frameMiter, ref frameSegBefore, joint);
             }
 
             joint.InBottom = joint.OutBottom = mesh.AddVertex(vertexFactory(printVertex,
@@ -284,7 +292,8 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             return joint;
         }
 
-        private ToolpathPreviewJoint GenerateRightBevel(Segment3d segBefore, Segment3d segAfter, TPrintVertex printVertex, ToolpathPreviewMesh mesh)
+        protected virtual ToolpathPreviewJoint GenerateRightBevel(Segment3d segBefore, Segment3d segAfter,
+            TPrintVertex printVertex, TPrintVertex nextPrintVertex, ToolpathPreviewMesh mesh)
         {
             CreateFrames(segBefore, segAfter, out var frameMiter, out var frameSegBefore, out var frameSegAfter);
 
@@ -295,11 +304,11 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
 
             if (CornerIsInsideTube(segBefore, segAfter, printVertex.Dimensions.x))
             {
-                AddLeftSquare(mesh, printVertex, ref frameSegBefore, ref frameSegAfter, joint);
+                AddLeftSquare(mesh, printVertex, nextPrintVertex, ref frameSegBefore, ref frameSegAfter, joint);
             }
             else
             {
-                AddLeftMiter(mesh, printVertex, ref frameMiter, ref frameSegBefore, joint);
+                AddLeftMiter(mesh, printVertex, nextPrintVertex, ref frameMiter, ref frameSegBefore, joint);
             }
 
             joint.InBottom = joint.OutBottom = mesh.AddVertex(vertexFactory(printVertex,
