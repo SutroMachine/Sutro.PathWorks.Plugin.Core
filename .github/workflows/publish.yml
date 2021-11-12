@@ -57,6 +57,7 @@ jobs:
         id: publish_nuget
         uses: AraHaan/publish-nuget@patch-2
         with:
+
           # Relative to repository root
           PROJECT_FILE_PATH: Sutro.PathWorks.Plugins.Core/Sutro.PathWorks.Plugins.Core.csproj
 
