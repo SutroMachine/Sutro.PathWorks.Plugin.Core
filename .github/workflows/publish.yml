@@ -53,18 +53,12 @@ jobs:
           dotnet build -c Release
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
       
-      - name: Unit tests
-        run: dotnet test -c Release Sutro.Core.UnitTests/Sutro.Core.UnitTests.csproj --no-build
-
-      - name: Functional tests
-        run: dotnet test -c Release Sutro.Core.FunctionalTests/Sutro.Core.FunctionalTests.csproj --no-build 
-
       - name: Publish on version change
         id: publish_nuget
         uses: AraHaan/publish-nuget@patch-2
         with:
           # Relative to repository root
-          PROJECT_FILE_PATH: Sutro.Core/Sutro.Core.csproj
+          PROJECT_FILE_PATH: Sutro.PathWorks.Plugins.Core/Sutro.PathWorks.Plugins.Core.csproj
 
           # Regex pattern to extract version info in a capturing group
           VERSION_REGEX: <Version>(.*)<\/Version>
