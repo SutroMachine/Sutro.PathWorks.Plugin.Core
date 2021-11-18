@@ -39,7 +39,7 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
         {
             var right = frameSegBefore.FromFrameP(DiamondCrossSection.Right(printVertex.Dimensions));
             joint.InRight = mesh.AddVertex(vertexFactory(printVertex, right, brightnessMin));
-            joint.OutRight = mesh.AddVertex(vertexFactory(printVertex, right, brightnessMin));
+            joint.OutRight = mesh.AddVertex(vertexFactory(nextPrintVertex, right, brightnessMin));
         }
 
         protected override ToolpathPreviewJoint GenerateLeftBevel(Segment3d segBefore, Segment3d segAfter, TPrintVertex printVertex, TPrintVertex nextPrintVertex, ToolpathPreviewMesh mesh)
