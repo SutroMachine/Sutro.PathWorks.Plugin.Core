@@ -111,17 +111,19 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
 
             var joint = new ToolpathPreviewJoint();
 
+            var dimensions = CrossSectionDimensionsFromPrintVertex(printVertex);
+
             joint.InTop = joint.OutTop = mesh.AddVertex(vertexFactory(printVertex,
-                frame.FromFrameP(DiamondCrossSection.Top(printVertex.Dimensions)), brightnessMax));
+                frame.FromFrameP(DiamondCrossSection.Top(dimensions)), brightnessMax));
 
             joint.InRight = joint.OutRight = mesh.AddVertex(vertexFactory(printVertex,
-                frame.FromFrameP(DiamondCrossSection.Right(printVertex.Dimensions)), brightnessMin));
+                frame.FromFrameP(DiamondCrossSection.Right(dimensions)), brightnessMin));
 
             joint.InBottom = joint.OutBottom = mesh.AddVertex(vertexFactory(printVertex,
-                frame.FromFrameP(DiamondCrossSection.Bottom(printVertex.Dimensions)), brightnessMax));
+                frame.FromFrameP(DiamondCrossSection.Bottom(dimensions)), brightnessMax));
 
             joint.InLeft = joint.OutLeft = mesh.AddVertex(vertexFactory(printVertex,
-                frame.FromFrameP(DiamondCrossSection.Left(printVertex.Dimensions)), brightnessMin));
+                frame.FromFrameP(DiamondCrossSection.Left(dimensions)), brightnessMin));
 
             return joint;
         }
@@ -170,17 +172,19 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             var frame = new Frame3f(printVertex.Position);
             frame.AlignAxis(1, ToVector3f(segmentDirection));
 
+            var dimensions = CrossSectionDimensionsFromPrintVertex(nextPrintVertex);
+
             joint.OutTop = mesh.AddVertex(vertexFactory(nextPrintVertex,
-                frame.FromFrameP(DiamondCrossSection.Top(nextPrintVertex.Dimensions)), brightnessMax));
+                frame.FromFrameP(DiamondCrossSection.Top(dimensions)), brightnessMax));
 
             joint.OutRight = mesh.AddVertex(vertexFactory(nextPrintVertex,
-                frame.FromFrameP(DiamondCrossSection.Right(nextPrintVertex.Dimensions)), brightnessMin));
+                frame.FromFrameP(DiamondCrossSection.Right(dimensions)), brightnessMin));
 
             joint.OutBottom = mesh.AddVertex(vertexFactory(nextPrintVertex,
-                frame.FromFrameP(DiamondCrossSection.Bottom(nextPrintVertex.Dimensions)), brightnessMax));
+                frame.FromFrameP(DiamondCrossSection.Bottom(dimensions)), brightnessMax));
 
             joint.OutLeft = mesh.AddVertex(vertexFactory(nextPrintVertex,
-                frame.FromFrameP(DiamondCrossSection.Left(nextPrintVertex.Dimensions)), brightnessMin));
+                frame.FromFrameP(DiamondCrossSection.Left(dimensions)), brightnessMin));
 
             mesh.AddTriangle(joint.OutBottom, joint.OutTop, joint.OutLeft);
             mesh.AddTriangle(joint.OutBottom, joint.OutRight, joint.OutTop);
@@ -191,17 +195,19 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             var frame = new Frame3f(printVertex.Position);
             frame.AlignAxis(1, ToVector3f(segmentDirection));
 
+            var dimensions = CrossSectionDimensionsFromPrintVertex(printVertex);
+
             joint.InTop = mesh.AddVertex(vertexFactory(printVertex,
-                frame.FromFrameP(DiamondCrossSection.Top(printVertex.Dimensions)), brightnessMax));
+                frame.FromFrameP(DiamondCrossSection.Top(dimensions)), brightnessMax));
 
             joint.InRight = mesh.AddVertex(vertexFactory(printVertex,
-                frame.FromFrameP(DiamondCrossSection.Right(printVertex.Dimensions)), brightnessMin));
+                frame.FromFrameP(DiamondCrossSection.Right(dimensions)), brightnessMin));
 
             joint.InBottom = mesh.AddVertex(vertexFactory(printVertex,
-                frame.FromFrameP(DiamondCrossSection.Bottom(printVertex.Dimensions)), brightnessMax));
+                frame.FromFrameP(DiamondCrossSection.Bottom(dimensions)), brightnessMax));
 
             joint.InLeft = mesh.AddVertex(vertexFactory(printVertex,
-                frame.FromFrameP(DiamondCrossSection.Left(printVertex.Dimensions)), brightnessMin));
+                frame.FromFrameP(DiamondCrossSection.Left(dimensions)), brightnessMin));
 
             mesh.AddTriangle(joint.InBottom, joint.InLeft, joint.InTop);
             mesh.AddTriangle(joint.InBottom, joint.InTop, joint.InRight);
@@ -210,37 +216,45 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
         protected virtual void AddLeftMiter(ToolpathPreviewMesh mesh, TPrintVertex printVertex, TPrintVertex nextPrintVertex,
             ref Frame3f frameMiter, ref Frame3f frameSegBefore, ToolpathPreviewJoint joint)
         {
+            var dimensions = CrossSectionDimensionsFromPrintVertex(printVertex);
+
             double miterScaleFactor = GetMiterScaleFactor(ref frameMiter, ref frameSegBefore);
             joint.InLeft = joint.OutLeft = mesh.AddVertex(vertexFactory(printVertex,
-                frameMiter.FromFrameP(DiamondCrossSection.Left(printVertex.Dimensions, miterScaleFactor)), brightnessMin));
+                frameMiter.FromFrameP(DiamondCrossSection.Left(dimensions, miterScaleFactor)), brightnessMin));
         }
 
         protected virtual void AddLeftSquare(ToolpathPreviewMesh mesh, TPrintVertex printVertex, TPrintVertex nextPrintVertex,
             ref Frame3f frameSegBefore, ref Frame3f frameSegAfter, ToolpathPreviewJoint joint)
         {
+            var dimensions = CrossSectionDimensionsFromPrintVertex(printVertex);
+
             joint.InLeft = mesh.AddVertex(vertexFactory(printVertex,
-                frameSegBefore.FromFrameP(DiamondCrossSection.Left(printVertex.Dimensions)), brightnessMin));
+                frameSegBefore.FromFrameP(DiamondCrossSection.Left(dimensions)), brightnessMin));
 
             joint.OutLeft = mesh.AddVertex(vertexFactory(printVertex,
-                frameSegAfter.FromFrameP(DiamondCrossSection.Left(printVertex.Dimensions)), brightnessMin));
+                frameSegAfter.FromFrameP(DiamondCrossSection.Left(dimensions)), brightnessMin));
         }
 
         protected virtual void AddRightMiter(TPrintVertex printVertex, TPrintVertex nextPrintVertex, ToolpathPreviewMesh mesh,
             ref Frame3f frameMiter, ref Frame3f frameSegBefore, ToolpathPreviewJoint joint)
         {
+            var dimensions = CrossSectionDimensionsFromPrintVertex(printVertex);
+
             double miterScaleFactor = GetMiterScaleFactor(ref frameMiter, ref frameSegBefore);
             joint.InRight = joint.OutRight = mesh.AddVertex(vertexFactory(printVertex,
-                frameMiter.FromFrameP(DiamondCrossSection.Right(printVertex.Dimensions, miterScaleFactor)), brightnessMin));
+                frameMiter.FromFrameP(DiamondCrossSection.Right(dimensions, miterScaleFactor)), brightnessMin));
         }
 
         protected virtual void AddRightSquare(TPrintVertex printVertex, TPrintVertex nextPrintVertex, ToolpathPreviewMesh mesh,
             ref Frame3f frameSegBefore, ref Frame3f frameSegAfter, ToolpathPreviewJoint joint)
         {
+            var dimensions = CrossSectionDimensionsFromPrintVertex(printVertex);
+
             joint.InRight = mesh.AddVertex(vertexFactory(printVertex,
-                frameSegBefore.FromFrameP(DiamondCrossSection.Right(printVertex.Dimensions)), brightnessMin));
+                frameSegBefore.FromFrameP(DiamondCrossSection.Right(dimensions)), brightnessMin));
 
             joint.OutRight = mesh.AddVertex(vertexFactory(printVertex,
-                frameSegAfter.FromFrameP(DiamondCrossSection.Right(printVertex.Dimensions)), brightnessMin));
+                frameSegAfter.FromFrameP(DiamondCrossSection.Right(dimensions)), brightnessMin));
         }
 
         private ToolpathPreviewJoint GenerateButtJoint(Segment3d? segmentBefore, Segment3d? segmentAfter, TPrintVertex printVertex, TPrintVertex nextPrintVertex, ToolpathPreviewMesh mesh)
@@ -261,12 +275,14 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
         {
             CreateFrames(segBefore, segAfter, out var frameMiter, out var frameSegBefore, out var frameSegAfter);
 
+            var dimensions = CrossSectionDimensionsFromPrintVertex(printVertex);
+
             var joint = new ToolpathPreviewJoint();
 
             joint.InTop = joint.OutTop = mesh.AddVertex(vertexFactory(printVertex,
-                frameMiter.FromFrameP(DiamondCrossSection.Top(printVertex.Dimensions)), brightnessMax));
+                frameMiter.FromFrameP(DiamondCrossSection.Top(dimensions)), brightnessMax));
 
-            if (CornerIsInsideTube(segBefore, segAfter, printVertex.Dimensions.x))
+            if (CornerIsInsideTube(segBefore, segAfter, dimensions.x))
             {
                 AddRightSquare(printVertex, nextPrintVertex, mesh, ref frameSegBefore, ref frameSegAfter, joint);
             }
@@ -276,15 +292,15 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             }
 
             joint.InBottom = joint.OutBottom = mesh.AddVertex(vertexFactory(printVertex,
-                frameMiter.FromFrameP(DiamondCrossSection.Bottom(printVertex.Dimensions)), brightnessMax));
+                frameMiter.FromFrameP(DiamondCrossSection.Bottom(dimensions)), brightnessMax));
 
-            double bevelDistance = GetBevelDistance(ref segBefore, ref segAfter, printVertex.Dimensions);
+            double bevelDistance = GetBevelDistance(ref segBefore, ref segAfter, dimensions);
 
             joint.InLeft = mesh.AddVertex(vertexFactory(printVertex,
-                frameSegBefore.FromFrameP(DiamondCrossSection.Left(printVertex.Dimensions, 1, bevelDistance)), brightnessMin));
+                frameSegBefore.FromFrameP(DiamondCrossSection.Left(dimensions, 1, bevelDistance)), brightnessMin));
 
             joint.OutLeft = mesh.AddVertex(vertexFactory(printVertex,
-                frameSegAfter.FromFrameP(DiamondCrossSection.Left(printVertex.Dimensions, 1, -bevelDistance)), brightnessMin));
+                frameSegAfter.FromFrameP(DiamondCrossSection.Left(dimensions, 1, -bevelDistance)), brightnessMin));
 
             mesh.AddTriangle(joint.InLeft, joint.InTop, joint.OutLeft);
             mesh.AddTriangle(joint.InLeft, joint.OutLeft, joint.InBottom);
@@ -297,12 +313,14 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
         {
             CreateFrames(segBefore, segAfter, out var frameMiter, out var frameSegBefore, out var frameSegAfter);
 
+            var dimensions = CrossSectionDimensionsFromPrintVertex(printVertex);
+
             var joint = new ToolpathPreviewJoint();
 
             joint.InTop = joint.OutTop = mesh.AddVertex(vertexFactory(printVertex,
-                frameMiter.FromFrameP(DiamondCrossSection.Top(printVertex.Dimensions)), brightnessMax));
+                frameMiter.FromFrameP(DiamondCrossSection.Top(dimensions)), brightnessMax));
 
-            if (CornerIsInsideTube(segBefore, segAfter, printVertex.Dimensions.x))
+            if (CornerIsInsideTube(segBefore, segAfter, dimensions.x))
             {
                 AddLeftSquare(mesh, printVertex, nextPrintVertex, ref frameSegBefore, ref frameSegAfter, joint);
             }
@@ -312,20 +330,25 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
             }
 
             joint.InBottom = joint.OutBottom = mesh.AddVertex(vertexFactory(printVertex,
-                frameMiter.FromFrameP(DiamondCrossSection.Bottom(printVertex.Dimensions)), brightnessMax));
+                frameMiter.FromFrameP(DiamondCrossSection.Bottom(dimensions)), brightnessMax));
 
-            double bevelDistance = GetBevelDistance(ref segBefore, ref segAfter, printVertex.Dimensions);
+            double bevelDistance = GetBevelDistance(ref segBefore, ref segAfter, dimensions);
 
             joint.InRight = mesh.AddVertex(vertexFactory(printVertex,
-                frameSegBefore.FromFrameP(DiamondCrossSection.Right(printVertex.Dimensions, 1, bevelDistance)), brightnessMin));
+                frameSegBefore.FromFrameP(DiamondCrossSection.Right(dimensions, 1, bevelDistance)), brightnessMin));
 
             joint.OutRight = mesh.AddVertex(vertexFactory(printVertex,
-                frameSegAfter.FromFrameP(DiamondCrossSection.Right(printVertex.Dimensions, 1, -bevelDistance)), brightnessMin));
+                frameSegAfter.FromFrameP(DiamondCrossSection.Right(dimensions, 1, -bevelDistance)), brightnessMin));
 
             mesh.AddTriangle(joint.InRight, joint.OutRight, joint.InTop);
             mesh.AddTriangle(joint.InRight, joint.InBottom, joint.OutRight);
 
             return joint;
+        }
+
+        protected virtual Vector2d CrossSectionDimensionsFromPrintVertex(TPrintVertex printVertex)
+        {
+            return printVertex.Dimensions;
         }
     }
 }
