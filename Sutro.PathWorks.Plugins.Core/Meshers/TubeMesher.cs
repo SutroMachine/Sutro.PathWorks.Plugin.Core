@@ -29,13 +29,21 @@ namespace Sutro.PathWorks.Plugins.Core.Meshers
                 var currentVertex = toolpath[i];
                 var nextVertex = toolpath[i];
 
+                bool crossSectionChange = false;
                 if (i < toolpath.VertexCount - 1)
                 {
                     nextVertex = toolpath[i + 1];
                     segmentAfterJoint = new Segment3d(currentVertex.Position, nextVertex.Position);
+
+                    var dimensionsCurrent = CrossSectionDimensionsFromPrintVertex(currentVertex);
+                    var dimensionsNext = CrossSectionDimensionsFromPrintVertex(nextVertex);
+                    if (!MathUtil.EpsilonEqual(dimensionsCurrent.x, dimensionsNext.x, 1e-3) ||
+                        !MathUtil.EpsilonEqual(dimensionsCurrent.y, dimensionsNext.y, 1e-3))
+                        crossSectionChange = true;
                 }
 
-                if (segmentBeforeJoint == null || segmentAfterJoint == null)
+
+                if (crossSectionChange || segmentBeforeJoint == null || segmentAfterJoint == null)
                 {
                     joints[i] = GenerateButtJoint(segmentBeforeJoint, segmentAfterJoint, currentVertex, nextVertex, mesh);
                 }
